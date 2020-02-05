@@ -155,6 +155,26 @@
 									"type": "Expression"
 								}
 							}
+						},
+						{
+							"name": "log",
+							"type": "SetVariable",
+							"dependsOn": [
+								{
+									"activity": "postToSP",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "log",
+								"value": {
+									"value": "@activity('postToSP').output",
+									"type": "Expression"
+								}
+							}
 						}
 					]
 				}
@@ -162,6 +182,9 @@
 		],
 		"variables": {
 			"json": {
+				"type": "String"
+			},
+			"log": {
 				"type": "String"
 			}
 		},
