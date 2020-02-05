@@ -79,7 +79,7 @@
 							"typeProperties": {
 								"variableName": "json",
 								"value": {
-									"value": "{\n\t\"websiteAbsoluteUrl\":\"https://hepartsint.sharepoint.com/sites/internal/intranet/prontoToSF/\",\n\t\"SPadminUser\":\"Tamer.Elshazli@h-eparts.com\",\n\t\"SPadminPass\":\"Enigma#25\",\n\t\"listName\":\"DEB_MASTER\",\n\t\"item\":{\n\t\t@concat('\"Accountcode__c\":\"',item().Accountcode__c,'\"')\n\t}\n\t\n}",
+									"value": "{\n\t\"websiteAbsoluteUrl\":\"https://hepartsint.sharepoint.com/sites/internal/intranet/prontoToSF/\",\n\t\"SPadminUser\":\"Tamer.Elshazli@h-eparts.com\",\n\t\"SPadminPass\":\"Enigma#25\",\n\t\"listName\":\"DEB_MASTER\",\n\t\"item\":{\n\t\t\"Accountcode__c\":\"@item().Accountcode__c\"\n\t}\n\t\n}",
 									"type": "Expression"
 								}
 							}
