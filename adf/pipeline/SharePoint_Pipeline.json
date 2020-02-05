@@ -113,14 +113,45 @@
 					"isSequential": true,
 					"activities": [
 						{
-							"name": "Set variable1",
+							"name": "prepJson",
 							"type": "SetVariable",
 							"dependsOn": [],
 							"userProperties": [],
 							"typeProperties": {
 								"variableName": "json",
 								"value": {
-									"value": "@item().Accountcode__c",
+									"value": "{\n\t\"websiteAbsoluteUrl\":\"https://hepartsint.sharepoint.com/sites/internal/intranet/prontoToSF/\",\n\t\"SPadminUser\":\"Tamer.Elshazli@h-eparts.com\",\n\t\"SPadminPass\":\"Enigma#25\",\n\t\"listName\":\"DEB_MASTER\",\n\t\"item\":{\n\t\t@concat('\"Accountcode__c\":\"',item().Accountcode__c,'\"')\n\t}\n\t\n}",
+									"type": "Expression"
+								}
+							}
+						},
+						{
+							"name": "postToSP",
+							"type": "WebActivity",
+							"dependsOn": [
+								{
+									"activity": "prepJson",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "7.00:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"url": "https://hewebutils.azurewebsites.net/api/SPUtils/",
+								"method": "POST",
+								"headers": {
+									"Content-Type": "application/json"
+								},
+								"body": {
+									"value": "@variables('json')",
 									"type": "Expression"
 								}
 							}
