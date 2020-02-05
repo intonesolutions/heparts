@@ -70,30 +70,6 @@
 				}
 			},
 			{
-				"name": "Web1",
-				"type": "WebActivity",
-				"dependsOn": [],
-				"policy": {
-					"timeout": "7.00:00:00",
-					"retry": 0,
-					"retryIntervalInSeconds": 30,
-					"secureOutput": false,
-					"secureInput": false
-				},
-				"userProperties": [],
-				"typeProperties": {
-					"url": "https://hewebutils.azurewebsites.net/api/SPUtils/addItemToList",
-					"method": "POST",
-					"headers": {
-						"Content-Type": "application/json"
-					},
-					"body": {
-						"value": "{\n\t\"websiteAbsoluteUrl\":\"https://hepartsint.sharepoint.com/sites/internal/intranet/prontoToSF/\",\n\t\"SPadminUser\":\"Tamer.Elshazli@h-eparts.com\",\n\t\"SPadminPass\":\"Enigma#25\",\n\t\"listName\":\"DEB_MASTER\",\n        \"item\":[\n\t{\n\t\t@concat(' \"Accountcode__c\":\"\"',item().Accountcode__c)\n\t}\n\t]\n}\n",
-						"type": "Expression"
-					}
-				}
-			},
-			{
 				"name": "ForEach1",
 				"type": "ForEach",
 				"dependsOn": [
