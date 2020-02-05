@@ -104,7 +104,7 @@
 							},
 							"userProperties": [],
 							"typeProperties": {
-								"url": "https://hewebutils.azurewebsites.net/api/SPUtils/",
+								"url": "https://hewebutils.azurewebsites.net/api/SPUtils/addItemToList",
 								"method": "POST",
 								"headers": {
 									"Content-Type": "application/json"
