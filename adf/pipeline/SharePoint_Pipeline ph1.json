@@ -4,7 +4,7 @@
 		"description": "to get siteid, https://support.cloudhq.net/how-to-find-guids-of-sharepoint-sites/",
 		"activities": [
 			{
-				"name": "extract from SF",
+				"name": "extract from Pronto",
 				"type": "Copy",
 				"dependsOn": [],
 				"policy": {
@@ -123,7 +123,7 @@
 				"type": "Lookup",
 				"dependsOn": [
 					{
-						"activity": "extract from SF",
+						"activity": "extract from Pronto",
 						"dependencyConditions": [
 							"Succeeded"
 						]
