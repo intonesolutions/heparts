@@ -1,0 +1,16 @@
+{
+	"name": "Opportunity",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "hepartspartialsb_hepartial",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "SalesforceObject",
+		"schema": [],
+		"typeProperties": {
+			"objectApiName": "Opportunity"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

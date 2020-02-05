@@ -1,0 +1,34 @@
+{
+	"name": "blob_json",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "blob",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"folder": {
+				"type": "string"
+			},
+			"filename": {
+				"type": "string"
+			}
+		},
+		"annotations": [],
+		"type": "Json",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": {
+					"value": "@dataset().filename",
+					"type": "Expression"
+				},
+				"folderPath": {
+					"value": "@dataset().folder",
+					"type": "Expression"
+				},
+				"container": "data"
+			}
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

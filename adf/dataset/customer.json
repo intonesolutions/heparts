@@ -1,0 +1,15 @@
+{
+	"name": "customer",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "pronto_ftp",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "FileShare",
+		"typeProperties": {
+			"fileName": "CUSTOMER.xml"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

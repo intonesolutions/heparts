@@ -1,0 +1,64 @@
+{
+	"name": "pipeline2",
+	"properties": {
+		"activities": [
+			{
+				"name": "CopySPtoBlob",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "RestSource",
+						"httpRequestTimeout": "00:01:40",
+						"requestInterval": "00.00:00:00.010",
+						"requestMethod": "POST",
+						"requestBody": "{\n\t\"websiteAbsoluteUrl\":\"https://hepartsint.sharepoint.com/sites/internal/intranet/prontoToSF/\",\n\t\"SPadminUser\":\"Tamer.Elshazli@h-eparts.com\",\n\t\"SPadminPass\":\"Enigma#25\",\n\t\"listName\":\"DEB_MASTER\",\n\t\"filter\":\"\",\n\t\"sort\":\"\",\n\t\"top\":\"\",\n\t\"getAttachments\":\"false\"\n}",
+						"additionalHeaders": {
+							"Content-Type": "application/json"
+						}
+					},
+					"sink": {
+						"type": "JsonSink",
+						"storeSettings": {
+							"type": "AzureBlobStorageWriteSettings"
+						},
+						"formatSettings": {
+							"type": "JsonWriteSettings",
+							"quoteAllText": true
+						}
+					},
+					"enableStaging": false
+				},
+				"inputs": [
+					{
+						"referenceName": "SharePointWebAPI",
+						"type": "DatasetReference",
+						"parameters": {
+							"APIURL": "api/SPUtils/getItemsFromList"
+						}
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "blob_json",
+						"type": "DatasetReference",
+						"parameters": {
+							"folder": "sharepoint",
+							"filename": "deb_master.json"
+						}
+					}
+				]
+			}
+		],
+		"annotations": []
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

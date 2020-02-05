@@ -1,0 +1,105 @@
+{
+	"name": "SharePoint_Pipeline",
+	"properties": {
+		"description": "to get siteid, https://support.cloudhq.net/how-to-find-guids-of-sharepoint-sites/",
+		"activities": [
+			{
+				"name": "extract from SF",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "SalesforceSource",
+						"readBehavior": "query"
+					},
+					"sink": {
+						"type": "JsonSink",
+						"storeSettings": {
+							"type": "AzureBlobStorageWriteSettings"
+						},
+						"formatSettings": {
+							"type": "JsonWriteSettings",
+							"quoteAllText": true
+						}
+					},
+					"enableStaging": false
+				},
+				"inputs": [
+					{
+						"referenceName": "salesforce_OBJ",
+						"type": "DatasetReference",
+						"parameters": {
+							"objName": "DEB_MASTER__C"
+						}
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "blob_json",
+						"type": "DatasetReference",
+						"parameters": {
+							"folder": "intake",
+							"filename": "deb_master.json"
+						}
+					}
+				]
+			},
+			{
+				"name": "start json",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "extract from SF",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "json",
+					"value": "["
+				}
+			},
+			{
+				"name": "Web1",
+				"type": "WebActivity",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"url": "https://hewebutils.azurewebsites.net/api/SPUtils/addItemToList",
+					"method": "POST",
+					"headers": {
+						"Content-Type": "application/json"
+					},
+					"body": {
+						"value": "{\n\t\"websiteAbsoluteUrl\":\"https://hepartsint.sharepoint.com/sites/internal/intranet/prontoToSF/\",\n\t\"SPadminUser\":\"Tamer.Elshazli@h-eparts.com\",\n\t\"SPadminPass\":\"Enigma#25\",\n\t\"listName\":\"DEB_MASTER\",\n        \"item\":[\n\t{\n\t\t@concat(' \"Accountcode__c\":\"\"',item().Accountcode__c)\n\t}\n\t]\n}\n",
+						"type": "Expression"
+					}
+				}
+			}
+		],
+		"variables": {
+			"json": {
+				"type": "String"
+			}
+		},
+		"annotations": []
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

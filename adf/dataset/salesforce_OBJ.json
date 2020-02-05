@@ -1,0 +1,24 @@
+{
+	"name": "salesforce_OBJ",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "hepartspartialsb_hepartial",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"objName": {
+				"type": "string"
+			}
+		},
+		"annotations": [],
+		"type": "SalesforceObject",
+		"schema": [],
+		"typeProperties": {
+			"objectApiName": {
+				"value": "@dataset().objName",
+				"type": "Expression"
+			}
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}
