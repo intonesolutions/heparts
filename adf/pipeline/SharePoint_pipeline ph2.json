@@ -97,25 +97,7 @@
 						"mappings": [
 							{
 								"source": {
-									"path": "$['MSUS_Pronto__c']"
-								},
-								"sink": {
-									"name": "MSUS_Pronto__c",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"path": "$['Pronto_Global_Account__c']"
-								},
-								"sink": {
-									"name": "Pronto_Global_Account__c",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"path": "$['Name']"
+									"path": "$['Title']"
 								},
 								"sink": {
 									"name": "Name",
@@ -124,136 +106,46 @@
 							},
 							{
 								"source": {
-									"path": "$['CurrencyIsoCode']"
+									"path": "$['Accountcode__c']"
 								},
 								"sink": {
-									"name": "CurrencyIsoCode",
+									"name": "Accountcode__c",
 									"type": "String"
 								}
 							},
 							{
 								"source": {
-									"path": "$['OwnerId']"
+									"path": "$['RepCode__c']"
 								},
 								"sink": {
-									"name": "OwnerId",
+									"name": "RepCode__c",
 									"type": "String"
 								}
 							},
 							{
 								"source": {
-									"path": "$['Crown_Sales_Rep__c']"
+									"path": "$['Territory__c']"
 								},
 								"sink": {
-									"name": "Crown_Sales_Rep__c",
+									"name": "Territory__c",
 									"type": "String"
 								}
 							},
 							{
 								"source": {
-									"path": "$['Territory_ID__c']"
+									"path": "$['DrCurrCode__c']"
 								},
 								"sink": {
-									"name": "Territory_ID__c",
+									"name": "DrCurrCode__c",
 									"type": "String"
 								}
 							},
 							{
 								"source": {
-									"path": "$['BillingStreet']"
+									"path": "$['BillTo__c']"
 								},
 								"sink": {
-									"name": "BillingStreet",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"path": "$['BillingCity']"
-								},
-								"sink": {
-									"name": "BillingCity",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"path": "$['BillingState']"
-								},
-								"sink": {
-									"name": "BillingState",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"path": "$['BillingPostalCode']"
-								},
-								"sink": {
-									"name": "BillingPostalCode",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"path": "$['BillingCountry']"
-								},
-								"sink": {
-									"name": "BillingCountry",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"path": "$['ShippingStreet']"
-								},
-								"sink": {
-									"name": "ShippingStreet",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"path": "$['ShippingCity']"
-								},
-								"sink": {
-									"name": "ShippingCity",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"path": "$['ShippingState']"
-								},
-								"sink": {
-									"name": "ShippingState",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"path": "$['ShippingPostalCode']"
-								},
-								"sink": {
-									"name": "ShippingPostalCode",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"path": "$['ShippingCountry']"
-								},
-								"sink": {
-									"name": "ShippingCountry",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"path": "$['Phone']"
-								},
-								"sink": {
-									"name": "Phone",
+									"name": "BillTo__c",
 									"type": "String"
 								}
 							}
