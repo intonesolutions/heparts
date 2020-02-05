@@ -1,5 +1,5 @@
 {
-	"name": "SharePoint_Pipeline",
+	"name": "SharePoint_Pipeline ph1",
 	"properties": {
 		"description": "to get siteid, https://support.cloudhq.net/how-to-find-guids-of-sharepoint-sites/",
 		"activities": [
