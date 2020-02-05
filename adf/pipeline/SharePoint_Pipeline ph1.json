@@ -57,7 +57,7 @@
 				"type": "ForEach",
 				"dependsOn": [
 					{
-						"activity": "Lookup1",
+						"activity": "Read data",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -119,7 +119,7 @@
 				}
 			},
 			{
-				"name": "Lookup1",
+				"name": "Read data",
 				"type": "Lookup",
 				"dependsOn": [
 					{
