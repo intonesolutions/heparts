@@ -79,7 +79,7 @@
 							"typeProperties": {
 								"variableName": "json",
 								"value": {
-									"value": "@concat('{\n\t\"websiteAbsoluteUrl\":\"https://hepartsint.sharepoint.com/sites/internal/intranet/prontoToSF/\",\n\t\"SPadminUser\":\"Tamer.Elshazli@h-eparts.com\",\n\t\"SPadminPass\":\"Enigma#25\",\n\t\"listName\":\"DEB_MASTER\",\n\t\"item\":{\n\t\t\"Accountcode__c\":\"',item().Accountcode__c,'\"\n\t}\n}')",
+									"value": "@concat('{\n\t\"websiteAbsoluteUrl\":\"https://hepartsint.sharepoint.com/sites/internal/intranet/prontoToSF/\",\n\t\"SPadminUser\":\"Tamer.Elshazli@h-eparts.com\",\n\t\"SPadminPass\":\"Enigma#25\",\n\t\"listName\":\"DEB_MASTER\",\n\t\"item\":{\n\t\t\"Accountcode__c\":\"',item().Accountcode__c,'\",\n\t\t\"RepCode__c\":\"',item().RepCode__c,'\",\n\t\t\"Territory__c\":\"',item().Territory__c,'\",\n\t\t\"DrCurrCode__c\":\"',item().DrCurrCode__c,'\",\n\t\t\"BillTo__c\":\"',item().BillTo__c,'\"\n\t}\n}')",
 									"type": "Expression"
 								}
 							}
@@ -111,26 +111,6 @@
 								},
 								"body": {
 									"value": "@variables('json')",
-									"type": "Expression"
-								}
-							}
-						},
-						{
-							"name": "log",
-							"type": "SetVariable",
-							"dependsOn": [
-								{
-									"activity": "postToSP",
-									"dependencyConditions": [
-										"Succeeded"
-									]
-								}
-							],
-							"userProperties": [],
-							"typeProperties": {
-								"variableName": "log",
-								"value": {
-									"value": "@activity('postToSP').output",
 									"type": "Expression"
 								}
 							}
