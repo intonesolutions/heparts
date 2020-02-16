@@ -16,12 +16,15 @@
 				"userProperties": [],
 				"typeProperties": {
 					"source": {
-						"type": "BinarySource",
+						"type": "DelimitedTextSource",
 						"storeSettings": {
 							"type": "FtpReadSettings",
-							"recursive": false,
+							"recursive": true,
 							"wildcardFileName": "*DEB_MASTER.xml",
-							"useBinaryTransfer": false
+							"useBinaryTransfer": true
+						},
+						"formatSettings": {
+							"type": "DelimitedTextReadSettings"
 						}
 					},
 					"sink": {
@@ -34,7 +37,7 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "XML_FTP",
+						"referenceName": "FTP_TEXT",
 						"type": "DatasetReference"
 					}
 				],
