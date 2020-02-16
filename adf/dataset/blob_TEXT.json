@@ -1,5 +1,5 @@
 {
-	"name": "blobl_TEXT",
+	"name": "blob_TEXT",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "blob",

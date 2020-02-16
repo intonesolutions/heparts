@@ -49,7 +49,7 @@
 				],
 				"outputs": [
 					{
-						"referenceName": "blobl_TEXT",
+						"referenceName": "blob_TEXT",
 						"type": "DatasetReference",
 						"parameters": {
 							"folder": "intake",
