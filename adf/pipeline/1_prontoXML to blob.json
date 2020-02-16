@@ -19,9 +19,9 @@
 						"type": "BinarySource",
 						"storeSettings": {
 							"type": "FtpReadSettings",
-							"recursive": true,
+							"recursive": false,
 							"wildcardFileName": "*DEB_MASTER.xml",
-							"useBinaryTransfer": true
+							"useBinaryTransfer": false
 						}
 					},
 					"sink": {
