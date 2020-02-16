@@ -166,6 +166,9 @@
 				"type": "String"
 			}
 		},
+		"folder": {
+			"name": "demo"
+		},
 		"annotations": []
 	},
 	"type": "Microsoft.DataFactory/factories/pipelines"
