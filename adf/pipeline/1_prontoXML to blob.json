@@ -25,14 +25,9 @@
 						}
 					},
 					"sink": {
-						"type": "JsonSink",
+						"type": "BinarySink",
 						"storeSettings": {
-							"type": "AzureBlobStorageWriteSettings",
-							"copyBehavior": "MergeFiles"
-						},
-						"formatSettings": {
-							"type": "JsonWriteSettings",
-							"quoteAllText": true
+							"type": "AzureBlobStorageWriteSettings"
 						}
 					},
 					"enableStaging": false
@@ -45,7 +40,7 @@
 				],
 				"outputs": [
 					{
-						"referenceName": "blob_json",
+						"referenceName": "blob_xml",
 						"type": "DatasetReference",
 						"parameters": {
 							"folder": "intake",
@@ -77,14 +72,9 @@
 						}
 					},
 					"sink": {
-						"type": "JsonSink",
+						"type": "BinarySink",
 						"storeSettings": {
-							"type": "AzureBlobStorageWriteSettings",
-							"copyBehavior": "MergeFiles"
-						},
-						"formatSettings": {
-							"type": "JsonWriteSettings",
-							"quoteAllText": true
+							"type": "AzureBlobStorageWriteSettings"
 						}
 					},
 					"enableStaging": false
@@ -97,7 +87,7 @@
 				],
 				"outputs": [
 					{
-						"referenceName": "blob_json",
+						"referenceName": "blob_xml",
 						"type": "DatasetReference",
 						"parameters": {
 							"folder": "intake",
@@ -129,14 +119,9 @@
 						}
 					},
 					"sink": {
-						"type": "JsonSink",
+						"type": "BinarySink",
 						"storeSettings": {
-							"type": "AzureBlobStorageWriteSettings",
-							"copyBehavior": "MergeFiles"
-						},
-						"formatSettings": {
-							"type": "JsonWriteSettings",
-							"quoteAllText": true
+							"type": "AzureBlobStorageWriteSettings"
 						}
 					},
 					"enableStaging": false
@@ -149,7 +134,7 @@
 				],
 				"outputs": [
 					{
-						"referenceName": "blob_json",
+						"referenceName": "blob_xml",
 						"type": "DatasetReference",
 						"parameters": {
 							"folder": "intake",
@@ -181,14 +166,9 @@
 						}
 					},
 					"sink": {
-						"type": "JsonSink",
+						"type": "BinarySink",
 						"storeSettings": {
-							"type": "AzureBlobStorageWriteSettings",
-							"copyBehavior": "MergeFiles"
-						},
-						"formatSettings": {
-							"type": "JsonWriteSettings",
-							"quoteAllText": true
+							"type": "AzureBlobStorageWriteSettings"
 						}
 					},
 					"enableStaging": false
@@ -201,7 +181,7 @@
 				],
 				"outputs": [
 					{
-						"referenceName": "blob_json",
+						"referenceName": "blob_xml",
 						"type": "DatasetReference",
 						"parameters": {
 							"folder": "intake",
