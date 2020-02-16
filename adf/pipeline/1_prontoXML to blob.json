@@ -28,9 +28,15 @@
 						}
 					},
 					"sink": {
-						"type": "BinarySink",
+						"type": "DelimitedTextSink",
 						"storeSettings": {
-							"type": "AzureBlobStorageWriteSettings"
+							"type": "AzureBlobStorageWriteSettings",
+							"copyBehavior": "MergeFiles"
+						},
+						"formatSettings": {
+							"type": "DelimitedTextWriteSettings",
+							"quoteAllText": true,
+							"fileExtension": ".txt"
 						}
 					},
 					"enableStaging": false
@@ -43,152 +49,11 @@
 				],
 				"outputs": [
 					{
-						"referenceName": "blob_xml",
+						"referenceName": "blobl_TEXT",
 						"type": "DatasetReference",
 						"parameters": {
 							"folder": "intake",
 							"filename": "deb_master.xml"
-						}
-					}
-				]
-			},
-			{
-				"name": "name and address",
-				"type": "Copy",
-				"dependsOn": [],
-				"policy": {
-					"timeout": "7.00:00:00",
-					"retry": 0,
-					"retryIntervalInSeconds": 30,
-					"secureOutput": false,
-					"secureInput": false
-				},
-				"userProperties": [],
-				"typeProperties": {
-					"source": {
-						"type": "BinarySource",
-						"storeSettings": {
-							"type": "FtpReadSettings",
-							"recursive": true,
-							"wildcardFileName": "*NAME_AND_ADDRESS_MASTER.xml",
-							"useBinaryTransfer": true
-						}
-					},
-					"sink": {
-						"type": "BinarySink",
-						"storeSettings": {
-							"type": "AzureBlobStorageWriteSettings"
-						}
-					},
-					"enableStaging": false
-				},
-				"inputs": [
-					{
-						"referenceName": "XML_FTP",
-						"type": "DatasetReference"
-					}
-				],
-				"outputs": [
-					{
-						"referenceName": "blob_xml",
-						"type": "DatasetReference",
-						"parameters": {
-							"folder": "intake",
-							"filename": "name_address_master.xml"
-						}
-					}
-				]
-			},
-			{
-				"name": "so_pronto",
-				"type": "Copy",
-				"dependsOn": [],
-				"policy": {
-					"timeout": "7.00:00:00",
-					"retry": 0,
-					"retryIntervalInSeconds": 30,
-					"secureOutput": false,
-					"secureInput": false
-				},
-				"userProperties": [],
-				"typeProperties": {
-					"source": {
-						"type": "BinarySource",
-						"storeSettings": {
-							"type": "FtpReadSettings",
-							"recursive": true,
-							"wildcardFileName": "*SALES_ORDER_PRONTO.xml",
-							"useBinaryTransfer": true
-						}
-					},
-					"sink": {
-						"type": "BinarySink",
-						"storeSettings": {
-							"type": "AzureBlobStorageWriteSettings"
-						}
-					},
-					"enableStaging": false
-				},
-				"inputs": [
-					{
-						"referenceName": "XML_FTP",
-						"type": "DatasetReference"
-					}
-				],
-				"outputs": [
-					{
-						"referenceName": "blob_xml",
-						"type": "DatasetReference",
-						"parameters": {
-							"folder": "intake",
-							"filename": "salesorder_head.xml"
-						}
-					}
-				]
-			},
-			{
-				"name": "so_lines_pronto",
-				"type": "Copy",
-				"dependsOn": [],
-				"policy": {
-					"timeout": "7.00:00:00",
-					"retry": 0,
-					"retryIntervalInSeconds": 30,
-					"secureOutput": false,
-					"secureInput": false
-				},
-				"userProperties": [],
-				"typeProperties": {
-					"source": {
-						"type": "BinarySource",
-						"storeSettings": {
-							"type": "FtpReadSettings",
-							"recursive": true,
-							"wildcardFileName": "*SALES_ORDER_LINE.xml",
-							"useBinaryTransfer": true
-						}
-					},
-					"sink": {
-						"type": "BinarySink",
-						"storeSettings": {
-							"type": "AzureBlobStorageWriteSettings"
-						}
-					},
-					"enableStaging": false
-				},
-				"inputs": [
-					{
-						"referenceName": "XML_FTP",
-						"type": "DatasetReference"
-					}
-				],
-				"outputs": [
-					{
-						"referenceName": "blob_xml",
-						"type": "DatasetReference",
-						"parameters": {
-							"folder": "intake",
-							"filename": "salesorder_lines.xml"
 						}
 					}
 				]
