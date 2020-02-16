@@ -1,5 +1,5 @@
 {
-	"name": "DelimitedText1",
+	"name": "FTP_TEXT",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "pronto_ftp",
