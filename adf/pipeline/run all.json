@@ -9,7 +9,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"pipeline": {
-						"referenceName": "1_prontosf to blob",
+						"referenceName": "1_prontoXML to blob",
 						"type": "PipelineReference"
 					},
 					"waitOnCompletion": true
