@@ -41,6 +41,15 @@
 						"mappings": [
 							{
 								"source": {
+									"path": "$['Id']"
+								},
+								"sink": {
+									"name": "Id",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
 									"path": "$['External_ID__c']"
 								},
 								"sink": {
@@ -59,10 +68,10 @@
 							},
 							{
 								"source": {
-									"path": "$['Product2Id']"
+									"path": "$['PricebookEntryId']"
 								},
 								"sink": {
-									"name": "Product2Id",
+									"name": "PricebookEntryId",
 									"type": "String"
 								}
 							},
