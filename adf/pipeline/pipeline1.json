@@ -3,7 +3,7 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "OppLine_upd",
+				"name": "account",
 				"type": "Copy",
 				"dependsOn": [],
 				"policy": {
@@ -19,16 +19,15 @@
 						"type": "JsonSource",
 						"storeSettings": {
 							"type": "AzureBlobStorageReadSettings",
-							"recursive": false,
-							"enablePartitionDiscovery": false
+							"recursive": true
 						}
 					},
 					"sink": {
 						"type": "SalesforceSink",
 						"writeBatchSize": 5000,
 						"writeBehavior": "upsert",
-						"externalIdFieldName": "External_ID__c",
-						"ignoreNullValues": false
+						"externalIdFieldName": "MSUS_Pronto__c",
+						"ignoreNullValues": true
 					},
 					"enableStaging": false,
 					"translator": {
@@ -36,56 +35,237 @@
 						"mappings": [
 							{
 								"source": {
-									"path": "$['External_ID__c']"
+									"path": "$['MSUS_Pronto__c']"
 								},
 								"sink": {
-									"name": "External_ID__c",
+									"name": "MSUS_Pronto__c",
 									"type": "String"
 								}
 							},
 							{
 								"source": {
-									"path": "$['SortOrder__c']"
+									"path": "$['Pronto_Global_Account__c']"
 								},
 								"sink": {
-									"name": "SortOrder__c",
-									"type": "Decimal"
+									"name": "Pronto_Global_Account__c",
+									"type": "String"
 								}
 							},
 							{
 								"source": {
-									"path": "$['UnitPrice']"
+									"path": "$['Name']"
 								},
 								"sink": {
-									"name": "UnitPrice",
-									"type": "Decimal"
+									"name": "Name",
+									"type": "String"
 								}
 							},
 							{
 								"source": {
-									"path": "$['CME_Item_Cost__c']"
+									"path": "$['CurrencyIsoCode']"
 								},
 								"sink": {
-									"name": "CME_Item_Cost__c",
-									"type": "Decimal"
+									"name": "CurrencyIsoCode",
+									"type": "String"
 								}
 							},
 							{
 								"source": {
-									"path": "$['Shipped_Value__c']"
+									"path": "$['OwnerId']"
 								},
 								"sink": {
-									"name": "Shipped_Value__c",
-									"type": "Decimal"
+									"name": "OwnerId",
+									"type": "String"
 								}
 							},
 							{
 								"source": {
-									"path": "$['CME_Total_Cost__c']"
+									"path": "$['Crown_Sales_Rep__c']"
 								},
 								"sink": {
-									"name": "CME_Total_Cost__c",
-									"type": "Decimal"
+									"name": "Crown_Sales_Rep__c",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['Territory_ID__c']"
+								},
+								"sink": {
+									"name": "Territory_ID__c",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['BillingStreet']"
+								},
+								"sink": {
+									"name": "BillingStreet",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['BillingCity']"
+								},
+								"sink": {
+									"name": "BillingCity",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['BillingState']"
+								},
+								"sink": {
+									"name": "BillingState",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['BillingPostalCode']"
+								},
+								"sink": {
+									"name": "BillingPostalCode",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['BillingCountry']"
+								},
+								"sink": {
+									"name": "BillingCountry",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['ShippingStreet']"
+								},
+								"sink": {
+									"name": "ShippingStreet",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['ShippingCity']"
+								},
+								"sink": {
+									"name": "ShippingCity",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['ShippingState']"
+								},
+								"sink": {
+									"name": "ShippingState",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['ShippingPostalCode']"
+								},
+								"sink": {
+									"name": "ShippingPostalCode",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['ShippingCountry']"
+								},
+								"sink": {
+									"name": "ShippingCountry",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['Phone']"
+								},
+								"sink": {
+									"name": "Phone",
+									"type": "String"
+								}
+							}
+						],
+						"collectionReference": ""
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "blob_json",
+						"type": "DatasetReference",
+						"parameters": {
+							"folder": "stage",
+							"filename": "account.json"
+						}
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "salesforce_OBJ",
+						"type": "DatasetReference",
+						"parameters": {
+							"objName": "Account"
+						}
+					}
+				]
+			},
+			{
+				"name": "products",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "JsonSource",
+						"storeSettings": {
+							"type": "AzureBlobStorageReadSettings",
+							"recursive": true
+						}
+					},
+					"sink": {
+						"type": "SalesforceSink",
+						"writeBatchSize": 5000,
+						"writeBehavior": "upsert",
+						"externalIdFieldName": "Product_Key__c",
+						"ignoreNullValues": true
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"path": "$['IsActive']"
+								},
+								"sink": {
+									"name": "IsActive",
+									"type": "Boolean"
+								}
+							},
+							{
+								"source": {
+									"path": "$['SKU__c']"
+								},
+								"sink": {
+									"name": "SKU__c",
+									"type": "String"
 								}
 							},
 							{
@@ -99,110 +279,65 @@
 							},
 							{
 								"source": {
-									"path": "$['CME_Product_Group_Code__c']"
+									"path": "$['Name']"
 								},
 								"sink": {
-									"name": "CME_Product_Group_Code__c",
+									"name": "Name",
 									"type": "String"
 								}
 							},
 							{
 								"source": {
-									"path": "$['CME_Product_Group_Name__c']"
+									"path": "$['Part_num__c']"
 								},
 								"sink": {
-									"name": "CME_Product_Group_Name__c",
+									"name": "Part_num__c",
 									"type": "String"
 								}
 							},
 							{
 								"source": {
-									"path": "$['Back_Order_Suffix__c']"
+									"path": "$['Crown_Standard_Price__c']"
 								},
 								"sink": {
-									"name": "Back_Order_Suffix__c",
+									"name": "Crown_Standard_Price__c",
+									"type": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"path": "$['OEM_Retail_Price__c']"
+								},
+								"sink": {
+									"name": "OEM_Retail_Price__c",
+									"type": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"path": "$['Product_Key__c']"
+								},
+								"sink": {
+									"name": "Product_Key__c",
 									"type": "String"
 								}
 							},
 							{
 								"source": {
-									"path": "$['Morgan_Line__c']"
+									"path": "$['Family']"
 								},
 								"sink": {
-									"name": "Morgan_Line__c",
+									"name": "Family",
 									"type": "String"
 								}
 							},
 							{
 								"source": {
-									"path": "$['Transaction_Type__c']"
+									"path": "$['ProductCode']"
 								},
 								"sink": {
-									"name": "Transaction_Type__c",
+									"name": "ProductCode",
 									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"path": "$['Quantity']"
-								},
-								"sink": {
-									"name": "Quantity",
-									"type": "Decimal"
-								}
-							},
-							{
-								"source": {
-									"path": "$['Back_Order_Qty__c']"
-								},
-								"sink": {
-									"name": "Back_Order_Qty__c",
-									"type": "Decimal"
-								}
-							},
-							{
-								"source": {
-									"path": "$['Shipped_Qty__c']"
-								},
-								"sink": {
-									"name": "Shipped_Qty__c",
-									"type": "Decimal"
-								}
-							},
-							{
-								"source": {
-									"path": "$['Crown_Customer_ID_Number__c']"
-								},
-								"sink": {
-									"name": "Crown_Customer_ID_Number__c",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"path": "$['Tax_Rate__c']"
-								},
-								"sink": {
-									"name": "Tax_Rate__c",
-									"type": "Decimal"
-								}
-							},
-							{
-								"source": {
-									"path": "$['Total_Ordered_Tax_Amount__c']"
-								},
-								"sink": {
-									"name": "Total_Ordered_Tax_Amount__c",
-									"type": "Decimal"
-								}
-							},
-							{
-								"source": {
-									"path": "$['Total_Ordered_Line_Amount__c']"
-								},
-								"sink": {
-									"name": "Total_Ordered_Line_Amount__c",
-									"type": "Decimal"
 								}
 							}
 						],
@@ -215,7 +350,7 @@
 						"type": "DatasetReference",
 						"parameters": {
 							"folder": "stage",
-							"filename": "opportunity_line_upd.json"
+							"filename": "product2.json"
 						}
 					}
 				],
@@ -224,7 +359,56 @@
 						"referenceName": "salesforce_OBJ",
 						"type": "DatasetReference",
 						"parameters": {
-							"objName": "OpportunityLineItem"
+							"objName": "Product2"
+						}
+					}
+				]
+			},
+			{
+				"name": "opportunity",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "JsonSource",
+						"storeSettings": {
+							"type": "AzureBlobStorageReadSettings",
+							"recursive": true
+						}
+					},
+					"sink": {
+						"type": "SalesforceSink",
+						"writeBatchSize": 5000,
+						"writeBehavior": "upsert",
+						"externalIdFieldName": "Crown_Quote_ID__c",
+						"ignoreNullValues": true
+					},
+					"enableStaging": false
+				},
+				"inputs": [
+					{
+						"referenceName": "blob_json",
+						"type": "DatasetReference",
+						"parameters": {
+							"folder": "stage",
+							"filename": "opportunity.json"
+						}
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "salesforce_OBJ",
+						"type": "DatasetReference",
+						"parameters": {
+							"objName": "Opportunity"
 						}
 					}
 				]
