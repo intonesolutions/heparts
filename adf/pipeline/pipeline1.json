@@ -464,7 +464,8 @@
 						"referenceName": "blob_json",
 						"type": "DatasetReference",
 						"parameters": {
-							"folder": "intake"
+							"folder": "intake",
+							"filename": "opps_head.json"
 						}
 					}
 				]
@@ -520,7 +521,8 @@
 						"referenceName": "blob_json",
 						"type": "DatasetReference",
 						"parameters": {
-							"folder": "intake"
+							"folder": "intake",
+							"filename": "opp_lines.json"
 						}
 					}
 				]
@@ -589,7 +591,8 @@
 						"referenceName": "blob_json",
 						"type": "DatasetReference",
 						"parameters": {
-							"folder": "stage"
+							"folder": "stage",
+							"filename": "productpricebook.json"
 						}
 					}
 				]
