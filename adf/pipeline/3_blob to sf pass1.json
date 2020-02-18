@@ -266,6 +266,15 @@
 						"mappings": [
 							{
 								"source": {
+									"path": "$['Id']"
+								},
+								"sink": {
+									"name": "Id",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
 									"path": "$['IsActive']"
 								},
 								"sink": {
@@ -297,6 +306,15 @@
 								},
 								"sink": {
 									"name": "Name",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['Description']"
+								},
+								"sink": {
+									"name": "Description",
 									"type": "String"
 								}
 							},
@@ -342,15 +360,6 @@
 								},
 								"sink": {
 									"name": "Family",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"path": "$['ProductCode']"
-								},
-								"sink": {
-									"name": "ProductCode",
 									"type": "String"
 								}
 							}
