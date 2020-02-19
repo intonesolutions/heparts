@@ -1,0 +1,25 @@
+{
+	"name": "FTP_BIN",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "pronto_ftp",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"folder": {
+				"type": "string"
+			}
+		},
+		"annotations": [],
+		"type": "Binary",
+		"typeProperties": {
+			"location": {
+				"type": "FtpServerLocation",
+				"folderPath": {
+					"value": "@dataset().folder",
+					"type": "Expression"
+				}
+			}
+		}
+	}
+}
