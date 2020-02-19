@@ -1,6 +1,569 @@
 {
 	"name": "run_customers_only",
 	"properties": {
+		"activities": [
+			{
+				"name": "DEB_MASTER",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "DelimitedTextSource",
+						"storeSettings": {
+							"type": "FtpReadSettings",
+							"recursive": true,
+							"wildcardFileName": "DEB_MASTER-*.xml",
+							"useBinaryTransfer": true
+						},
+						"formatSettings": {
+							"type": "DelimitedTextReadSettings"
+						}
+					},
+					"sink": {
+						"type": "DelimitedTextSink",
+						"storeSettings": {
+							"type": "AzureBlobStorageWriteSettings",
+							"copyBehavior": "MergeFiles"
+						},
+						"formatSettings": {
+							"type": "DelimitedTextWriteSettings",
+							"quoteAllText": true,
+							"fileExtension": ".txt"
+						}
+					},
+					"enableStaging": false
+				},
+				"inputs": [
+					{
+						"referenceName": "FTP_TEXT",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "blob_TEXT",
+						"type": "DatasetReference",
+						"parameters": {
+							"folder": "intake",
+							"filename": "deb_master.xml"
+						}
+					}
+				]
+			},
+			{
+				"name": "name and address",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "DelimitedTextSource",
+						"storeSettings": {
+							"type": "FtpReadSettings",
+							"recursive": true,
+							"wildcardFileName": "NAME_AND_ADDRESS_MASTER-*.xml",
+							"useBinaryTransfer": true
+						},
+						"formatSettings": {
+							"type": "DelimitedTextReadSettings"
+						}
+					},
+					"sink": {
+						"type": "DelimitedTextSink",
+						"storeSettings": {
+							"type": "AzureBlobStorageWriteSettings",
+							"copyBehavior": "MergeFiles"
+						},
+						"formatSettings": {
+							"type": "DelimitedTextWriteSettings",
+							"quoteAllText": true,
+							"fileExtension": ".txt"
+						}
+					},
+					"enableStaging": false
+				},
+				"inputs": [
+					{
+						"referenceName": "FTP_TEXT",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "blob_TEXT",
+						"type": "DatasetReference",
+						"parameters": {
+							"folder": "intake",
+							"filename": "name_address_master.xml"
+						}
+					}
+				]
+			},
+			{
+				"name": "Account_from_sf",
+				"type": "Copy",
+				"dependsOn": [
+					{
+						"activity": "user_from_sf",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "SalesforceSource",
+						"query": "select Id,Pronto_Global_Account__c,MSUS_Pronto__c from Account",
+						"readBehavior": "query"
+					},
+					"sink": {
+						"type": "JsonSink",
+						"storeSettings": {
+							"type": "AzureBlobStorageWriteSettings"
+						},
+						"formatSettings": {
+							"type": "JsonWriteSettings",
+							"quoteAllText": true
+						}
+					},
+					"enableStaging": false
+				},
+				"inputs": [
+					{
+						"referenceName": "salesforce_OBJ",
+						"type": "DatasetReference",
+						"parameters": {
+							"objName": "Account"
+						}
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "blob_json",
+						"type": "DatasetReference",
+						"parameters": {
+							"folder": "intake",
+							"filename": "account.json"
+						}
+					}
+				]
+			},
+			{
+				"name": "user_from_sf",
+				"type": "Copy",
+				"dependsOn": [
+					{
+						"activity": "name and address",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "DEB_MASTER",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "SalesforceSource",
+						"readBehavior": "query"
+					},
+					"sink": {
+						"type": "JsonSink",
+						"storeSettings": {
+							"type": "AzureBlobStorageWriteSettings"
+						},
+						"formatSettings": {
+							"type": "JsonWriteSettings",
+							"quoteAllText": true
+						}
+					},
+					"enableStaging": false
+				},
+				"inputs": [
+					{
+						"referenceName": "salesforce_OBJ",
+						"type": "DatasetReference",
+						"parameters": {
+							"objName": "User"
+						}
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "blob_json",
+						"type": "DatasetReference",
+						"parameters": {
+							"folder": "intake",
+							"filename": "user.json"
+						}
+					}
+				]
+			},
+			{
+				"name": "call pass1",
+				"type": "AzureFunctionActivity",
+				"dependsOn": [
+					{
+						"activity": "Account_from_sf",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"functionName": "HttpTrigger1",
+					"method": "POST",
+					"body": {
+						"pass": "1"
+					}
+				},
+				"linkedServiceName": {
+					"referenceName": "AzureFunction1",
+					"type": "LinkedServiceReference"
+				}
+			},
+			{
+				"name": "account_to_sf",
+				"type": "Copy",
+				"dependsOn": [
+					{
+						"activity": "call pass1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "JsonSource",
+						"storeSettings": {
+							"type": "AzureBlobStorageReadSettings",
+							"recursive": true
+						}
+					},
+					"sink": {
+						"type": "SalesforceSink",
+						"writeBatchSize": 5000,
+						"writeBehavior": "upsert",
+						"externalIdFieldName": "MSUS_Pronto__c",
+						"ignoreNullValues": true
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"path": "$['MSUS_Pronto__c']"
+								},
+								"sink": {
+									"name": "MSUS_Pronto__c",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['Pronto_Global_Account__c']"
+								},
+								"sink": {
+									"name": "Pronto_Global_Account__c",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['Name']"
+								},
+								"sink": {
+									"name": "Name",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['CurrencyIsoCode']"
+								},
+								"sink": {
+									"name": "CurrencyIsoCode",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['OwnerId']"
+								},
+								"sink": {
+									"name": "OwnerId",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['Crown_Sales_Rep__c']"
+								},
+								"sink": {
+									"name": "Crown_Sales_Rep__c",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['Territory_ID__c']"
+								},
+								"sink": {
+									"name": "Territory_ID__c",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['BillingStreet']"
+								},
+								"sink": {
+									"name": "BillingStreet",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['BillingCity']"
+								},
+								"sink": {
+									"name": "BillingCity",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['BillingState']"
+								},
+								"sink": {
+									"name": "BillingState",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['BillingPostalCode']"
+								},
+								"sink": {
+									"name": "BillingPostalCode",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['BillingCountry']"
+								},
+								"sink": {
+									"name": "BillingCountry",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['ShippingStreet']"
+								},
+								"sink": {
+									"name": "ShippingStreet",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['ShippingCity']"
+								},
+								"sink": {
+									"name": "ShippingCity",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['ShippingState']"
+								},
+								"sink": {
+									"name": "ShippingState",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['ShippingPostalCode']"
+								},
+								"sink": {
+									"name": "ShippingPostalCode",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['ShippingCountry']"
+								},
+								"sink": {
+									"name": "ShippingCountry",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['Phone']"
+								},
+								"sink": {
+									"name": "Phone",
+									"type": "String"
+								}
+							}
+						],
+						"collectionReference": ""
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "blob_json",
+						"type": "DatasetReference",
+						"parameters": {
+							"folder": "stage",
+							"filename": "account.json"
+						}
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "salesforce_OBJ",
+						"type": "DatasetReference",
+						"parameters": {
+							"objName": "Account"
+						}
+					}
+				]
+			},
+			{
+				"name": "delete_ftp",
+				"type": "Delete",
+				"dependsOn": [
+					{
+						"activity": "account_to_sf",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"dataset": {
+						"referenceName": "FTP_BIN",
+						"type": "DatasetReference",
+						"parameters": {
+							"folder": "/"
+						}
+					},
+					"enableLogging": false,
+					"storeSettings": {
+						"type": "FtpReadSettings",
+						"recursive": false,
+						"wildcardFileName": "DEB_MASTER*.xml",
+						"useBinaryTransfer": true
+					}
+				}
+			},
+			{
+				"name": "delete_ftp_copy1",
+				"type": "Delete",
+				"dependsOn": [
+					{
+						"activity": "delete_ftp",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"dataset": {
+						"referenceName": "FTP_BIN",
+						"type": "DatasetReference",
+						"parameters": {
+							"folder": "/"
+						}
+					},
+					"enableLogging": false,
+					"storeSettings": {
+						"type": "FtpReadSettings",
+						"recursive": false,
+						"wildcardFileName": "NAME_AND_ADDRESS_MASTER*.xml",
+						"useBinaryTransfer": true
+					}
+				}
+			}
+		],
+		"folder": {
+			"name": "Pronto_SF"
+		},
 		"annotations": []
 	}
 }
