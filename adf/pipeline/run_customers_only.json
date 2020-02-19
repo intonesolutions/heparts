@@ -19,9 +19,9 @@
 						"type": "DelimitedTextSource",
 						"storeSettings": {
 							"type": "FtpReadSettings",
-							"recursive": true,
+							"recursive": false,
 							"wildcardFileName": "DEB_MASTER-*.xml",
-							"useBinaryTransfer": true
+							"useBinaryTransfer": false
 						},
 						"formatSettings": {
 							"type": "DelimitedTextReadSettings"
@@ -75,9 +75,9 @@
 						"type": "DelimitedTextSource",
 						"storeSettings": {
 							"type": "FtpReadSettings",
-							"recursive": true,
+							"recursive": false,
 							"wildcardFileName": "NAME_AND_ADDRESS_MASTER-*.xml",
-							"useBinaryTransfer": true
+							"useBinaryTransfer": false
 						},
 						"formatSettings": {
 							"type": "DelimitedTextReadSettings"
