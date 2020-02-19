@@ -55,7 +55,8 @@
 						"referenceName": "blob_json",
 						"type": "DatasetReference",
 						"parameters": {
-							"folder": "intake"
+							"folder": "intake",
+							"filename": "*.xml"
 						}
 					},
 					"enableLogging": false,
