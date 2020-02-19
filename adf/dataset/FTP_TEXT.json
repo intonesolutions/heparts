@@ -11,7 +11,8 @@
 			"location": {
 				"type": "FtpServerLocation"
 			},
-			"columnDelimiter": "|",
+			"columnDelimiter": "\u0001",
+			"rowDelimiter": "\n",
 			"escapeChar": "\\",
 			"firstRowAsHeader": false,
 			"quoteChar": ""
