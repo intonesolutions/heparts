@@ -30,7 +30,7 @@
 				"typeProperties": {
 					"source": {
 						"type": "SalesforceSource",
-						"query": "select Id,Name from Opportunity",
+						"query": "select Id,Name,Date_Quote_Created__c from Opportunity",
 						"readBehavior": "query"
 					},
 					"sink": {
