@@ -52,19 +52,10 @@
 							},
 							{
 								"source": {
-									"path": "$['OpportunityId']"
+									"path": "$['rowstate__c']"
 								},
 								"sink": {
-									"name": "OpportunityId",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"path": "$['PricebookEntryId']"
-								},
-								"sink": {
-									"name": "PricebookEntryId",
+									"name": "rowstate__c",
 									"type": "String"
 								}
 							},
@@ -288,10 +279,28 @@
 						"mappings": [
 							{
 								"source": {
+									"path": "$['Id']"
+								},
+								"sink": {
+									"name": "Id",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
 									"path": "$['External_ID__c']"
 								},
 								"sink": {
 									"name": "External_ID__c",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['rowstate__c']"
+								},
+								"sink": {
+									"name": "rowstate__c",
 									"type": "String"
 								}
 							},
