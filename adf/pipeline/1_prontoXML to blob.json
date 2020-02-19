@@ -19,9 +19,9 @@
 						"type": "DelimitedTextSource",
 						"storeSettings": {
 							"type": "FtpReadSettings",
-							"recursive": true,
+							"recursive": false,
 							"wildcardFileName": "DEB_MASTER-*.xml",
-							"useBinaryTransfer": true
+							"useBinaryTransfer": false
 						},
 						"formatSettings": {
 							"type": "DelimitedTextReadSettings"
@@ -75,9 +75,9 @@
 						"type": "DelimitedTextSource",
 						"storeSettings": {
 							"type": "FtpReadSettings",
-							"recursive": true,
+							"recursive": false,
 							"wildcardFileName": "NAME_AND_ADDRESS_MASTER-*.xml",
-							"useBinaryTransfer": true
+							"useBinaryTransfer": false
 						},
 						"formatSettings": {
 							"type": "DelimitedTextReadSettings"
@@ -131,9 +131,9 @@
 						"type": "DelimitedTextSource",
 						"storeSettings": {
 							"type": "FtpReadSettings",
-							"recursive": true,
+							"recursive": false,
 							"wildcardFileName": "STOCK_MASTER-*.xml",
-							"useBinaryTransfer": true
+							"useBinaryTransfer": false
 						},
 						"formatSettings": {
 							"type": "DelimitedTextReadSettings"
@@ -187,9 +187,9 @@
 						"type": "DelimitedTextSource",
 						"storeSettings": {
 							"type": "FtpReadSettings",
-							"recursive": true,
+							"recursive": false,
 							"wildcardFileName": "SALES_ORDER_PRONTO-*.xml",
-							"useBinaryTransfer": true
+							"useBinaryTransfer": false
 						},
 						"formatSettings": {
 							"type": "DelimitedTextReadSettings"
@@ -243,9 +243,9 @@
 						"type": "DelimitedTextSource",
 						"storeSettings": {
 							"type": "FtpReadSettings",
-							"recursive": true,
+							"recursive": false,
 							"wildcardFileName": "SALES_ORDER_LINE-*.xml",
-							"useBinaryTransfer": true
+							"useBinaryTransfer": false
 						},
 						"formatSettings": {
 							"type": "DelimitedTextReadSettings"
