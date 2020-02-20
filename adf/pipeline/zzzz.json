@@ -281,21 +281,12 @@
 						"writeBatchSize": 5000,
 						"writeBehavior": "upsert",
 						"externalIdFieldName": "External_ID__c",
-						"ignoreNullValues": false
+						"ignoreNullValues": true
 					},
 					"enableStaging": false,
 					"translator": {
 						"type": "TabularTranslator",
 						"mappings": [
-							{
-								"source": {
-									"path": "$['Id']"
-								},
-								"sink": {
-									"name": "Id",
-									"type": "String"
-								}
-							},
 							{
 								"source": {
 									"path": "$['External_ID__c']"
