@@ -21,13 +21,14 @@
 						"readBehavior": "query"
 					},
 					"sink": {
-						"type": "JsonSink",
+						"type": "DelimitedTextSink",
 						"storeSettings": {
 							"type": "AzureBlobStorageWriteSettings"
 						},
 						"formatSettings": {
-							"type": "JsonWriteSettings",
-							"quoteAllText": true
+							"type": "DelimitedTextWriteSettings",
+							"quoteAllText": true,
+							"fileExtension": ".txt"
 						}
 					},
 					"enableStaging": false,
@@ -44,11 +45,11 @@
 				],
 				"outputs": [
 					{
-						"referenceName": "blob_json",
+						"referenceName": "blob_TEXT",
 						"type": "DatasetReference",
 						"parameters": {
 							"folder": "stage",
-							"filename": "productpricebook.json"
+							"filename": "productpricebook.csv"
 						}
 					}
 				]
