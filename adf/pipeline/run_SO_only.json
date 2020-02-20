@@ -255,12 +255,6 @@
 						"dependencyConditions": [
 							"Succeeded"
 						]
-					},
-					{
-						"activity": "Product2",
-						"dependencyConditions": [
-							"Succeeded"
-						]
 					}
 				],
 				"policy": {
@@ -1135,71 +1129,6 @@
 						}
 					}
 				}
-			},
-			{
-				"name": "Product2",
-				"type": "Copy",
-				"dependsOn": [
-					{
-						"activity": "so_lines_pronto",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					},
-					{
-						"activity": "so_pronto",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
-				"policy": {
-					"timeout": "7.00:00:00",
-					"retry": 0,
-					"retryIntervalInSeconds": 30,
-					"secureOutput": false,
-					"secureInput": false
-				},
-				"userProperties": [],
-				"typeProperties": {
-					"source": {
-						"type": "SalesforceSource",
-						"query": "select Id,Product_Key__c from Product2 where IsActive=true",
-						"readBehavior": "query"
-					},
-					"sink": {
-						"type": "DelimitedTextSink",
-						"storeSettings": {
-							"type": "AzureBlobStorageWriteSettings"
-						},
-						"formatSettings": {
-							"type": "DelimitedTextWriteSettings",
-							"quoteAllText": true,
-							"fileExtension": ".txt"
-						}
-					},
-					"enableStaging": false,
-					"enableSkipIncompatibleRow": true
-				},
-				"inputs": [
-					{
-						"referenceName": "salesforce_OBJ",
-						"type": "DatasetReference",
-						"parameters": {
-							"objName": "Product2"
-						}
-					}
-				],
-				"outputs": [
-					{
-						"referenceName": "blob_csv",
-						"type": "DatasetReference",
-						"parameters": {
-							"folder": "intake",
-							"filename": "product2.csv"
-						}
-					}
-				]
 			}
 		],
 		"annotations": []
