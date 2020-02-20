@@ -45,7 +45,7 @@
 				],
 				"outputs": [
 					{
-						"referenceName": "blob_TEXT",
+						"referenceName": "blob_csv",
 						"type": "DatasetReference",
 						"parameters": {
 							"folder": "stage",
