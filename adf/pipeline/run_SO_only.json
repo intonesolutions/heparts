@@ -341,11 +341,11 @@
 				]
 			},
 			{
-				"name": "get Opportunity",
+				"name": "get Opp from sf",
 				"type": "Copy",
 				"dependsOn": [
 					{
-						"activity": "opportunity_copy1",
+						"activity": "get Prod and Pricebook",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -398,11 +398,11 @@
 				]
 			},
 			{
-				"name": "oppLineitems_copy1",
+				"name": "get oppLineitems from sf",
 				"type": "Copy",
 				"dependsOn": [
 					{
-						"activity": "opportunity_copy1",
+						"activity": "get Prod and Pricebook",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -459,13 +459,13 @@
 				"type": "AzureFunctionActivity",
 				"dependsOn": [
 					{
-						"activity": "oppLineitems_copy1",
+						"activity": "get oppLineitems from sf",
 						"dependencyConditions": [
 							"Succeeded"
 						]
 					},
 					{
-						"activity": "get Opportunity",
+						"activity": "get Opp from sf",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -1200,6 +1200,106 @@
 						"recursive": false,
 						"wildcardFileName": "SALES_ORDER*.xml",
 						"useBinaryTransfer": true
+					}
+				}
+			},
+			{
+				"name": "get Prod and Pricebook",
+				"type": "Copy",
+				"dependsOn": [
+					{
+						"activity": "getKeys",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "SalesforceSource",
+						"query": {
+							"value": "@concat('select Id,Product2.Id,Product2.Product_Key__c from PriceBookEntry where IsActive=true and Product2.Product_Key__c in (',activity('getKeys').output.firstRow.keys,')')",
+							"type": "Expression"
+						},
+						"readBehavior": "query"
+					},
+					"sink": {
+						"type": "DelimitedTextSink",
+						"storeSettings": {
+							"type": "AzureBlobStorageWriteSettings"
+						},
+						"formatSettings": {
+							"type": "DelimitedTextWriteSettings",
+							"quoteAllText": true,
+							"fileExtension": ".txt"
+						}
+					},
+					"enableStaging": false,
+					"enableSkipIncompatibleRow": true
+				},
+				"inputs": [
+					{
+						"referenceName": "salesforce_OBJ",
+						"type": "DatasetReference",
+						"parameters": {
+							"objName": "Product2"
+						}
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "blob_csv",
+						"type": "DatasetReference",
+						"parameters": {
+							"folder": "stage",
+							"filename": "productpricebook.csv"
+						}
+					}
+				]
+			},
+			{
+				"name": "getKeys",
+				"type": "Lookup",
+				"dependsOn": [
+					{
+						"activity": "opportunity_copy1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "JsonSource",
+						"storeSettings": {
+							"type": "AzureBlobStorageReadSettings",
+							"recursive": false,
+							"enablePartitionDiscovery": false
+						}
+					},
+					"dataset": {
+						"referenceName": "blob_json",
+						"type": "DatasetReference",
+						"parameters": {
+							"folder": "stage",
+							"filename": "salesorder_prodkeys.json"
+						}
 					}
 				}
 			}
