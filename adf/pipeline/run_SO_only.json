@@ -1169,6 +1169,48 @@
 						}
 					}
 				]
+			},
+			{
+				"name": "delete_ftp",
+				"type": "Delete",
+				"dependsOn": [
+					{
+						"activity": "OppLine_upd",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "OppLine_ins",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"dataset": {
+						"referenceName": "FTP_BIN",
+						"type": "DatasetReference",
+						"parameters": {
+							"folder": "/"
+						}
+					},
+					"enableLogging": false,
+					"storeSettings": {
+						"type": "FtpReadSettings",
+						"recursive": false,
+						"wildcardFileName": "SALES_ORDER*.xml",
+						"useBinaryTransfer": true
+					}
+				}
 			}
 		],
 		"annotations": []
