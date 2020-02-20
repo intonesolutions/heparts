@@ -1168,13 +1168,14 @@
 						"readBehavior": "query"
 					},
 					"sink": {
-						"type": "JsonSink",
+						"type": "DelimitedTextSink",
 						"storeSettings": {
 							"type": "AzureBlobStorageWriteSettings"
 						},
 						"formatSettings": {
-							"type": "JsonWriteSettings",
-							"quoteAllText": true
+							"type": "DelimitedTextWriteSettings",
+							"quoteAllText": true,
+							"fileExtension": ".txt"
 						}
 					},
 					"enableStaging": false,
@@ -1191,11 +1192,11 @@
 				],
 				"outputs": [
 					{
-						"referenceName": "blob_json",
+						"referenceName": "blob_csv",
 						"type": "DatasetReference",
 						"parameters": {
 							"folder": "intake",
-							"filename": "product2.json"
+							"filename": "product2.csv"
 						}
 					}
 				]
