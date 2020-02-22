@@ -84,15 +84,9 @@
 						}
 					},
 					"sink": {
-						"type": "DelimitedTextSink",
+						"type": "BinarySink",
 						"storeSettings": {
-							"type": "AzureBlobStorageWriteSettings",
-							"copyBehavior": "MergeFiles"
-						},
-						"formatSettings": {
-							"type": "DelimitedTextWriteSettings",
-							"quoteAllText": true,
-							"fileExtension": ".txt"
+							"type": "AzureBlobStorageWriteSettings"
 						}
 					},
 					"enableStaging": false
@@ -105,12 +99,8 @@
 				],
 				"outputs": [
 					{
-						"referenceName": "blob_TEXT",
-						"type": "DatasetReference",
-						"parameters": {
-							"folder": "queue",
-							"filename": "salesorder_lines.xml"
-						}
+						"referenceName": "blob_bin",
+						"type": "DatasetReference"
 					}
 				]
 			}
