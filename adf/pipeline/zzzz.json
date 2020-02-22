@@ -77,7 +77,7 @@
 							"type": "FtpReadSettings",
 							"recursive": false,
 							"wildcardFileName": "SALES_ORDER_LINE-*.xml",
-							"useBinaryTransfer": false
+							"useBinaryTransfer": true
 						},
 						"formatSettings": {
 							"type": "DelimitedTextReadSettings"
@@ -100,7 +100,10 @@
 				"outputs": [
 					{
 						"referenceName": "blob_bin",
-						"type": "DatasetReference"
+						"type": "DatasetReference",
+						"parameters": {
+							"folder": "queue"
+						}
 					}
 				]
 			}
