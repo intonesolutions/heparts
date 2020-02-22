@@ -72,15 +72,12 @@
 				"userProperties": [],
 				"typeProperties": {
 					"source": {
-						"type": "DelimitedTextSource",
+						"type": "BinarySource",
 						"storeSettings": {
 							"type": "FtpReadSettings",
 							"recursive": false,
 							"wildcardFileName": "SALES_ORDER_LINE-*.xml",
 							"useBinaryTransfer": true
-						},
-						"formatSettings": {
-							"type": "DelimitedTextReadSettings"
 						}
 					},
 					"sink": {
@@ -93,8 +90,11 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "FTP_TEXT",
-						"type": "DatasetReference"
+						"referenceName": "FTP_BIN",
+						"type": "DatasetReference",
+						"parameters": {
+							"folder": "/"
+						}
 					}
 				],
 				"outputs": [
