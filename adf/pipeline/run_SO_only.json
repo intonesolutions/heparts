@@ -151,7 +151,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"expression": {
-						"value": "@equals(activity('call pass_0-so').output.body.status,'0')",
+						"value": "@equals(activity('call pass_0-so').output.status,'0')",
 						"type": "Expression"
 					},
 					"ifTrueActivities": [
