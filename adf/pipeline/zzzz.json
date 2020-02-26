@@ -3,7 +3,7 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "so_pronto",
+				"name": "so_ftp_to_blob",
 				"type": "Copy",
 				"dependsOn": [],
 				"policy": {
@@ -52,7 +52,7 @@
 				]
 			},
 			{
-				"name": "so_lines_pronto",
+				"name": "so_lines_ftp_to_blob",
 				"type": "Copy",
 				"dependsOn": [],
 				"policy": {
@@ -99,6 +99,48 @@
 						}
 					}
 				]
+			},
+			{
+				"name": "delete_ftp",
+				"type": "Delete",
+				"dependsOn": [
+					{
+						"activity": "so_lines_ftp_to_blob",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "so_ftp_to_blob",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"dataset": {
+						"referenceName": "FTP_BIN",
+						"type": "DatasetReference",
+						"parameters": {
+							"folder": "/"
+						}
+					},
+					"enableLogging": false,
+					"storeSettings": {
+						"type": "FtpReadSettings",
+						"recursive": false,
+						"wildcardFileName": "SALES_ORDER*.xml",
+						"useBinaryTransfer": true
+					}
+				}
 			}
 		],
 		"annotations": []
