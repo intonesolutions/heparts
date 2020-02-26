@@ -105,13 +105,7 @@
 				"type": "AzureFunctionActivity",
 				"dependsOn": [
 					{
-						"activity": "so_lines_ftp_to_blob",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					},
-					{
-						"activity": "so_ftp_to_blob",
+						"activity": "delete_ftp",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -176,7 +170,13 @@
 				"type": "Delete",
 				"dependsOn": [
 					{
-						"activity": "If Condition1",
+						"activity": "so_ftp_to_blob",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "so_lines_ftp_to_blob",
 						"dependencyConditions": [
 							"Succeeded"
 						]
