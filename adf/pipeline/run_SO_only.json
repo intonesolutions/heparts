@@ -3,7 +3,7 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "so_pronto_copy1",
+				"name": "so_ftp_to_blob",
 				"type": "Copy",
 				"dependsOn": [],
 				"policy": {
@@ -52,7 +52,7 @@
 				]
 			},
 			{
-				"name": "so_lines_pronto_copy1",
+				"name": "so_lines_ftp_to_blob",
 				"type": "Copy",
 				"dependsOn": [],
 				"policy": {
@@ -105,13 +105,13 @@
 				"type": "AzureFunctionActivity",
 				"dependsOn": [
 					{
-						"activity": "so_lines_pronto_copy1",
+						"activity": "so_lines_ftp_to_blob",
 						"dependencyConditions": [
 							"Succeeded"
 						]
 					},
 					{
-						"activity": "so_pronto_copy1",
+						"activity": "so_ftp_to_blob",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -156,7 +156,7 @@
 					},
 					"ifTrueActivities": [
 						{
-							"name": "Execute Pipeline1",
+							"name": "run_so_only_inner",
 							"type": "ExecutePipeline",
 							"dependsOn": [],
 							"userProperties": [],
