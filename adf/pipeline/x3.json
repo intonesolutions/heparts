@@ -567,7 +567,7 @@
 				"typeProperties": {
 					"source": {
 						"type": "SalesforceSource",
-						"query": "select Id,Name from Invoices_Crown__c",
+						"query": "select Id,External_ID__c from Invoices_Crown__c",
 						"readBehavior": "query"
 					},
 					"sink": {
