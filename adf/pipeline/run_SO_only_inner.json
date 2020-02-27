@@ -931,7 +931,7 @@
 					{
 						"activity": "invoice_to_sf",
 						"dependencyConditions": [
-							"Succeeded"
+							"Completed"
 						]
 					}
 				],
