@@ -415,6 +415,15 @@
 							},
 							{
 								"source": {
+									"path": "$['Sales_Rep_Code__c']"
+								},
+								"sink": {
+									"name": "Sales_Rep_Code__c",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
 									"path": "$['Delivery_Date__c']"
 								},
 								"sink": {
