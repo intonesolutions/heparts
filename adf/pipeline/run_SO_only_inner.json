@@ -1380,6 +1380,15 @@
 							},
 							{
 								"source": {
+									"path": "$['Invoices_Crown__c']"
+								},
+								"sink": {
+									"name": "Invoices_Crown__c",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
 									"path": "$['Product__c']"
 								},
 								"sink": {
