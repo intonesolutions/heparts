@@ -101,7 +101,7 @@
 				]
 			},
 			{
-				"name": "call pass_0-so",
+				"name": "call pass_q-so",
 				"type": "AzureFunctionActivity",
 				"dependsOn": [
 					{
@@ -123,7 +123,7 @@
 					"functionName": "HttpTrigger1",
 					"method": "POST",
 					"body": {
-						"pass": "0-so"
+						"pass": "q-so"
 					}
 				},
 				"linkedServiceName": {
@@ -136,7 +136,7 @@
 				"type": "IfCondition",
 				"dependsOn": [
 					{
-						"activity": "call pass_0-so",
+						"activity": "call pass_q-so",
 						"dependencyConditions": [
 							"Succeeded"
 						]
