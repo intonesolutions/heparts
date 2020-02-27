@@ -145,7 +145,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"expression": {
-						"value": "@not(equals(activity('call pass_0-so').output.status,'0'))",
+						"value": "@not(equals(activity('call pass_q-so').output.status,'0'))",
 						"type": "Expression"
 					},
 					"ifTrueActivities": [
