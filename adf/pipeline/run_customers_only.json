@@ -234,7 +234,7 @@
 				]
 			},
 			{
-				"name": "call pass1",
+				"name": "call pass deb",
 				"type": "AzureFunctionActivity",
 				"dependsOn": [
 					{
@@ -256,7 +256,7 @@
 					"functionName": "HttpTrigger1",
 					"method": "POST",
 					"body": {
-						"pass": "1"
+						"pass": "deb"
 					}
 				},
 				"linkedServiceName": {
@@ -269,7 +269,7 @@
 				"type": "Copy",
 				"dependsOn": [
 					{
-						"activity": "call pass1",
+						"activity": "call pass deb",
 						"dependencyConditions": [
 							"Succeeded"
 						]
