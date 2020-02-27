@@ -118,7 +118,7 @@
 				]
 			},
 			{
-				"name": "call pass101",
+				"name": "call pass stock",
 				"type": "AzureFunctionActivity",
 				"dependsOn": [
 					{
@@ -140,7 +140,7 @@
 					"functionName": "HttpTrigger1",
 					"method": "POST",
 					"body": {
-						"pass": "101"
+						"pass": "stock"
 					}
 				},
 				"linkedServiceName": {
@@ -153,7 +153,7 @@
 				"type": "Copy",
 				"dependsOn": [
 					{
-						"activity": "call pass101",
+						"activity": "call pass stock",
 						"dependencyConditions": [
 							"Succeeded"
 						]
