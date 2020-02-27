@@ -1476,6 +1476,15 @@
 									"name": "Price_per_Part__c",
 									"type": "Decimal"
 								}
+							},
+							{
+								"source": {
+									"path": "$['H_E_Partner__c']"
+								},
+								"sink": {
+									"name": "H_E_Partner__c",
+									"type": "String"
+								}
 							}
 						],
 						"collectionReference": ""
