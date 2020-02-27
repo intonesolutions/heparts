@@ -525,6 +525,15 @@
 						"mappings": [
 							{
 								"source": {
+									"path": "$['RecordTypeId']"
+								},
+								"sink": {
+									"name": "RecordTypeId",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
 									"path": "$['External_ID__c']"
 								},
 								"sink": {
@@ -534,10 +543,10 @@
 							},
 							{
 								"source": {
-									"path": "$['Invoices_Crown__c']"
+									"path": "$['Product__c']"
 								},
 								"sink": {
-									"name": "Invoices_Crown__c",
+									"name": "Product__c",
 									"type": "String"
 								}
 							},
@@ -610,6 +619,15 @@
 								},
 								"sink": {
 									"name": "Total_Amount__c",
+									"type": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"path": "$['Price_per_Part__c']"
+								},
+								"sink": {
+									"name": "Price_per_Part__c",
 									"type": "Decimal"
 								}
 							}
