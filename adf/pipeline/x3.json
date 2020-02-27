@@ -300,7 +300,8 @@
 						"externalIdFieldName": "Sales_Order_No__c",
 						"ignoreNullValues": true
 					},
-					"enableStaging": false
+					"enableStaging": false,
+					"enableSkipIncompatibleRow": true
 				},
 				"inputs": [
 					{
