@@ -199,7 +199,7 @@
 							"typeProperties": {
 								"variableName": "nn",
 								"value": {
-									"value": "@activity('call pass_q-so').output.status",
+									"value": "@string(activity('call pass_q-so').output.status)",
 									"type": "Expression"
 								}
 							}
