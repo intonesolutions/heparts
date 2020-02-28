@@ -101,71 +101,6 @@
 				]
 			},
 			{
-				"name": "call pass_q-so",
-				"type": "AzureFunctionActivity",
-				"dependsOn": [
-					{
-						"activity": "delete_ftp",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
-				"policy": {
-					"timeout": "7.00:00:00",
-					"retry": 0,
-					"retryIntervalInSeconds": 30,
-					"secureOutput": false,
-					"secureInput": false
-				},
-				"userProperties": [],
-				"typeProperties": {
-					"functionName": "HttpTrigger1",
-					"method": "POST",
-					"body": {
-						"pass": "q-so"
-					}
-				},
-				"linkedServiceName": {
-					"referenceName": "AzureFunction1",
-					"type": "LinkedServiceReference"
-				}
-			},
-			{
-				"name": "If Condition1",
-				"type": "IfCondition",
-				"dependsOn": [
-					{
-						"activity": "call pass_q-so",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
-				"userProperties": [],
-				"typeProperties": {
-					"expression": {
-						"value": "@not(equals(activity('call pass_q-so').output.status,'0'))",
-						"type": "Expression"
-					},
-					"ifTrueActivities": [
-						{
-							"name": "run_so_only_inner",
-							"type": "ExecutePipeline",
-							"dependsOn": [],
-							"userProperties": [],
-							"typeProperties": {
-								"pipeline": {
-									"referenceName": "run_SO_only_inner",
-									"type": "PipelineReference"
-								},
-								"waitOnCompletion": true
-							}
-						}
-					]
-				}
-			},
-			{
 				"name": "delete_ftp",
 				"type": "Delete",
 				"dependsOn": [
@@ -206,8 +141,114 @@
 						"useBinaryTransfer": true
 					}
 				}
+			},
+			{
+				"name": "Until1",
+				"type": "Until",
+				"dependsOn": [
+					{
+						"activity": "delete_ftp",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"expression": {
+						"value": "@equals(variables('nn'),'0')",
+						"type": "Expression"
+					},
+					"activities": [
+						{
+							"name": "call pass_q-so",
+							"type": "AzureFunctionActivity",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "7.00:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"functionName": "HttpTrigger1",
+								"method": "POST",
+								"body": {
+									"pass": "q-so"
+								}
+							},
+							"linkedServiceName": {
+								"referenceName": "AzureFunction1",
+								"type": "LinkedServiceReference"
+							}
+						},
+						{
+							"name": "Set nn",
+							"type": "SetVariable",
+							"dependsOn": [
+								{
+									"activity": "call pass_q-so",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "nn",
+								"value": {
+									"value": "@activity('call pass_q-so').output.status",
+									"type": "Expression"
+								}
+							}
+						},
+						{
+							"name": "If Condition1",
+							"type": "IfCondition",
+							"dependsOn": [
+								{
+									"activity": "Set nn",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"userProperties": [],
+							"typeProperties": {
+								"expression": {
+									"value": "@not(equals(variables('nn'),'0'))",
+									"type": "Expression"
+								},
+								"ifTrueActivities": [
+									{
+										"name": "run_so_only_inner",
+										"type": "ExecutePipeline",
+										"dependsOn": [],
+										"userProperties": [],
+										"typeProperties": {
+											"pipeline": {
+												"referenceName": "run_SO_only_inner",
+												"type": "PipelineReference"
+											},
+											"waitOnCompletion": true
+										}
+									}
+								]
+							}
+						}
+					],
+					"timeout": "7.00:00:00"
+				}
 			}
 		],
+		"variables": {
+			"nn": {
+				"type": "String",
+				"defaultValue": "0"
+			}
+		},
 		"folder": {
 			"name": "Pronto_SF"
 		},
