@@ -299,6 +299,7 @@
 						"ignoreNullValues": true
 					},
 					"enableStaging": false,
+					"enableSkipIncompatibleRow": true,
 					"translator": {
 						"type": "TabularTranslator",
 						"mappings": [
