@@ -9,6 +9,12 @@
 					"referenceName": "2-run_stocks_only",
 					"type": "PipelineReference"
 				}
+			},
+			{
+				"pipelineReference": {
+					"referenceName": "1-run_customers_only",
+					"type": "PipelineReference"
+				}
 			}
 		],
 		"type": "ScheduleTrigger",
