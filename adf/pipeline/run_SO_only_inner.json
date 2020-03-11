@@ -99,6 +99,12 @@
 						"dependencyConditions": [
 							"Succeeded"
 						]
+					},
+					{
+						"activity": "get Opp from sf",
+						"dependencyConditions": [
+							"Succeeded"
+						]
 					}
 				],
 				"policy": {
@@ -369,7 +375,7 @@
 				"type": "Copy",
 				"dependsOn": [
 					{
-						"activity": "getKeys",
+						"activity": "getProdKeys",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -387,7 +393,7 @@
 					"source": {
 						"type": "SalesforceSource",
 						"query": {
-							"value": "@concat('select Id,Product2.Id,Product2.Product_Key__c from PriceBookEntry where IsActive=true and Product2.Product_Key__c in (',activity('getKeys').output.firstRow.keys,')')",
+							"value": "@concat('select Id,Product2.Id,Product2.Product_Key__c from PriceBookEntry where IsActive=true and Product2.Product_Key__c in (',activity('getProdKeys').output.firstRow.keys,')')",
 							"type": "Expression"
 						},
 						"readBehavior": "query"
@@ -427,7 +433,7 @@
 				]
 			},
 			{
-				"name": "getKeys",
+				"name": "getProdKeys",
 				"type": "Lookup",
 				"dependsOn": [
 					{
@@ -1027,6 +1033,110 @@
 					"referenceName": "AzureFunction1",
 					"type": "LinkedServiceReference"
 				}
+			},
+			{
+				"name": "getOppKeys",
+				"type": "Lookup",
+				"dependsOn": [
+					{
+						"activity": "invoice_to_sf",
+						"dependencyConditions": [
+							"Completed"
+						]
+					},
+					{
+						"activity": "opportunity_to_sf",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "JsonSource",
+						"storeSettings": {
+							"type": "AzureBlobStorageReadSettings",
+							"recursive": false,
+							"enablePartitionDiscovery": false
+						}
+					},
+					"dataset": {
+						"referenceName": "blob_json",
+						"type": "DatasetReference",
+						"parameters": {
+							"folder": "stage",
+							"filename": "opportunity_keys.json"
+						}
+					}
+				}
+			},
+			{
+				"name": "get Opp from sf",
+				"type": "Copy",
+				"dependsOn": [
+					{
+						"activity": "getOppKeys",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "SalesforceSource",
+						"query": {
+							"value": "@concat('select Id,Name from Opportunity where Crown_Quote_ID__c in (',activity('getOppKeys').output.firstRow.keys,')')",
+							"type": "Expression"
+						},
+						"readBehavior": "query"
+					},
+					"sink": {
+						"type": "JsonSink",
+						"storeSettings": {
+							"type": "AzureBlobStorageWriteSettings"
+						},
+						"formatSettings": {
+							"type": "JsonWriteSettings",
+							"quoteAllText": true
+						}
+					},
+					"enableStaging": false
+				},
+				"inputs": [
+					{
+						"referenceName": "salesforce_OBJ",
+						"type": "DatasetReference",
+						"parameters": {
+							"objName": "Opportunity"
+						}
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "blob_json",
+						"type": "DatasetReference",
+						"parameters": {
+							"folder": "intake",
+							"filename": "opps_head.json"
+						}
+					}
+				]
 			}
 		],
 		"folder": {
