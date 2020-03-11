@@ -81,11 +81,6 @@
 							},
 							{
 								"source": {
-									"path": "$['_prodid']"
-								}
-							},
-							{
-								"source": {
 									"path": "$['SortOrder__c']"
 								},
 								"sink": {
