@@ -72,10 +72,10 @@
 							},
 							{
 								"source": {
-									"path": "$['PricebookEntryId']"
+									"path": "$['_prodid']"
 								},
 								"sink": {
-									"name": "PricebookEntryId",
+									"name": "Product2Id",
 									"type": "String"
 								}
 							},
