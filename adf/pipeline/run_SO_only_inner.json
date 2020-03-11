@@ -213,6 +213,11 @@
 							},
 							{
 								"source": {
+									"path": "$['_prodid']"
+								}
+							},
+							{
+								"source": {
 									"path": "$['SortOrder__c']"
 								},
 								"sink": {
@@ -344,6 +349,33 @@
 								"sink": {
 									"name": "Crown_Customer_ID_Number__c",
 									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['Tax_Rate__c']"
+								},
+								"sink": {
+									"name": "Tax_Rate__c",
+									"type": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"path": "$['Total_Ordered_Tax_Amount__c']"
+								},
+								"sink": {
+									"name": "Total_Ordered_Tax_Amount__c",
+									"type": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"path": "$['Total_Ordered_Line_Amount__c']"
+								},
+								"sink": {
+									"name": "Total_Ordered_Line_Amount__c",
+									"type": "Decimal"
 								}
 							}
 						],
