@@ -161,6 +161,15 @@
 						"mappings": [
 							{
 								"source": {
+									"path": "$['Id']"
+								},
+								"sink": {
+									"name": "Id",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
 									"path": "$['External_ID__c']"
 								},
 								"sink": {
@@ -174,6 +183,24 @@
 								},
 								"sink": {
 									"name": "rowstate__c",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['OpportunityId']"
+								},
+								"sink": {
+									"name": "OpportunityId",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['PricebookEntryId']"
+								},
+								"sink": {
+									"name": "PricebookEntryId",
 									"type": "String"
 								}
 							},
@@ -310,33 +337,6 @@
 								"sink": {
 									"name": "Crown_Customer_ID_Number__c",
 									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"path": "$['Tax_Rate__c']"
-								},
-								"sink": {
-									"name": "Tax_Rate__c",
-									"type": "Decimal"
-								}
-							},
-							{
-								"source": {
-									"path": "$['Total_Ordered_Tax_Amount__c']"
-								},
-								"sink": {
-									"name": "Total_Ordered_Tax_Amount__c",
-									"type": "Decimal"
-								}
-							},
-							{
-								"source": {
-									"path": "$['Total_Ordered_Line_Amount__c']"
-								},
-								"sink": {
-									"name": "Total_Ordered_Line_Amount__c",
-									"type": "Decimal"
 								}
 							}
 						],
