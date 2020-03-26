@@ -1,10 +1,6 @@
 {
 	"name": "SharePointWebAPI",
 	"properties": {
-		"linkedServiceName": {
-			"referenceName": "RestService1",
-			"type": "LinkedServiceReference"
-		},
 		"parameters": {
 			"APIURL": {
 				"type": "string"
