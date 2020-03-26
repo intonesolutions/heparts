@@ -1,0 +1,132 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory name",
+			"defaultValue": "he-adf-salesforce-prod"
+		},
+		"AzureFunction1_functionKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'functionKey' of 'AzureFunction1'"
+		},
+		"blob_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'blob'"
+		},
+		"hepartspartialsb_hepartial_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'hepartspartialsb_hepartial'"
+		},
+		"hepartspartialsb_hepartial_securityToken": {
+			"type": "secureString",
+			"metadata": "Secure string for 'securityToken' of 'hepartspartialsb_hepartial'"
+		},
+		"pronto_ftp_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'pronto_ftp'"
+		},
+		"customer_properties_typeProperties_fileName": {
+			"type": "string",
+			"defaultValue": "CUSTOMER.xml"
+		},
+		"hepartspartialsb_hepartial_properties_typeProperties_environmentUrl": {
+			"type": "string",
+			"defaultValue": "https://login.salesforce.com"
+		},
+		"hepartspartialsb_hepartial_properties_typeProperties_username": {
+			"type": "string",
+			"defaultValue": "integration@dom-ex.com"
+		},
+		"pronto_ftp_properties_typeProperties_host": {
+			"type": "string",
+			"defaultValue": "40.77.111.157"
+		},
+		"pronto_ftp_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "prontosalesforce"
+		},
+		"containerUri": {
+			"type": "string",
+			"metadata": "URI to storage account containing linked ARM templates"
+		},
+		"containerSasToken": {
+			"type": "string",
+			"metadata": "Sas token to storage account containing linked ARM templates"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "ArmTemplate_0",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2018-02-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_0.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					},
+					"AzureFunction1_functionKey": {
+						"value": "[parameters('AzureFunction1_functionKey')]"
+					},
+					"blob_connectionString": {
+						"value": "[parameters('blob_connectionString')]"
+					},
+					"pronto_ftp_password": {
+						"value": "[parameters('pronto_ftp_password')]"
+					},
+					"hepartspartialsb_hepartial_password": {
+						"value": "[parameters('hepartspartialsb_hepartial_password')]"
+					},
+					"hepartspartialsb_hepartial_securityToken": {
+						"value": "[parameters('hepartspartialsb_hepartial_securityToken')]"
+					},
+					"pronto_ftp_properties_typeProperties_host": {
+						"value": "[parameters('pronto_ftp_properties_typeProperties_host')]"
+					},
+					"pronto_ftp_properties_typeProperties_userName": {
+						"value": "[parameters('pronto_ftp_properties_typeProperties_userName')]"
+					},
+					"customer_properties_typeProperties_fileName": {
+						"value": "[parameters('customer_properties_typeProperties_fileName')]"
+					},
+					"hepartspartialsb_hepartial_properties_typeProperties_environmentUrl": {
+						"value": "[parameters('hepartspartialsb_hepartial_properties_typeProperties_environmentUrl')]"
+					},
+					"hepartspartialsb_hepartial_properties_typeProperties_username": {
+						"value": "[parameters('hepartspartialsb_hepartial_properties_typeProperties_username')]"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "ArmTemplate_1",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2018-02-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_1.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					}
+				}
+			},
+			"dependsOn": [
+				"[resourceId('Microsoft.Resources/deployments', 'ArmTemplate_0')]"
+			]
+		}
+	]
+}
