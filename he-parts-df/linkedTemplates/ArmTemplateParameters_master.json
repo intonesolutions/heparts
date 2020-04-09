@@ -1,0 +1,57 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"value": "he-parts-df"
+		},
+		"AzureFunction1_functionKey": {
+			"value": ""
+		},
+		"blob_connectionString": {
+			"value": ""
+		},
+		"hepartspartialsb_hepartial_password": {
+			"value": ""
+		},
+		"hepartspartialsb_hepartial_securityToken": {
+			"value": ""
+		},
+		"pronto_extract_password": {
+			"value": ""
+		},
+		"pronto_ftp_password": {
+			"value": ""
+		},
+		"customer_properties_typeProperties_fileName": {
+			"value": "CUSTOMER.xml"
+		},
+		"RestService1_properties_typeProperties_url": {
+			"value": "https://hewebutils.azurewebsites.net/"
+		},
+		"hepartspartialsb_hepartial_properties_typeProperties_environmentUrl": {
+			"value": "https://test.salesforce.com"
+		},
+		"hepartspartialsb_hepartial_properties_typeProperties_username": {
+			"value": "tamer.elshazli@sheaglobal.com.hepartial"
+		},
+		"pronto_extract_properties_typeProperties_host": {
+			"value": "\\\\hepiftpdiag.file.core.windows.net\\pronto-extract"
+		},
+		"pronto_extract_properties_typeProperties_userId": {
+			"value": "Azure\\hepiftpdiag"
+		},
+		"pronto_ftp_properties_typeProperties_host": {
+			"value": "40.77.111.157"
+		},
+		"pronto_ftp_properties_typeProperties_userName": {
+			"value": "prontosalesforce_qa"
+		},
+		"containerUri": {
+			"value": ""
+		},
+		"containerSasToken": {
+			"value": ""
+		}
+	}
+}
