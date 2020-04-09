@@ -305,28 +305,10 @@
 						"mappings": [
 							{
 								"source": {
-									"path": "$['Id']"
-								},
-								"sink": {
-									"name": "Id",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
 									"path": "$['MSUS_Pronto__c']"
 								},
 								"sink": {
 									"name": "MSUS_Pronto__c",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"path": "$['Canada_Pronto__c']"
-								},
-								"sink": {
-									"name": "Canada_Pronto__c",
 									"type": "String"
 								}
 							},
@@ -345,6 +327,42 @@
 								},
 								"sink": {
 									"name": "Name",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['CurrencyIsoCode']"
+								},
+								"sink": {
+									"name": "CurrencyIsoCode",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['OwnerId']"
+								},
+								"sink": {
+									"name": "OwnerId",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['Crown_Sales_Rep__c']"
+								},
+								"sink": {
+									"name": "Crown_Sales_Rep__c",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['Territory_ID__c']"
+								},
+								"sink": {
+									"name": "Territory_ID__c",
 									"type": "String"
 								}
 							},
@@ -444,15 +462,6 @@
 								},
 								"sink": {
 									"name": "Phone",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"path": "$['Territory_ID__c']"
-								},
-								"sink": {
-									"name": "Territory_ID__c",
 									"type": "String"
 								}
 							}
@@ -557,5 +566,6 @@
 			"name": "Pronto_SF"
 		},
 		"annotations": []
-	}
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
 }
