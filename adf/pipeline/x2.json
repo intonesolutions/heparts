@@ -27,7 +27,7 @@
 						"type": "SalesforceSink",
 						"writeBatchSize": 5000,
 						"writeBehavior": "upsert",
-						"externalIdFieldName": "Crown_Quote_ID__c",
+						"externalIdFieldName": "Morgan_External_ID__c",
 						"ignoreNullValues": true
 					},
 					"enableStaging": false
