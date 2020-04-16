@@ -82,7 +82,7 @@
 					"source": {
 						"type": "SalesforceSource",
 						"query": {
-							"value": "@concat('select Id,Product2.Id,Product2.Product_Key__c from PriceBookEntry where IsActive=true and Product2.Product_Key__c in (',activity('getProdKeys').output.firstRow.keys,')')",
+							"value": "@concat('select Id,Product2.Id,Product2.Product_Key__c,CurrencyIsoCode from PriceBookEntry where IsActive=true and Product2.Product_Key__c in (',activity('getProdKeys').output.firstRow.keys,')')",
 							"type": "Expression"
 						},
 						"readBehavior": "query"
