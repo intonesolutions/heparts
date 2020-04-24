@@ -566,5 +566,6 @@
 			"name": "Pronto_SF"
 		},
 		"annotations": []
-	}
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
 }
