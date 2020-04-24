@@ -6,649 +6,12 @@
 			"type": "string",
 			"metadata": "Data Factory name",
 			"defaultValue": "he-adf-salesforce-prod"
-		},
-		"AzureFunction1_functionKey": {
-			"type": "secureString",
-			"metadata": "Secure string for 'functionKey' of 'AzureFunction1'"
-		},
-		"blob_connectionString": {
-			"type": "secureString",
-			"metadata": "Secure string for 'connectionString' of 'blob'"
-		},
-		"hepartspartialsb_hepartial_password": {
-			"type": "secureString",
-			"metadata": "Secure string for 'password' of 'hepartspartialsb_hepartial'"
-		},
-		"hepartspartialsb_hepartial_securityToken": {
-			"type": "secureString",
-			"metadata": "Secure string for 'securityToken' of 'hepartspartialsb_hepartial'"
-		},
-		"pronto_ftp_password": {
-			"type": "secureString",
-			"metadata": "Secure string for 'password' of 'pronto_ftp'"
-		},
-		"customer_properties_typeProperties_fileName": {
-			"type": "string",
-			"defaultValue": "CUSTOMER.xml"
-		},
-		"hepartspartialsb_hepartial_properties_typeProperties_environmentUrl": {
-			"type": "string",
-			"defaultValue": "https://login.salesforce.com"
-		},
-		"hepartspartialsb_hepartial_properties_typeProperties_username": {
-			"type": "string",
-			"defaultValue": "integration@dom-ex.com"
-		},
-		"pronto_ftp_properties_typeProperties_host": {
-			"type": "string",
-			"defaultValue": "40.77.111.157"
-		},
-		"pronto_ftp_properties_typeProperties_userName": {
-			"type": "string",
-			"defaultValue": "prontosalesforce"
 		}
 	},
 	"variables": {
 		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
 	},
 	"resources": [
-		{
-			"name": "[concat(parameters('factoryName'), '/cleanup')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "delete_ftp",
-						"type": "Delete",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"dataset": {
-								"referenceName": "FTP_BIN",
-								"type": "DatasetReference",
-								"parameters": {
-									"folder": "/"
-								}
-							},
-							"enableLogging": false,
-							"storeSettings": {
-								"type": "FtpReadSettings",
-								"recursive": false,
-								"wildcardFileName": "*.xml",
-								"useBinaryTransfer": true
-							}
-						}
-					},
-					{
-						"name": "delete_intake_xml",
-						"type": "Delete",
-						"dependsOn": [
-							{
-								"activity": "delete_ftp",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"dataset": {
-								"referenceName": "blob_json",
-								"type": "DatasetReference",
-								"parameters": {
-									"folder": "intake",
-									"filename": "*.xml"
-								}
-							},
-							"enableLogging": false,
-							"storeSettings": {
-								"type": "AzureBlobStorageReadSettings",
-								"recursive": false,
-								"wildcardFileName": "*.xml"
-							}
-						}
-					},
-					{
-						"name": "delete_intake_json",
-						"type": "Delete",
-						"dependsOn": [
-							{
-								"activity": "delete_intake_xml",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"dataset": {
-								"referenceName": "blob_json",
-								"type": "DatasetReference",
-								"parameters": {
-									"folder": "intake",
-									"filename": "*.json"
-								}
-							},
-							"enableLogging": false,
-							"storeSettings": {
-								"type": "AzureBlobStorageReadSettings",
-								"recursive": false,
-								"wildcardFileName": "*.json"
-							}
-						}
-					},
-					{
-						"name": "delete_stage_json",
-						"type": "Delete",
-						"dependsOn": [
-							{
-								"activity": "delete_intake_json",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"dataset": {
-								"referenceName": "blob_json",
-								"type": "DatasetReference",
-								"parameters": {
-									"folder": "stage",
-									"filename": "*.json"
-								}
-							},
-							"enableLogging": false,
-							"storeSettings": {
-								"type": "AzureBlobStorageReadSettings",
-								"recursive": false,
-								"wildcardFileName": "*.json"
-							}
-						}
-					}
-				],
-				"annotations": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/FTP_BIN')]",
-				"[concat(variables('factoryId'), '/datasets/blob_json')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/FTP_BIN')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "pronto_ftp",
-					"type": "LinkedServiceReference"
-				},
-				"parameters": {
-					"folder": {
-						"type": "string"
-					}
-				},
-				"annotations": [],
-				"type": "Binary",
-				"typeProperties": {
-					"location": {
-						"type": "FtpServerLocation",
-						"folderPath": {
-							"value": "@dataset().folder",
-							"type": "Expression"
-						}
-					}
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/pronto_ftp')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/FTP_TEXT')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "pronto_ftp",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "DelimitedText",
-				"typeProperties": {
-					"location": {
-						"type": "FtpServerLocation"
-					},
-					"columnDelimiter": "\u0001",
-					"rowDelimiter": "\n",
-					"escapeChar": "\\",
-					"firstRowAsHeader": false,
-					"quoteChar": ""
-				},
-				"schema": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/pronto_ftp')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/Opportunity')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "hepartspartialsb_hepartial",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "SalesforceObject",
-				"schema": [],
-				"typeProperties": {
-					"objectApiName": "Opportunity"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/hepartspartialsb_hepartial')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/blob_TEXT')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "blob",
-					"type": "LinkedServiceReference"
-				},
-				"parameters": {
-					"folder": {
-						"type": "string"
-					},
-					"filename": {
-						"type": "string"
-					}
-				},
-				"annotations": [],
-				"type": "DelimitedText",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobStorageLocation",
-						"fileName": {
-							"value": "@dataset().filename",
-							"type": "Expression"
-						},
-						"folderPath": {
-							"value": "@dataset().folder",
-							"type": "Expression"
-						},
-						"container": "data"
-					},
-					"columnDelimiter": ",",
-					"escapeChar": "\\",
-					"quoteChar": ""
-				},
-				"schema": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/blob')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/blob_bin')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "blob",
-					"type": "LinkedServiceReference"
-				},
-				"parameters": {
-					"folder": {
-						"type": "string"
-					}
-				},
-				"annotations": [],
-				"type": "Binary",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobStorageLocation",
-						"folderPath": {
-							"value": "@dataset().folder",
-							"type": "Expression"
-						},
-						"container": "data"
-					}
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/blob')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/blob_csv')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "blob",
-					"type": "LinkedServiceReference"
-				},
-				"parameters": {
-					"folder": {
-						"type": "string"
-					},
-					"filename": {
-						"type": "string"
-					}
-				},
-				"annotations": [],
-				"type": "DelimitedText",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobStorageLocation",
-						"fileName": {
-							"value": "@dataset().filename",
-							"type": "Expression"
-						},
-						"folderPath": {
-							"value": "@dataset().folder",
-							"type": "Expression"
-						},
-						"container": "data"
-					},
-					"columnDelimiter": ",",
-					"escapeChar": "\\",
-					"firstRowAsHeader": true,
-					"quoteChar": ""
-				},
-				"schema": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/blob')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/blob_json')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "blob",
-					"type": "LinkedServiceReference"
-				},
-				"parameters": {
-					"folder": {
-						"type": "string"
-					},
-					"filename": {
-						"type": "string"
-					}
-				},
-				"annotations": [],
-				"type": "Json",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobStorageLocation",
-						"fileName": {
-							"value": "@dataset().filename",
-							"type": "Expression"
-						},
-						"folderPath": {
-							"value": "@dataset().folder",
-							"type": "Expression"
-						},
-						"container": "data"
-					}
-				},
-				"schema": {}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/blob')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/customer')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "pronto_ftp",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "FileShare",
-				"typeProperties": {
-					"fileName": "[parameters('customer_properties_typeProperties_fileName')]"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/pronto_ftp')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/salesforce_OBJ')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "hepartspartialsb_hepartial",
-					"type": "LinkedServiceReference"
-				},
-				"parameters": {
-					"objName": {
-						"type": "string"
-					}
-				},
-				"annotations": [],
-				"type": "SalesforceObject",
-				"schema": [],
-				"typeProperties": {
-					"objectApiName": {
-						"value": "@dataset().objName",
-						"type": "Expression"
-					}
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/hepartspartialsb_hepartial')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/AzureFunction1')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "AzureFunction",
-				"typeProperties": {
-					"functionAppUrl": "https://hesfintegration.azurewebsites.net",
-					"functionKey": {
-						"type": "SecureString",
-						"value": "[parameters('AzureFunction1_functionKey')]"
-					}
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/blob')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "AzureBlobStorage",
-				"typeProperties": {
-					"connectionString": "[parameters('blob_connectionString')]"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/hepartspartialsb_hepartial')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "Salesforce",
-				"typeProperties": {
-					"environmentUrl": "[parameters('hepartspartialsb_hepartial_properties_typeProperties_environmentUrl')]",
-					"username": "[parameters('hepartspartialsb_hepartial_properties_typeProperties_username')]",
-					"password": {
-						"type": "SecureString",
-						"value": "[parameters('hepartspartialsb_hepartial_password')]"
-					},
-					"securityToken": {
-						"type": "SecureString",
-						"value": "[parameters('hepartspartialsb_hepartial_securityToken')]"
-					}
-				},
-				"connectVia": {
-					"referenceName": "IRforSF",
-					"type": "IntegrationRuntimeReference"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/integrationRuntimes/IRforSF')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/pronto_ftp')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "FtpServer",
-				"typeProperties": {
-					"host": "[parameters('pronto_ftp_properties_typeProperties_host')]",
-					"port": 21,
-					"enableSsl": false,
-					"enableServerCertificateValidation": false,
-					"authenticationType": "Basic",
-					"userName": "[parameters('pronto_ftp_properties_typeProperties_userName')]",
-					"password": {
-						"type": "SecureString",
-						"value": "[parameters('pronto_ftp_password')]"
-					}
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/trigger1')]",
-			"type": "Microsoft.DataFactory/factories/triggers",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"runtimeState": "Started",
-				"pipelines": [
-					{
-						"pipelineReference": {
-							"referenceName": "2-run_stocks_only",
-							"type": "PipelineReference"
-						},
-						"parameters": {}
-					},
-					{
-						"pipelineReference": {
-							"referenceName": "1-run_customers_only",
-							"type": "PipelineReference"
-						},
-						"parameters": {}
-					}
-				],
-				"type": "ScheduleTrigger",
-				"typeProperties": {
-					"recurrence": {
-						"frequency": "Minute",
-						"interval": 30,
-						"startTime": "2020-03-06T14:00:00.000Z",
-						"timeZone": "UTC"
-					}
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/pipelines/2-run_stocks_only')]",
-				"[concat(variables('factoryId'), '/pipelines/1-run_customers_only')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/trigger2')]",
-			"type": "Microsoft.DataFactory/factories/triggers",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"runtimeState": "Started",
-				"pipelines": [
-					{
-						"pipelineReference": {
-							"referenceName": "3-run_SO_only",
-							"type": "PipelineReference"
-						},
-						"parameters": {}
-					}
-				],
-				"type": "ScheduleTrigger",
-				"typeProperties": {
-					"recurrence": {
-						"frequency": "Minute",
-						"interval": 30,
-						"startTime": "2020-03-07T02:15:00.000Z",
-						"timeZone": "UTC"
-					}
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/pipelines/3-run_SO_only')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/IRforSF')]",
-			"type": "Microsoft.DataFactory/factories/integrationRuntimes",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"type": "Managed",
-				"typeProperties": {
-					"computeProperties": {
-						"location": "East US",
-						"dataFlowProperties": {
-							"computeType": "General",
-							"coreCount": 8,
-							"timeToLive": 0
-						}
-					}
-				}
-			},
-			"dependsOn": []
-		},
 		{
 			"name": "[concat(parameters('factoryName'), '/1-run_customers_only')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
@@ -697,8 +60,7 @@
 						"inputs": [
 							{
 								"referenceName": "FTP_TEXT",
-								"type": "DatasetReference",
-								"parameters": {}
+								"type": "DatasetReference"
 							}
 						],
 						"outputs": [
@@ -754,8 +116,7 @@
 						"inputs": [
 							{
 								"referenceName": "FTP_TEXT",
-								"type": "DatasetReference",
-								"parameters": {}
+								"type": "DatasetReference"
 							}
 						],
 						"outputs": [
@@ -910,7 +271,6 @@
 						"typeProperties": {
 							"functionName": "HttpTrigger1",
 							"method": "POST",
-							"headers": {},
 							"body": {
 								"pass": "deb"
 							}
@@ -1223,14 +583,7 @@
 				},
 				"annotations": []
 			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/FTP_TEXT')]",
-				"[concat(variables('factoryId'), '/datasets/blob_TEXT')]",
-				"[concat(variables('factoryId'), '/datasets/salesforce_OBJ')]",
-				"[concat(variables('factoryId'), '/datasets/blob_json')]",
-				"[concat(variables('factoryId'), '/linkedServices/AzureFunction1')]",
-				"[concat(variables('factoryId'), '/datasets/FTP_BIN')]"
-			]
+			"dependsOn": []
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/2-run_stocks_only')]",
@@ -1280,8 +633,7 @@
 						"inputs": [
 							{
 								"referenceName": "FTP_TEXT",
-								"type": "DatasetReference",
-								"parameters": {}
+								"type": "DatasetReference"
 							}
 						],
 						"outputs": [
@@ -1317,7 +669,6 @@
 						"typeProperties": {
 							"functionName": "HttpTrigger1",
 							"method": "POST",
-							"headers": {},
 							"body": {
 								"pass": "stock"
 							}
@@ -1531,14 +882,7 @@
 				},
 				"annotations": []
 			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/FTP_TEXT')]",
-				"[concat(variables('factoryId'), '/datasets/blob_TEXT')]",
-				"[concat(variables('factoryId'), '/linkedServices/AzureFunction1')]",
-				"[concat(variables('factoryId'), '/datasets/blob_json')]",
-				"[concat(variables('factoryId'), '/datasets/salesforce_OBJ')]",
-				"[concat(variables('factoryId'), '/datasets/FTP_BIN')]"
-			]
+			"dependsOn": []
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/3-run_SO_only')]",
@@ -1719,7 +1063,6 @@
 									"typeProperties": {
 										"functionName": "HttpTrigger1",
 										"method": "POST",
-										"headers": {},
 										"body": {
 											"pass": "q-so"
 										}
@@ -1777,8 +1120,7 @@
 														"referenceName": "run_SO_only_inner",
 														"type": "PipelineReference"
 													},
-													"waitOnCompletion": true,
-													"parameters": {}
+													"waitOnCompletion": true
 												}
 											}
 										]
@@ -1801,9 +1143,6 @@
 				"annotations": []
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/FTP_BIN')]",
-				"[concat(variables('factoryId'), '/datasets/blob_bin')]",
-				"[concat(variables('factoryId'), '/linkedServices/AzureFunction1')]",
 				"[concat(variables('factoryId'), '/pipelines/run_SO_only_inner')]"
 			]
 		},
@@ -2028,7 +1367,6 @@
 						"typeProperties": {
 							"functionName": "HttpTrigger1",
 							"method": "POST",
-							"headers": {},
 							"body": {
 								"pass": "0-so"
 							}
@@ -2044,11 +1382,7 @@
 				},
 				"annotations": []
 			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/salesforce_OBJ')]",
-				"[concat(variables('factoryId'), '/datasets/blob_json')]",
-				"[concat(variables('factoryId'), '/linkedServices/AzureFunction1')]"
-			]
+			"dependsOn": []
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/run_SO_only_inner')]",
@@ -2078,7 +1412,6 @@
 						"typeProperties": {
 							"functionName": "HttpTrigger1",
 							"method": "POST",
-							"headers": {},
 							"body": {
 								"pass": "1"
 							}
@@ -2522,7 +1855,6 @@
 						"typeProperties": {
 							"functionName": "HttpTrigger1",
 							"method": "POST",
-							"headers": {},
 							"body": {
 								"pass": "2"
 							}
@@ -3590,7 +2922,6 @@
 						"typeProperties": {
 							"functionName": "HttpTrigger1",
 							"method": "POST",
-							"headers": {},
 							"body": {
 								"pass": "0-so"
 							}
@@ -3606,12 +2937,7 @@
 				},
 				"annotations": []
 			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/AzureFunction1')]",
-				"[concat(variables('factoryId'), '/datasets/blob_json')]",
-				"[concat(variables('factoryId'), '/datasets/salesforce_OBJ')]",
-				"[concat(variables('factoryId'), '/datasets/blob_csv')]"
-			]
+			"dependsOn": []
 		}
 	]
 }
