@@ -76,7 +76,7 @@
 				"annotations": [],
 				"type": "AzureFunction",
 				"typeProperties": {
-					"functionAppUrl": "https://hesfintegration.azurewebsites.net",
+					"functionAppUrl": "https://hesfintegration-qa.azurewebsites.net",
 					"functionKey": {
 						"type": "SecureString",
 						"value": "[parameters('AzureFunction1_functionKey')]"
@@ -891,6 +891,77 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/x1-stock')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "STOCK_MASTER",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "DelimitedTextSource",
+								"storeSettings": {
+									"type": "FtpReadSettings",
+									"recursive": false,
+									"wildcardFileName": "STOCK_MASTER-*.xml",
+									"useBinaryTransfer": false
+								},
+								"formatSettings": {
+									"type": "DelimitedTextReadSettings"
+								}
+							},
+							"sink": {
+								"type": "DelimitedTextSink",
+								"storeSettings": {
+									"type": "AzureBlobStorageWriteSettings",
+									"copyBehavior": "MergeFiles"
+								},
+								"formatSettings": {
+									"type": "DelimitedTextWriteSettings",
+									"quoteAllText": true,
+									"fileExtension": ".txt"
+								}
+							},
+							"enableStaging": false
+						},
+						"inputs": [
+							{
+								"referenceName": "FTP_TEXT",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "blob_TEXT",
+								"type": "DatasetReference",
+								"parameters": {
+									"folder": "intake",
+									"filename": "stock_master.xml"
+								}
+							}
+						]
+					}
+				],
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/FTP_TEXT')]",
+				"[concat(variables('factoryId'), '/datasets/blob_TEXT')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/x1')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
@@ -1090,34 +1161,6 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/linkedServices/RestService1')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/salesforce_OBJ')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "hepartspartialsb_hepartial",
-					"type": "LinkedServiceReference"
-				},
-				"parameters": {
-					"objName": {
-						"type": "string"
-					}
-				},
-				"annotations": [],
-				"type": "SalesforceObject",
-				"schema": [],
-				"typeProperties": {
-					"objectApiName": {
-						"value": "@dataset().objName",
-						"type": "Expression"
-					}
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/hepartspartialsb_hepartial')]"
 			]
 		}
 	]
