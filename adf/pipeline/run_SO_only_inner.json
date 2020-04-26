@@ -102,6 +102,15 @@
 							},
 							{
 								"source": {
+									"path": "$['SoInvoiceNo__c']"
+								},
+								"sink": {
+									"name": "CME_Invoice_No__c",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
 									"path": "$['Crown_Quote_ID__c']"
 								},
 								"sink": {
@@ -159,7 +168,7 @@
 									"path": "$['Sales_Rep_Code__c']"
 								},
 								"sink": {
-									"name": "Sales_Rep_Name__c",
+									"name": "CME_Sales_Rep_Code__c",
 									"type": "String"
 								}
 							},
@@ -187,15 +196,6 @@
 								},
 								"sink": {
 									"name": "CurrencyIsoCode",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"path": "$['OwnerId']"
-								},
-								"sink": {
-									"name": "OwnerId",
 									"type": "String"
 								}
 							},
