@@ -300,15 +300,6 @@
 							},
 							{
 								"source": {
-									"path": "$['CME_Invoice_No__c']"
-								},
-								"sink": {
-									"name": "CME_Invoice_No__c",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
 									"path": "$['Invoice_Date__c']"
 								},
 								"sink": {
