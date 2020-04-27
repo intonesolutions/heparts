@@ -103,10 +103,6 @@
 							{
 								"source": {
 									"path": "$['SoInvoiceNo__c']"
-								},
-								"sink": {
-									"name": "CME_Invoice_No__c",
-									"type": "String"
 								}
 							},
 							{
@@ -166,10 +162,6 @@
 							{
 								"source": {
 									"path": "$['Sales_Rep_Code__c']"
-								},
-								"sink": {
-									"name": "CME_Sales_Rep_Code__c",
-									"type": "String"
 								}
 							},
 							{
@@ -196,6 +188,15 @@
 								},
 								"sink": {
 									"name": "CurrencyIsoCode",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['OwnerId']"
+								},
+								"sink": {
+									"name": "OwnerId",
 									"type": "String"
 								}
 							},
@@ -300,6 +301,15 @@
 							},
 							{
 								"source": {
+									"path": "$['CME_Invoice_No__c']"
+								},
+								"sink": {
+									"name": "CME_Invoice_No__c",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
 									"path": "$['Invoice_Date__c']"
 								},
 								"sink": {
@@ -354,11 +364,26 @@
 							},
 							{
 								"source": {
+									"path": "$['Total_Shipped_Discount__c']"
+								}
+							},
+							{
+								"source": {
 									"path": "$['Total_Shipped_Amount__c']"
 								},
 								"sink": {
 									"name": "Total_Shipped_Amount__c",
 									"type": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"path": "$['Total_Shipped_Tax__c']"
+								}
+							},
+							{
+								"source": {
+									"path": "$['Total_Shipped_Tax_Adj__c']"
 								}
 							},
 							{
