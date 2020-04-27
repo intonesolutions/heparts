@@ -102,15 +102,6 @@
 							},
 							{
 								"source": {
-									"path": "$['SoInvoiceNo__c']"
-								},
-								"sink": {
-									"name": "CME_Invoice_No__c",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
 									"path": "$['Crown_Quote_ID__c']"
 								},
 								"sink": {
