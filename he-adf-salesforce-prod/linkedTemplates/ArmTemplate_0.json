@@ -1582,7 +1582,7 @@
 											"path": "$['SoInvoiceNo__c']"
 										},
 										"sink": {
-											"name": "CME_Invoice_No__c",
+											"name": "Invoice__c",
 											"type": "String"
 										}
 									},
@@ -1673,6 +1673,15 @@
 										},
 										"sink": {
 											"name": "CurrencyIsoCode",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "$['OwnerId']"
+										},
+										"sink": {
+											"name": "OwnerId",
 											"type": "String"
 										}
 									},
@@ -1773,6 +1782,15 @@
 										"sink": {
 											"name": "Morgan_GST_Tax__c",
 											"type": "Decimal"
+										}
+									},
+									{
+										"source": {
+											"path": "$['CME_Invoice_No__c']"
+										},
+										"sink": {
+											"name": "CME_Invoice_No__c",
+											"type": "String"
 										}
 									},
 									{
