@@ -24,15 +24,13 @@
 						"pipelineReference": {
 							"referenceName": "2-run_stocks_only",
 							"type": "PipelineReference"
-						},
-						"parameters": {}
+						}
 					},
 					{
 						"pipelineReference": {
 							"referenceName": "1-run_customers_only",
 							"type": "PipelineReference"
-						},
-						"parameters": {}
+						}
 					}
 				],
 				"type": "ScheduleTrigger",
@@ -59,8 +57,7 @@
 						"pipelineReference": {
 							"referenceName": "3-run_SO_only",
 							"type": "PipelineReference"
-						},
-						"parameters": {}
+						}
 					}
 				],
 				"type": "ScheduleTrigger",
