@@ -53,603 +53,6 @@
 	},
 	"resources": [
 		{
-			"name": "[concat(parameters('factoryName'), '/cleanup')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "delete_ftp",
-						"type": "Delete",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"dataset": {
-								"referenceName": "FTP_BIN",
-								"type": "DatasetReference",
-								"parameters": {
-									"folder": "/"
-								}
-							},
-							"enableLogging": false,
-							"storeSettings": {
-								"type": "FtpReadSettings",
-								"recursive": false,
-								"wildcardFileName": "*.xml",
-								"useBinaryTransfer": true
-							}
-						}
-					},
-					{
-						"name": "delete_intake_xml",
-						"type": "Delete",
-						"dependsOn": [
-							{
-								"activity": "delete_ftp",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"dataset": {
-								"referenceName": "blob_json",
-								"type": "DatasetReference",
-								"parameters": {
-									"folder": "intake",
-									"filename": "*.xml"
-								}
-							},
-							"enableLogging": false,
-							"storeSettings": {
-								"type": "AzureBlobStorageReadSettings",
-								"recursive": false,
-								"wildcardFileName": "*.xml"
-							}
-						}
-					},
-					{
-						"name": "delete_intake_json",
-						"type": "Delete",
-						"dependsOn": [
-							{
-								"activity": "delete_intake_xml",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"dataset": {
-								"referenceName": "blob_json",
-								"type": "DatasetReference",
-								"parameters": {
-									"folder": "intake",
-									"filename": "*.json"
-								}
-							},
-							"enableLogging": false,
-							"storeSettings": {
-								"type": "AzureBlobStorageReadSettings",
-								"recursive": false,
-								"wildcardFileName": "*.json"
-							}
-						}
-					},
-					{
-						"name": "delete_stage_json",
-						"type": "Delete",
-						"dependsOn": [
-							{
-								"activity": "delete_intake_json",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"dataset": {
-								"referenceName": "blob_json",
-								"type": "DatasetReference",
-								"parameters": {
-									"folder": "stage",
-									"filename": "*.json"
-								}
-							},
-							"enableLogging": false,
-							"storeSettings": {
-								"type": "AzureBlobStorageReadSettings",
-								"recursive": false,
-								"wildcardFileName": "*.json"
-							}
-						}
-					}
-				],
-				"annotations": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/FTP_BIN')]",
-				"[concat(variables('factoryId'), '/datasets/blob_json')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/FTP_BIN')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "pronto_ftp",
-					"type": "LinkedServiceReference"
-				},
-				"parameters": {
-					"folder": {
-						"type": "string"
-					}
-				},
-				"annotations": [],
-				"type": "Binary",
-				"typeProperties": {
-					"location": {
-						"type": "FtpServerLocation",
-						"folderPath": {
-							"value": "@dataset().folder",
-							"type": "Expression"
-						}
-					}
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/pronto_ftp')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/FTP_TEXT')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "pronto_ftp",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "DelimitedText",
-				"typeProperties": {
-					"location": {
-						"type": "FtpServerLocation"
-					},
-					"columnDelimiter": "\u0001",
-					"rowDelimiter": "\n",
-					"escapeChar": "\\",
-					"firstRowAsHeader": false,
-					"quoteChar": ""
-				},
-				"schema": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/pronto_ftp')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/Opportunity')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "hepartspartialsb_hepartial",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "SalesforceObject",
-				"schema": [],
-				"typeProperties": {
-					"objectApiName": "Opportunity"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/hepartspartialsb_hepartial')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/blob_TEXT')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "blob",
-					"type": "LinkedServiceReference"
-				},
-				"parameters": {
-					"folder": {
-						"type": "string"
-					},
-					"filename": {
-						"type": "string"
-					}
-				},
-				"annotations": [],
-				"type": "DelimitedText",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobStorageLocation",
-						"fileName": {
-							"value": "@dataset().filename",
-							"type": "Expression"
-						},
-						"folderPath": {
-							"value": "@dataset().folder",
-							"type": "Expression"
-						},
-						"container": "data"
-					},
-					"columnDelimiter": ",",
-					"escapeChar": "\\",
-					"quoteChar": ""
-				},
-				"schema": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/blob')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/blob_bin')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "blob",
-					"type": "LinkedServiceReference"
-				},
-				"parameters": {
-					"folder": {
-						"type": "string"
-					}
-				},
-				"annotations": [],
-				"type": "Binary",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobStorageLocation",
-						"folderPath": {
-							"value": "@dataset().folder",
-							"type": "Expression"
-						},
-						"container": "data"
-					}
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/blob')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/blob_csv')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "blob",
-					"type": "LinkedServiceReference"
-				},
-				"parameters": {
-					"folder": {
-						"type": "string"
-					},
-					"filename": {
-						"type": "string"
-					}
-				},
-				"annotations": [],
-				"type": "DelimitedText",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobStorageLocation",
-						"fileName": {
-							"value": "@dataset().filename",
-							"type": "Expression"
-						},
-						"folderPath": {
-							"value": "@dataset().folder",
-							"type": "Expression"
-						},
-						"container": "data"
-					},
-					"columnDelimiter": ",",
-					"escapeChar": "\\",
-					"firstRowAsHeader": true,
-					"quoteChar": ""
-				},
-				"schema": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/blob')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/blob_json')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "blob",
-					"type": "LinkedServiceReference"
-				},
-				"parameters": {
-					"folder": {
-						"type": "string"
-					},
-					"filename": {
-						"type": "string"
-					}
-				},
-				"annotations": [],
-				"type": "Json",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobStorageLocation",
-						"fileName": {
-							"value": "@dataset().filename",
-							"type": "Expression"
-						},
-						"folderPath": {
-							"value": "@dataset().folder",
-							"type": "Expression"
-						},
-						"container": "data"
-					}
-				},
-				"schema": {}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/blob')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/customer')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "pronto_ftp",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "FileShare",
-				"typeProperties": {
-					"fileName": "[parameters('customer_properties_typeProperties_fileName')]"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/pronto_ftp')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/salesforce_OBJ')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "hepartspartialsb_hepartial",
-					"type": "LinkedServiceReference"
-				},
-				"parameters": {
-					"objName": {
-						"type": "string"
-					}
-				},
-				"annotations": [],
-				"type": "SalesforceObject",
-				"schema": [],
-				"typeProperties": {
-					"objectApiName": {
-						"value": "@dataset().objName",
-						"type": "Expression"
-					}
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/hepartspartialsb_hepartial')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/AzureFunction1')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "AzureFunction",
-				"typeProperties": {
-					"functionAppUrl": "https://hesfintegration.azurewebsites.net",
-					"functionKey": {
-						"type": "SecureString",
-						"value": "[parameters('AzureFunction1_functionKey')]"
-					}
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/blob')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "AzureBlobStorage",
-				"typeProperties": {
-					"connectionString": "[parameters('blob_connectionString')]"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/hepartspartialsb_hepartial')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "Salesforce",
-				"typeProperties": {
-					"environmentUrl": "[parameters('hepartspartialsb_hepartial_properties_typeProperties_environmentUrl')]",
-					"username": "[parameters('hepartspartialsb_hepartial_properties_typeProperties_username')]",
-					"password": {
-						"type": "SecureString",
-						"value": "[parameters('hepartspartialsb_hepartial_password')]"
-					},
-					"securityToken": {
-						"type": "SecureString",
-						"value": "[parameters('hepartspartialsb_hepartial_securityToken')]"
-					}
-				},
-				"connectVia": {
-					"referenceName": "IRforSF",
-					"type": "IntegrationRuntimeReference"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/integrationRuntimes/IRforSF')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/pronto_ftp')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "FtpServer",
-				"typeProperties": {
-					"host": "[parameters('pronto_ftp_properties_typeProperties_host')]",
-					"port": 21,
-					"enableSsl": false,
-					"enableServerCertificateValidation": false,
-					"authenticationType": "Basic",
-					"userName": "[parameters('pronto_ftp_properties_typeProperties_userName')]",
-					"password": {
-						"type": "SecureString",
-						"value": "[parameters('pronto_ftp_password')]"
-					}
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/trigger1')]",
-			"type": "Microsoft.DataFactory/factories/triggers",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"runtimeState": "Started",
-				"pipelines": [
-					{
-						"pipelineReference": {
-							"referenceName": "2-run_stocks_only",
-							"type": "PipelineReference"
-						},
-						"parameters": {}
-					},
-					{
-						"pipelineReference": {
-							"referenceName": "1-run_customers_only",
-							"type": "PipelineReference"
-						},
-						"parameters": {}
-					}
-				],
-				"type": "ScheduleTrigger",
-				"typeProperties": {
-					"recurrence": {
-						"frequency": "Minute",
-						"interval": 30,
-						"startTime": "2020-03-06T14:00:00.000Z",
-						"timeZone": "UTC"
-					}
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/pipelines/2-run_stocks_only')]",
-				"[concat(variables('factoryId'), '/pipelines/1-run_customers_only')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/trigger2')]",
-			"type": "Microsoft.DataFactory/factories/triggers",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"runtimeState": "Started",
-				"pipelines": [
-					{
-						"pipelineReference": {
-							"referenceName": "3-run_SO_only",
-							"type": "PipelineReference"
-						},
-						"parameters": {}
-					}
-				],
-				"type": "ScheduleTrigger",
-				"typeProperties": {
-					"recurrence": {
-						"frequency": "Minute",
-						"interval": 30,
-						"startTime": "2020-03-07T02:15:00.000Z",
-						"timeZone": "UTC"
-					}
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/pipelines/3-run_SO_only')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/IRforSF')]",
-			"type": "Microsoft.DataFactory/factories/integrationRuntimes",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"type": "Managed",
-				"typeProperties": {
-					"computeProperties": {
-						"location": "East US",
-						"dataFlowProperties": {
-							"computeType": "General",
-							"coreCount": 8,
-							"timeToLive": 0
-						}
-					}
-				}
-			},
-			"dependsOn": []
-		},
-		{
 			"name": "[concat(parameters('factoryName'), '/1-run_customers_only')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
@@ -1808,14 +1211,14 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/run_so_res')]",
+			"name": "[concat(parameters('factoryName'), '/cleanup')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"activities": [
 					{
-						"name": "Opportunity",
-						"type": "Copy",
+						"name": "delete_ftp",
+						"type": "Delete",
 						"dependsOn": [],
 						"policy": {
 							"timeout": "7.00:00:00",
@@ -1826,47 +1229,69 @@
 						},
 						"userProperties": [],
 						"typeProperties": {
-							"source": {
-								"type": "SalesforceSource",
-								"query": "select Id,Name,Date_Quote_Created__c from Opportunity",
-								"readBehavior": "query"
-							},
-							"sink": {
-								"type": "JsonSink",
-								"storeSettings": {
-									"type": "AzureBlobStorageWriteSettings"
-								},
-								"formatSettings": {
-									"type": "JsonWriteSettings",
-									"quoteAllText": true
-								}
-							},
-							"enableStaging": false
-						},
-						"inputs": [
-							{
-								"referenceName": "salesforce_OBJ",
+							"dataset": {
+								"referenceName": "FTP_BIN",
 								"type": "DatasetReference",
 								"parameters": {
-									"objName": "Opportunity"
+									"folder": "/"
 								}
+							},
+							"enableLogging": false,
+							"storeSettings": {
+								"type": "FtpReadSettings",
+								"recursive": false,
+								"wildcardFileName": "*.xml",
+								"useBinaryTransfer": true
+							}
+						}
+					},
+					{
+						"name": "delete_intake_xml",
+						"type": "Delete",
+						"dependsOn": [
+							{
+								"activity": "delete_ftp",
+								"dependencyConditions": [
+									"Succeeded"
+								]
 							}
 						],
-						"outputs": [
-							{
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataset": {
 								"referenceName": "blob_json",
 								"type": "DatasetReference",
 								"parameters": {
 									"folder": "intake",
-									"filename": "opps_head.json"
+									"filename": "*.xml"
 								}
+							},
+							"enableLogging": false,
+							"storeSettings": {
+								"type": "AzureBlobStorageReadSettings",
+								"recursive": false,
+								"wildcardFileName": "*.xml"
 							}
-						]
+						}
 					},
 					{
-						"name": "oppLineitems",
-						"type": "Copy",
-						"dependsOn": [],
+						"name": "delete_intake_json",
+						"type": "Delete",
+						"dependsOn": [
+							{
+								"activity": "delete_intake_xml",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
 						"policy": {
 							"timeout": "7.00:00:00",
 							"retry": 0,
@@ -1876,47 +1301,33 @@
 						},
 						"userProperties": [],
 						"typeProperties": {
-							"source": {
-								"type": "SalesforceSource",
-								"query": "select id,OpportunityId,External_ID__c from  OpportunityLineItem",
-								"readBehavior": "query"
-							},
-							"sink": {
-								"type": "JsonSink",
-								"storeSettings": {
-									"type": "AzureBlobStorageWriteSettings"
-								},
-								"formatSettings": {
-									"type": "JsonWriteSettings",
-									"quoteAllText": true
-								}
-							},
-							"enableStaging": false
-						},
-						"inputs": [
-							{
-								"referenceName": "salesforce_OBJ",
-								"type": "DatasetReference",
-								"parameters": {
-									"objName": "OpportunityLineItem"
-								}
-							}
-						],
-						"outputs": [
-							{
+							"dataset": {
 								"referenceName": "blob_json",
 								"type": "DatasetReference",
 								"parameters": {
 									"folder": "intake",
-									"filename": "opp_lines.json"
+									"filename": "*.json"
 								}
+							},
+							"enableLogging": false,
+							"storeSettings": {
+								"type": "AzureBlobStorageReadSettings",
+								"recursive": false,
+								"wildcardFileName": "*.json"
 							}
-						]
+						}
 					},
 					{
-						"name": "get Opp from sf",
-						"type": "Copy",
-						"dependsOn": [],
+						"name": "delete_stage_json",
+						"type": "Delete",
+						"dependsOn": [
+							{
+								"activity": "delete_intake_json",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
 						"policy": {
 							"timeout": "7.00:00:00",
 							"retry": 0,
@@ -1926,128 +1337,28 @@
 						},
 						"userProperties": [],
 						"typeProperties": {
-							"source": {
-								"type": "SalesforceSource",
-								"query": "select Id,Name from Opportunity",
-								"readBehavior": "query"
-							},
-							"sink": {
-								"type": "JsonSink",
-								"storeSettings": {
-									"type": "AzureBlobStorageWriteSettings"
-								},
-								"formatSettings": {
-									"type": "JsonWriteSettings",
-									"quoteAllText": true
-								}
-							},
-							"enableStaging": false
-						},
-						"inputs": [
-							{
-								"referenceName": "salesforce_OBJ",
-								"type": "DatasetReference",
-								"parameters": {
-									"objName": "Opportunity"
-								}
-							}
-						],
-						"outputs": [
-							{
+							"dataset": {
 								"referenceName": "blob_json",
 								"type": "DatasetReference",
 								"parameters": {
-									"folder": "intake",
-									"filename": "opps_head.json"
-								}
-							}
-						]
-					},
-					{
-						"name": "get oppLineitems from sf",
-						"type": "Copy",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "SalesforceSource",
-								"query": "select id,OpportunityId,External_ID__c from  OpportunityLineItem",
-								"readBehavior": "query"
-							},
-							"sink": {
-								"type": "JsonSink",
-								"storeSettings": {
-									"type": "AzureBlobStorageWriteSettings"
-								},
-								"formatSettings": {
-									"type": "JsonWriteSettings",
-									"quoteAllText": true
+									"folder": "stage",
+									"filename": "*.json"
 								}
 							},
-							"enableStaging": false
-						},
-						"inputs": [
-							{
-								"referenceName": "salesforce_OBJ",
-								"type": "DatasetReference",
-								"parameters": {
-									"objName": "OpportunityLineItem"
-								}
+							"enableLogging": false,
+							"storeSettings": {
+								"type": "AzureBlobStorageReadSettings",
+								"recursive": false,
+								"wildcardFileName": "*.json"
 							}
-						],
-						"outputs": [
-							{
-								"referenceName": "blob_json",
-								"type": "DatasetReference",
-								"parameters": {
-									"folder": "intake",
-									"filename": "opp_lines.json"
-								}
-							}
-						]
-					},
-					{
-						"name": "call pass_0-so",
-						"type": "AzureFunctionActivity",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"functionName": "HttpTrigger1",
-							"method": "POST",
-							"headers": {},
-							"body": {
-								"pass": "0-so"
-							}
-						},
-						"linkedServiceName": {
-							"referenceName": "AzureFunction1",
-							"type": "LinkedServiceReference"
 						}
 					}
 				],
-				"folder": {
-					"name": "Pronto_SF"
-				},
 				"annotations": []
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/salesforce_OBJ')]",
-				"[concat(variables('factoryId'), '/datasets/blob_json')]",
-				"[concat(variables('factoryId'), '/linkedServices/AzureFunction1')]"
+				"[concat(variables('factoryId'), '/datasets/FTP_BIN')]",
+				"[concat(variables('factoryId'), '/datasets/blob_json')]"
 			]
 		},
 		{
@@ -2157,6 +1468,15 @@
 									},
 									{
 										"source": {
+											"path": "$['SoInvoiceNo__c']"
+										},
+										"sink": {
+											"name": "CME_Invoice_No__c",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
 											"path": "$['Crown_Quote_ID__c']"
 										},
 										"sink": {
@@ -2214,7 +1534,7 @@
 											"path": "$['Sales_Rep_Code__c']"
 										},
 										"sink": {
-											"name": "Sales_Rep_Name__c",
+											"name": "CME_Sales_Rep_Code__c",
 											"type": "String"
 										}
 									},
@@ -2242,15 +1562,6 @@
 										},
 										"sink": {
 											"name": "CurrencyIsoCode",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "$['OwnerId']"
-										},
-										"sink": {
-											"name": "OwnerId",
 											"type": "String"
 										}
 									},
@@ -2355,15 +1666,6 @@
 									},
 									{
 										"source": {
-											"path": "$['CME_Invoice_No__c']"
-										},
-										"sink": {
-											"name": "CME_Invoice_No__c",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
 											"path": "$['Invoice_Date__c']"
 										},
 										"sink": {
@@ -2418,10 +1720,37 @@
 									},
 									{
 										"source": {
+											"path": "$['Total_Shipped_Discount__c']"
+										},
+										"sink": {
+											"name": "Total_Shipped_Discount__c",
+											"type": "Decimal"
+										}
+									},
+									{
+										"source": {
 											"path": "$['Total_Shipped_Amount__c']"
 										},
 										"sink": {
 											"name": "Total_Shipped_Amount__c",
+											"type": "Decimal"
+										}
+									},
+									{
+										"source": {
+											"path": "$['Total_Shipped_Tax__c']"
+										},
+										"sink": {
+											"name": "Total_Shipped_Tax__c",
+											"type": "Decimal"
+										}
+									},
+									{
+										"source": {
+											"path": "$['Total_Shipped_Tax_Adj__c']"
+										},
+										"sink": {
+											"name": "Total_Shipped_Tax_Adj__c",
 											"type": "Decimal"
 										}
 									},
@@ -3067,6 +2396,15 @@
 									},
 									{
 										"source": {
+											"path": "$['Sales_Rep_Code__c']"
+										},
+										"sink": {
+											"name": "Sales_Rep_Code__c",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
 											"path": "$['Delivery_Date__c']"
 										},
 										"sink": {
@@ -3612,6 +2950,695 @@
 				"[concat(variables('factoryId'), '/datasets/salesforce_OBJ')]",
 				"[concat(variables('factoryId'), '/datasets/blob_csv')]"
 			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/run_so_res')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Opportunity",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "SalesforceSource",
+								"query": "select Id,Name,Date_Quote_Created__c from Opportunity",
+								"readBehavior": "query"
+							},
+							"sink": {
+								"type": "JsonSink",
+								"storeSettings": {
+									"type": "AzureBlobStorageWriteSettings"
+								},
+								"formatSettings": {
+									"type": "JsonWriteSettings",
+									"quoteAllText": true
+								}
+							},
+							"enableStaging": false
+						},
+						"inputs": [
+							{
+								"referenceName": "salesforce_OBJ",
+								"type": "DatasetReference",
+								"parameters": {
+									"objName": "Opportunity"
+								}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "blob_json",
+								"type": "DatasetReference",
+								"parameters": {
+									"folder": "intake",
+									"filename": "opps_head.json"
+								}
+							}
+						]
+					},
+					{
+						"name": "oppLineitems",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "SalesforceSource",
+								"query": "select id,OpportunityId,External_ID__c from  OpportunityLineItem",
+								"readBehavior": "query"
+							},
+							"sink": {
+								"type": "JsonSink",
+								"storeSettings": {
+									"type": "AzureBlobStorageWriteSettings"
+								},
+								"formatSettings": {
+									"type": "JsonWriteSettings",
+									"quoteAllText": true
+								}
+							},
+							"enableStaging": false
+						},
+						"inputs": [
+							{
+								"referenceName": "salesforce_OBJ",
+								"type": "DatasetReference",
+								"parameters": {
+									"objName": "OpportunityLineItem"
+								}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "blob_json",
+								"type": "DatasetReference",
+								"parameters": {
+									"folder": "intake",
+									"filename": "opp_lines.json"
+								}
+							}
+						]
+					},
+					{
+						"name": "get Opp from sf",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "SalesforceSource",
+								"query": "select Id,Name from Opportunity",
+								"readBehavior": "query"
+							},
+							"sink": {
+								"type": "JsonSink",
+								"storeSettings": {
+									"type": "AzureBlobStorageWriteSettings"
+								},
+								"formatSettings": {
+									"type": "JsonWriteSettings",
+									"quoteAllText": true
+								}
+							},
+							"enableStaging": false
+						},
+						"inputs": [
+							{
+								"referenceName": "salesforce_OBJ",
+								"type": "DatasetReference",
+								"parameters": {
+									"objName": "Opportunity"
+								}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "blob_json",
+								"type": "DatasetReference",
+								"parameters": {
+									"folder": "intake",
+									"filename": "opps_head.json"
+								}
+							}
+						]
+					},
+					{
+						"name": "get oppLineitems from sf",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "SalesforceSource",
+								"query": "select id,OpportunityId,External_ID__c from  OpportunityLineItem",
+								"readBehavior": "query"
+							},
+							"sink": {
+								"type": "JsonSink",
+								"storeSettings": {
+									"type": "AzureBlobStorageWriteSettings"
+								},
+								"formatSettings": {
+									"type": "JsonWriteSettings",
+									"quoteAllText": true
+								}
+							},
+							"enableStaging": false
+						},
+						"inputs": [
+							{
+								"referenceName": "salesforce_OBJ",
+								"type": "DatasetReference",
+								"parameters": {
+									"objName": "OpportunityLineItem"
+								}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "blob_json",
+								"type": "DatasetReference",
+								"parameters": {
+									"folder": "intake",
+									"filename": "opp_lines.json"
+								}
+							}
+						]
+					},
+					{
+						"name": "call pass_0-so",
+						"type": "AzureFunctionActivity",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"functionName": "HttpTrigger1",
+							"method": "POST",
+							"headers": {},
+							"body": {
+								"pass": "0-so"
+							}
+						},
+						"linkedServiceName": {
+							"referenceName": "AzureFunction1",
+							"type": "LinkedServiceReference"
+						}
+					}
+				],
+				"folder": {
+					"name": "Pronto_SF"
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/salesforce_OBJ')]",
+				"[concat(variables('factoryId'), '/datasets/blob_json')]",
+				"[concat(variables('factoryId'), '/linkedServices/AzureFunction1')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/FTP_BIN')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "pronto_ftp",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"folder": {
+						"type": "string"
+					}
+				},
+				"annotations": [],
+				"type": "Binary",
+				"typeProperties": {
+					"location": {
+						"type": "FtpServerLocation",
+						"folderPath": {
+							"value": "@dataset().folder",
+							"type": "Expression"
+						}
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/pronto_ftp')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/FTP_TEXT')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "pronto_ftp",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "FtpServerLocation"
+					},
+					"columnDelimiter": "\u0001",
+					"rowDelimiter": "\n",
+					"escapeChar": "\\",
+					"firstRowAsHeader": false,
+					"quoteChar": ""
+				},
+				"schema": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/pronto_ftp')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Opportunity')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "hepartspartialsb_hepartial",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "SalesforceObject",
+				"schema": [],
+				"typeProperties": {
+					"objectApiName": "Opportunity"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/hepartspartialsb_hepartial')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/blob_TEXT')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "blob",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"folder": {
+						"type": "string"
+					},
+					"filename": {
+						"type": "string"
+					}
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": {
+							"value": "@dataset().filename",
+							"type": "Expression"
+						},
+						"folderPath": {
+							"value": "@dataset().folder",
+							"type": "Expression"
+						},
+						"container": "data"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"quoteChar": ""
+				},
+				"schema": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/blob')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/blob_bin')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "blob",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"folder": {
+						"type": "string"
+					}
+				},
+				"annotations": [],
+				"type": "Binary",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"folderPath": {
+							"value": "@dataset().folder",
+							"type": "Expression"
+						},
+						"container": "data"
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/blob')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/blob_csv')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "blob",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"folder": {
+						"type": "string"
+					},
+					"filename": {
+						"type": "string"
+					}
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": {
+							"value": "@dataset().filename",
+							"type": "Expression"
+						},
+						"folderPath": {
+							"value": "@dataset().folder",
+							"type": "Expression"
+						},
+						"container": "data"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": ""
+				},
+				"schema": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/blob')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/blob_json')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "blob",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"folder": {
+						"type": "string"
+					},
+					"filename": {
+						"type": "string"
+					}
+				},
+				"annotations": [],
+				"type": "Json",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": {
+							"value": "@dataset().filename",
+							"type": "Expression"
+						},
+						"folderPath": {
+							"value": "@dataset().folder",
+							"type": "Expression"
+						},
+						"container": "data"
+					}
+				},
+				"schema": {}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/blob')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/customer')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "pronto_ftp",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "FileShare",
+				"typeProperties": {
+					"fileName": "[parameters('customer_properties_typeProperties_fileName')]"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/pronto_ftp')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/salesforce_OBJ')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "hepartspartialsb_hepartial",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"objName": {
+						"type": "string"
+					}
+				},
+				"annotations": [],
+				"type": "SalesforceObject",
+				"schema": [],
+				"typeProperties": {
+					"objectApiName": {
+						"value": "@dataset().objName",
+						"type": "Expression"
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/hepartspartialsb_hepartial')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/AzureFunction1')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureFunction",
+				"typeProperties": {
+					"functionAppUrl": "https://hesfintegration.azurewebsites.net",
+					"functionKey": {
+						"type": "SecureString",
+						"value": "[parameters('AzureFunction1_functionKey')]"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/blob')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureBlobStorage",
+				"typeProperties": {
+					"connectionString": "[parameters('blob_connectionString')]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/hepartspartialsb_hepartial')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "Salesforce",
+				"typeProperties": {
+					"environmentUrl": "[parameters('hepartspartialsb_hepartial_properties_typeProperties_environmentUrl')]",
+					"username": "[parameters('hepartspartialsb_hepartial_properties_typeProperties_username')]",
+					"password": {
+						"type": "SecureString",
+						"value": "[parameters('hepartspartialsb_hepartial_password')]"
+					},
+					"securityToken": {
+						"type": "SecureString",
+						"value": "[parameters('hepartspartialsb_hepartial_securityToken')]"
+					}
+				},
+				"connectVia": {
+					"referenceName": "IRforSF",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/integrationRuntimes/IRforSF')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/pronto_ftp')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "FtpServer",
+				"typeProperties": {
+					"host": "[parameters('pronto_ftp_properties_typeProperties_host')]",
+					"port": 21,
+					"enableSsl": false,
+					"enableServerCertificateValidation": false,
+					"authenticationType": "Basic",
+					"userName": "[parameters('pronto_ftp_properties_typeProperties_userName')]",
+					"password": {
+						"type": "SecureString",
+						"value": "[parameters('pronto_ftp_password')]"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/trigger1')]",
+			"type": "Microsoft.DataFactory/factories/triggers",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"runtimeState": "Started",
+				"pipelines": [
+					{
+						"pipelineReference": {
+							"referenceName": "2-run_stocks_only",
+							"type": "PipelineReference"
+						},
+						"parameters": {}
+					},
+					{
+						"pipelineReference": {
+							"referenceName": "1-run_customers_only",
+							"type": "PipelineReference"
+						},
+						"parameters": {}
+					}
+				],
+				"type": "ScheduleTrigger",
+				"typeProperties": {
+					"recurrence": {
+						"frequency": "Minute",
+						"interval": 30,
+						"startTime": "2020-03-06T14:00:00.000Z",
+						"timeZone": "UTC"
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/pipelines/2-run_stocks_only')]",
+				"[concat(variables('factoryId'), '/pipelines/1-run_customers_only')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/trigger2')]",
+			"type": "Microsoft.DataFactory/factories/triggers",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"runtimeState": "Started",
+				"pipelines": [
+					{
+						"pipelineReference": {
+							"referenceName": "3-run_SO_only",
+							"type": "PipelineReference"
+						},
+						"parameters": {}
+					}
+				],
+				"type": "ScheduleTrigger",
+				"typeProperties": {
+					"recurrence": {
+						"frequency": "Minute",
+						"interval": 30,
+						"startTime": "2020-03-07T02:15:00.000Z",
+						"timeZone": "UTC"
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/pipelines/3-run_SO_only')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/IRforSF')]",
+			"type": "Microsoft.DataFactory/factories/integrationRuntimes",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "Managed",
+				"typeProperties": {
+					"computeProperties": {
+						"location": "East US",
+						"dataFlowProperties": {
+							"computeType": "General",
+							"coreCount": 8,
+							"timeToLive": 0
+						}
+					}
+				}
+			},
+			"dependsOn": []
 		}
 	]
 }
