@@ -103,6 +103,10 @@
 							{
 								"source": {
 									"path": "$['SoInvoiceNo__c']"
+								},
+								"sink": {
+									"name": "Invoice__c",
+									"type": "String"
 								}
 							},
 							{
@@ -162,6 +166,10 @@
 							{
 								"source": {
 									"path": "$['Sales_Rep_Code__c']"
+								},
+								"sink": {
+									"name": "CME_Sales_Rep_Code__c",
+									"type": "String"
 								}
 							},
 							{
