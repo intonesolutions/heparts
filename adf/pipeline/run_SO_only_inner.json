@@ -102,6 +102,15 @@
 							},
 							{
 								"source": {
+									"path": "$['SoInvoiceNo__c']"
+								},
+								"sink": {
+									"name": "Invoice__c",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
 									"path": "$['Crown_Quote_ID__c']"
 								},
 								"sink": {
@@ -363,10 +372,37 @@
 							},
 							{
 								"source": {
+									"path": "$['Total_Shipped_Discount__c']"
+								},
+								"sink": {
+									"name": "Total_Shipped_Discount__c",
+									"type": "Decimal"
+								}
+							},
+							{
+								"source": {
 									"path": "$['Total_Shipped_Amount__c']"
 								},
 								"sink": {
 									"name": "Total_Shipped_Amount__c",
+									"type": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"path": "$['Total_Shipped_Tax__c']"
+								},
+								"sink": {
+									"name": "Total_Shipped_Tax__c",
+									"type": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"path": "$['Total_Shipped_Tax_Adj__c']"
+								},
+								"sink": {
+									"name": "Total_Shipped_Tax_Adj__c",
 									"type": "Decimal"
 								}
 							},
@@ -743,68 +779,6 @@
 						"type": "DatasetReference",
 						"parameters": {
 							"objName": "OpportunityLineItem"
-						}
-					}
-				]
-			},
-			{
-				"name": "get Prod and Pricebook",
-				"type": "Copy",
-				"dependsOn": [
-					{
-						"activity": "getProdKeys",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
-				"policy": {
-					"timeout": "7.00:00:00",
-					"retry": 0,
-					"retryIntervalInSeconds": 30,
-					"secureOutput": false,
-					"secureInput": false
-				},
-				"userProperties": [],
-				"typeProperties": {
-					"source": {
-						"type": "SalesforceSource",
-						"query": {
-							"value": "@concat('select Id,Product2.Id,Product2.Product_Key__c,CurrencyIsoCode from PriceBookEntry where IsActive=true and Product2.Product_Key__c in (',activity('getProdKeys').output.firstRow.keys,')')",
-							"type": "Expression"
-						},
-						"readBehavior": "query"
-					},
-					"sink": {
-						"type": "DelimitedTextSink",
-						"storeSettings": {
-							"type": "AzureBlobStorageWriteSettings"
-						},
-						"formatSettings": {
-							"type": "DelimitedTextWriteSettings",
-							"quoteAllText": true,
-							"fileExtension": ".txt"
-						}
-					},
-					"enableStaging": false,
-					"enableSkipIncompatibleRow": true
-				},
-				"inputs": [
-					{
-						"referenceName": "salesforce_OBJ",
-						"type": "DatasetReference",
-						"parameters": {
-							"objName": "Product2"
-						}
-					}
-				],
-				"outputs": [
-					{
-						"referenceName": "blob_csv",
-						"type": "DatasetReference",
-						"parameters": {
-							"folder": "stage",
-							"filename": "productpricebook.csv"
 						}
 					}
 				]
@@ -1552,8 +1526,95 @@
 					"referenceName": "AzureFunction1",
 					"type": "LinkedServiceReference"
 				}
+			},
+			{
+				"name": "get Prod and Pricebook",
+				"type": "Copy",
+				"dependsOn": [
+					{
+						"activity": "set query",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "SalesforceSource",
+						"query": {
+							"value": "@variables('q')",
+							"type": "Expression"
+						},
+						"readBehavior": "query"
+					},
+					"sink": {
+						"type": "DelimitedTextSink",
+						"storeSettings": {
+							"type": "AzureBlobStorageWriteSettings"
+						},
+						"formatSettings": {
+							"type": "DelimitedTextWriteSettings",
+							"quoteAllText": true,
+							"fileExtension": ".txt"
+						}
+					},
+					"enableStaging": false,
+					"enableSkipIncompatibleRow": true
+				},
+				"inputs": [
+					{
+						"referenceName": "salesforce_OBJ",
+						"type": "DatasetReference",
+						"parameters": {
+							"objName": "Product2"
+						}
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "blob_csv",
+						"type": "DatasetReference",
+						"parameters": {
+							"folder": "stage",
+							"filename": "productpricebook.csv"
+						}
+					}
+				]
+			},
+			{
+				"name": "set query",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "getProdKeys",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "q",
+					"value": {
+						"value": "@concat('select Id,Product2.Id,Product2.Product_Key__c,CurrencyIsoCode from PriceBookEntry where IsActive=true',if(greater(lastindexof(activity('getProdKeys').output.firstRow.keys,','),90000),'',concat(' and Product2.Product_Key__c in (',activity('getProdKeys').output.firstRow.keys,')')))",
+						"type": "Expression"
+					}
+				}
 			}
 		],
+		"variables": {
+			"q": {
+				"type": "String"
+			}
+		},
 		"folder": {
 			"name": "Pronto_SF"
 		},
