@@ -964,7 +964,7 @@
 					"source": {
 						"type": "SalesforceSource",
 						"query": {
-							"value": "@concat('select Id,Name from Opportunity where Crown_Quote_ID__c in (',activity('getOppKeys').output.firstRow.keys,')')",
+							"value": "@concat('select Id,Name from Opportunity ',if(greater(lastindexof(activity('getOppKeys').output.firstRow.keys,','),70000),'',concat(' where Crown_Quote_ID__c in (',activity('getOppKeys').output.firstRow.keys,')')))",
 							"type": "Expression"
 						},
 						"readBehavior": "query"
