@@ -442,13 +442,7 @@
 				"type": "Copy",
 				"dependsOn": [
 					{
-						"activity": "getProdKeys",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					},
-					{
-						"activity": "getOppKeys",
+						"activity": "set query",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -466,7 +460,7 @@
 					"source": {
 						"type": "SalesforceSource",
 						"query": {
-							"value": "@concat('select Id,Product2.Id,Product2.Product_Key__c,CurrencyIsoCode from PriceBookEntry where IsActive=true',if(greater(lastindexof(activity('getProdKeys').output.firstRow.keys,'}'),90000),'',concat(' and Product2.Product_Key__c in (',activity('getProdKeys').output.firstRow.keys,')')))",
+							"value": "@variables('q')",
 							"type": "Expression"
 						},
 						"readBehavior": "query"
@@ -1006,8 +1000,39 @@
 						}
 					}
 				]
+			},
+			{
+				"name": "set query",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "getOppKeys",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "getProdKeys",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "q",
+					"value": {
+						"value": "@concat('select Id,Product2.Id,Product2.Product_Key__c,CurrencyIsoCode from PriceBookEntry where IsActive=true',if(greater(lastindexof(activity('getProdKeys').output.firstRow.keys,'}'),90000),'',concat(' and Product2.Product_Key__c in (',activity('getProdKeys').output.firstRow.keys,')')))",
+						"type": "Expression"
+					}
+				}
 			}
 		],
+		"variables": {
+			"q": {
+				"type": "String"
+			}
+		},
 		"annotations": []
 	}
 }
