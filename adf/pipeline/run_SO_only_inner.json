@@ -93,15 +93,6 @@
 							},
 							{
 								"source": {
-									"path": "$['Date_Quote_Created__c']"
-								},
-								"sink": {
-									"name": "Date_Quote_Created__c",
-									"type": "DateTime"
-								}
-							},
-							{
-								"source": {
 									"path": "$['SoInvoiceNo__c']"
 								},
 								"sink": {
@@ -206,6 +197,15 @@
 								"sink": {
 									"name": "OwnerId",
 									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['Date_Quote_Created__c']"
+								},
+								"sink": {
+									"name": "Date_Quote_Created__c",
+									"type": "DateTime"
 								}
 							},
 							{
@@ -448,6 +448,15 @@
 								},
 								"sink": {
 									"name": "Warehouse__c",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['imported__c']"
+								},
+								"sink": {
+									"name": "imported__c",
 									"type": "String"
 								}
 							}
