@@ -1061,6 +1061,11 @@
 				]
 			}
 		],
+		"variables": {
+			"q": {
+				"type": "String"
+			}
+		},
 		"annotations": []
 	},
 	"type": "Microsoft.DataFactory/factories/pipelines"
