@@ -1177,7 +1177,7 @@
 					{
 						"activity": "get Prod and Pricebook",
 						"dependencyConditions": [
-							"Succeeded"
+							"Completed"
 						]
 					}
 				],
