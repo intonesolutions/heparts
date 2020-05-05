@@ -950,6 +950,15 @@
 							},
 							{
 								"source": {
+									"path": "$['OwnerId']"
+								},
+								"sink": {
+									"name": "OwnerId",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
 									"path": "$['Invoice_Date__c']"
 								},
 								"sink": {
@@ -1125,6 +1134,15 @@
 								},
 								"sink": {
 									"name": "Warehouse__c",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['imported__c']"
+								},
+								"sink": {
+									"name": "imported__c",
 									"type": "String"
 								}
 							}
