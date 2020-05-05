@@ -31,7 +31,7 @@
 						"ignoreNullValues": true
 					},
 					"enableStaging": false,
-					"enableSkipIncompatibleRow": true,
+					"enableSkipIncompatibleRow": false,
 					"translator": {
 						"type": "TabularTranslator",
 						"mappings": [
@@ -475,7 +475,7 @@
 						"ignoreNullValues": true
 					},
 					"enableStaging": false,
-					"enableSkipIncompatibleRow": true,
+					"enableSkipIncompatibleRow": false,
 					"translator": {
 						"type": "TabularTranslator",
 						"mappings": [
@@ -948,7 +948,7 @@
 					{
 						"activity": "get Prod and Pricebook",
 						"dependencyConditions": [
-							"Succeeded"
+							"Completed"
 						]
 					}
 				],
