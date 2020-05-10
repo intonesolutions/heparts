@@ -147,7 +147,7 @@
 				"type": "Until",
 				"dependsOn": [
 					{
-						"activity": "delete_ftp",
+						"activity": "usermapping_from_sf",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -241,6 +241,62 @@
 					],
 					"timeout": "7.00:00:00"
 				}
+			},
+			{
+				"name": "usermapping_from_sf",
+				"type": "Copy",
+				"dependsOn": [
+					{
+						"activity": "delete_ftp",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "SalesforceSource",
+						"readBehavior": "query"
+					},
+					"sink": {
+						"type": "JsonSink",
+						"storeSettings": {
+							"type": "AzureBlobStorageWriteSettings"
+						},
+						"formatSettings": {
+							"type": "JsonWriteSettings",
+							"quoteAllText": true
+						}
+					},
+					"enableStaging": false
+				},
+				"inputs": [
+					{
+						"referenceName": "salesforce_OBJ",
+						"type": "DatasetReference",
+						"parameters": {
+							"objName": "ERP_Territory__c"
+						}
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "blob_json",
+						"type": "DatasetReference",
+						"parameters": {
+							"folder": "intake",
+							"filename": "usermapping.json"
+						}
+					}
+				]
 			}
 		],
 		"variables": {
