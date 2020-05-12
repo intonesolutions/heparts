@@ -868,7 +868,7 @@
 						"type": "SalesforceSink",
 						"writeBatchSize": 5000,
 						"writeBehavior": "upsert",
-						"externalIdFieldName": "Crown_Invoice__c",
+						"externalIdFieldName": "External_ID__c",
 						"ignoreNullValues": true
 					},
 					"enableStaging": false,
