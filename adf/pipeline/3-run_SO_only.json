@@ -56,7 +56,7 @@
 				"type": "Delete",
 				"dependsOn": [
 					{
-						"activity": "copy to processed",
+						"activity": "copy_to_processed",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -244,7 +244,7 @@
 				]
 			},
 			{
-				"name": "copy to processed",
+				"name": "copy_to_processed",
 				"type": "Copy",
 				"dependsOn": [
 					{
@@ -268,6 +268,7 @@
 						"storeSettings": {
 							"type": "FtpReadSettings",
 							"recursive": false,
+							"wildcardFileName": "SALES_ORDER_*.xml",
 							"useBinaryTransfer": true
 						}
 					},
