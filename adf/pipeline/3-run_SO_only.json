@@ -20,7 +20,7 @@
 						"storeSettings": {
 							"type": "FtpReadSettings",
 							"recursive": false,
-							"wildcardFileName": "SALES_ORDER_*.xml",
+							"wildcardFileName": "SALES_ORDER*.xml",
 							"useBinaryTransfer": true
 						}
 					},
@@ -268,7 +268,7 @@
 						"storeSettings": {
 							"type": "FtpReadSettings",
 							"recursive": false,
-							"wildcardFileName": "SALES_ORDER_*.xml",
+							"wildcardFileName": "SALES_ORDER*.xml",
 							"useBinaryTransfer": true
 						}
 					},
