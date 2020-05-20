@@ -20,7 +20,7 @@
 						"storeSettings": {
 							"type": "FtpReadSettings",
 							"recursive": false,
-							"wildcardFileName": "SALES_ORDER_*.xml",
+							"wildcardFileName": "SALES_ORDER*.xml",
 							"useBinaryTransfer": true
 						}
 					},
@@ -56,7 +56,7 @@
 				"type": "Delete",
 				"dependsOn": [
 					{
-						"activity": "copy to processed",
+						"activity": "copy_to_processed",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -170,7 +170,14 @@
 									{
 										"name": "run_so_only_inner",
 										"type": "ExecutePipeline",
-										"dependsOn": [],
+										"dependsOn": [
+											{
+												"activity": "call pass_0-so",
+												"dependencyConditions": [
+													"Succeeded"
+												]
+											}
+										],
 										"userProperties": [],
 										"typeProperties": {
 											"pipeline": {
@@ -178,6 +185,30 @@
 												"type": "PipelineReference"
 											},
 											"waitOnCompletion": true
+										}
+									},
+									{
+										"name": "call pass_0-so",
+										"type": "AzureFunctionActivity",
+										"dependsOn": [],
+										"policy": {
+											"timeout": "7.00:00:00",
+											"retry": 0,
+											"retryIntervalInSeconds": 30,
+											"secureOutput": false,
+											"secureInput": false
+										},
+										"userProperties": [],
+										"typeProperties": {
+											"functionName": "HttpTrigger1",
+											"method": "POST",
+											"body": {
+												"pass": "0-so"
+											}
+										},
+										"linkedServiceName": {
+											"referenceName": "AzureFunction1",
+											"type": "LinkedServiceReference"
 										}
 									}
 								]
@@ -244,7 +275,7 @@
 				]
 			},
 			{
-				"name": "copy to processed",
+				"name": "copy_to_processed",
 				"type": "Copy",
 				"dependsOn": [
 					{
@@ -268,6 +299,7 @@
 						"storeSettings": {
 							"type": "FtpReadSettings",
 							"recursive": false,
+							"wildcardFileName": "SALES_ORDER*.xml",
 							"useBinaryTransfer": true
 						}
 					},
