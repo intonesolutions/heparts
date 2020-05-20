@@ -56,7 +56,7 @@
 				"type": "Delete",
 				"dependsOn": [
 					{
-						"activity": "so_all_ftp_to_blob",
+						"activity": "Copy data1",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -239,6 +239,58 @@
 						"parameters": {
 							"folder": "intake",
 							"filename": "usermapping.json"
+						}
+					}
+				]
+			},
+			{
+				"name": "Copy data1",
+				"type": "Copy",
+				"dependsOn": [
+					{
+						"activity": "so_all_ftp_to_blob",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "BinarySource",
+						"storeSettings": {
+							"type": "FtpReadSettings",
+							"recursive": false,
+							"useBinaryTransfer": true
+						}
+					},
+					"sink": {
+						"type": "BinarySink"
+					},
+					"enableStaging": false
+				},
+				"inputs": [
+					{
+						"referenceName": "FTP_BIN",
+						"type": "DatasetReference",
+						"parameters": {
+							"folder": "/"
+						}
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "FTP_BIN",
+						"type": "DatasetReference",
+						"parameters": {
+							"folder": "/processed"
 						}
 					}
 				]
