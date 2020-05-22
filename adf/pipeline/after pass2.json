@@ -25,7 +25,7 @@
 					},
 					"sink": {
 						"type": "SalesforceSink",
-						"writeBatchSize": 5000,
+						"writeBatchSize": 1000,
 						"writeBehavior": "upsert",
 						"externalIdFieldName": "External_ID__c",
 						"ignoreNullValues": true
@@ -289,7 +289,7 @@
 					},
 					"sink": {
 						"type": "SalesforceSink",
-						"writeBatchSize": 5000,
+						"writeBatchSize": 1000,
 						"writeBehavior": "upsert",
 						"externalIdFieldName": "External_ID__c",
 						"ignoreNullValues": true
@@ -459,6 +459,9 @@
 				]
 			}
 		],
+		"folder": {
+			"name": "Pronto_SF"
+		},
 		"annotations": []
 	}
 }
