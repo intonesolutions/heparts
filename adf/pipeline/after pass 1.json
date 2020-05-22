@@ -55,15 +55,6 @@
 							},
 							{
 								"source": {
-									"path": "$['Date_Quote_Created__c']"
-								},
-								"sink": {
-									"name": "Date_Quote_Created__c",
-									"type": "DateTime"
-								}
-							},
-							{
-								"source": {
 									"path": "$['SoInvoiceNo__c']"
 								},
 								"sink": {
@@ -168,6 +159,15 @@
 								"sink": {
 									"name": "OwnerId",
 									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['Date_Quote_Created__c']"
+								},
+								"sink": {
+									"name": "Date_Quote_Created__c",
+									"type": "DateTime"
 								}
 							},
 							{
@@ -412,6 +412,15 @@
 									"name": "Warehouse__c",
 									"type": "String"
 								}
+							},
+							{
+								"source": {
+									"path": "$['imported__c']"
+								},
+								"sink": {
+									"name": "imported__c",
+									"type": "String"
+								}
 							}
 						],
 						"collectionReference": ""
@@ -438,68 +447,6 @@
 				]
 			},
 			{
-				"name": "get Prod and Pricebook",
-				"type": "Copy",
-				"dependsOn": [
-					{
-						"activity": "set query",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
-				"policy": {
-					"timeout": "7.00:00:00",
-					"retry": 0,
-					"retryIntervalInSeconds": 30,
-					"secureOutput": false,
-					"secureInput": false
-				},
-				"userProperties": [],
-				"typeProperties": {
-					"source": {
-						"type": "SalesforceSource",
-						"query": {
-							"value": "@variables('q')",
-							"type": "Expression"
-						},
-						"readBehavior": "query"
-					},
-					"sink": {
-						"type": "DelimitedTextSink",
-						"storeSettings": {
-							"type": "AzureBlobStorageWriteSettings"
-						},
-						"formatSettings": {
-							"type": "DelimitedTextWriteSettings",
-							"quoteAllText": true,
-							"fileExtension": ".txt"
-						}
-					},
-					"enableStaging": false,
-					"enableSkipIncompatibleRow": true
-				},
-				"inputs": [
-					{
-						"referenceName": "salesforce_OBJ",
-						"type": "DatasetReference",
-						"parameters": {
-							"objName": "Product2"
-						}
-					}
-				],
-				"outputs": [
-					{
-						"referenceName": "blob_csv",
-						"type": "DatasetReference",
-						"parameters": {
-							"folder": "stage",
-							"filename": "productpricebook.csv"
-						}
-					}
-				]
-			},
-			{
 				"name": "getProdKeys",
 				"type": "Lookup",
 				"dependsOn": [
@@ -507,6 +454,12 @@
 						"activity": "opportunity_to_sf",
 						"dependencyConditions": [
 							"Succeeded"
+						]
+					},
+					{
+						"activity": "invoice_to_sf",
+						"dependencyConditions": [
+							"Completed"
 						]
 					}
 				],
@@ -562,7 +515,7 @@
 						"type": "SalesforceSink",
 						"writeBatchSize": 5000,
 						"writeBehavior": "upsert",
-						"externalIdFieldName": "Crown_Invoice__c",
+						"externalIdFieldName": "External_ID__c",
 						"ignoreNullValues": true
 					},
 					"enableStaging": false,
@@ -639,6 +592,15 @@
 								},
 								"sink": {
 									"name": "Pronto_Account__c",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['OwnerId']"
+								},
+								"sink": {
+									"name": "OwnerId",
 									"type": "String"
 								}
 							},
@@ -821,6 +783,15 @@
 									"name": "Warehouse__c",
 									"type": "String"
 								}
+							},
+							{
+								"source": {
+									"path": "$['imported__c']"
+								},
+								"sink": {
+									"name": "imported__c",
+									"type": "String"
+								}
 							}
 						],
 						"collectionReference": ""
@@ -853,7 +824,7 @@
 					{
 						"activity": "get Prod and Pricebook",
 						"dependencyConditions": [
-							"Succeeded"
+							"Completed"
 						]
 					}
 				],
@@ -910,6 +881,12 @@
 					{
 						"activity": "invoice_to_sf",
 						"dependencyConditions": [
+							"Completed"
+						]
+					},
+					{
+						"activity": "opportunity_to_sf",
+						"dependencyConditions": [
 							"Succeeded"
 						]
 					}
@@ -946,7 +923,7 @@
 				"type": "Copy",
 				"dependsOn": [
 					{
-						"activity": "get Prod and Pricebook",
+						"activity": "getOppKeys",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -964,7 +941,7 @@
 					"source": {
 						"type": "SalesforceSource",
 						"query": {
-							"value": "@concat('select Id,Name from Opportunity ',if(greater(lastindexof(activity('getOppKeys').output.firstRow.keys,','),70000),'',concat(' where Crown_Quote_ID__c in (',activity('getOppKeys').output.firstRow.keys,')')))",
+							"value": "@concat('select Id,Name from Opportunity where Crown_Quote_ID__c in (',activity('getOppKeys').output.firstRow.keys,')')",
 							"type": "Expression"
 						},
 						"readBehavior": "query"
@@ -1002,15 +979,71 @@
 				]
 			},
 			{
-				"name": "set query",
-				"type": "SetVariable",
+				"name": "get Prod and Pricebook",
+				"type": "Copy",
 				"dependsOn": [
 					{
-						"activity": "getOppKeys",
+						"activity": "set query",
 						"dependencyConditions": [
 							"Succeeded"
 						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "SalesforceSource",
+						"query": {
+							"value": "@variables('q')",
+							"type": "Expression"
+						},
+						"readBehavior": "query"
 					},
+					"sink": {
+						"type": "DelimitedTextSink",
+						"storeSettings": {
+							"type": "AzureBlobStorageWriteSettings"
+						},
+						"formatSettings": {
+							"type": "DelimitedTextWriteSettings",
+							"quoteAllText": true,
+							"fileExtension": ".txt"
+						}
+					},
+					"enableStaging": false,
+					"enableSkipIncompatibleRow": true
+				},
+				"inputs": [
+					{
+						"referenceName": "salesforce_OBJ",
+						"type": "DatasetReference",
+						"parameters": {
+							"objName": "Product2"
+						}
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "blob_csv",
+						"type": "DatasetReference",
+						"parameters": {
+							"folder": "stage",
+							"filename": "productpricebook.csv"
+						}
+					}
+				]
+			},
+			{
+				"name": "set query",
+				"type": "SetVariable",
+				"dependsOn": [
 					{
 						"activity": "getProdKeys",
 						"dependencyConditions": [
@@ -1022,7 +1055,7 @@
 				"typeProperties": {
 					"variableName": "q",
 					"value": {
-						"value": "@concat('select Id,Product2.Id,Product2.Product_Key__c,CurrencyIsoCode from PriceBookEntry where IsActive=true',if(greater(lastindexof(activity('getProdKeys').output.firstRow.keys,','),70000),'',concat(' and Product2.Product_Key__c in (',activity('getProdKeys').output.firstRow.keys,')')))",
+						"value": "@concat('select Id,Product2.Id,Product2.Product_Key__c,CurrencyIsoCode from PriceBookEntry where IsActive=true',if(greater(lastindexof(activity('getProdKeys').output.firstRow.keys,','),90000),'',concat(' and Product2.Product_Key__c in (',activity('getProdKeys').output.firstRow.keys,')')))",
 						"type": "Expression"
 					}
 				}
@@ -1033,6 +1066,10 @@
 				"type": "String"
 			}
 		},
+		"folder": {
+			"name": "Pronto_SF"
+		},
 		"annotations": []
-	}
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
 }
