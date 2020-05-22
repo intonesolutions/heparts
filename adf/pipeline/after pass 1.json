@@ -31,7 +31,14 @@
 						"ignoreNullValues": true
 					},
 					"enableStaging": false,
-					"enableSkipIncompatibleRow": false,
+					"enableSkipIncompatibleRow": true,
+					"logStorageSettings": {
+						"linkedServiceName": {
+							"referenceName": "blob",
+							"type": "LinkedServiceReference"
+						},
+						"path": "data/logs"
+					},
 					"translator": {
 						"type": "TabularTranslator",
 						"mappings": [
