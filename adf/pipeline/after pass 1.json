@@ -520,7 +520,7 @@
 					},
 					"sink": {
 						"type": "SalesforceSink",
-						"writeBatchSize": 1000,
+						"writeBatchSize": 100,
 						"writeBehavior": "upsert",
 						"externalIdFieldName": "External_ID__c",
 						"ignoreNullValues": true
