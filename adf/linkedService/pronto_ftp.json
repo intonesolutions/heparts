@@ -11,7 +11,7 @@
 			"enableServerCertificateValidation": false,
 			"authenticationType": "Basic",
 			"userName": "prontosalesforce",
-			"encryptedCredential": "ew0KICAiVmVyc2lvbiI6ICIyMDE3LTExLTMwIiwNCiAgIlByb3RlY3Rpb25Nb2RlIjogIktleSIsDQogICJTZWNyZXRDb250ZW50VHlwZSI6ICJQbGFpbnRleHQiLA0KICAiQ3JlZGVudGlhbElkIjogIkhFLUFERi1TQUxFU0ZPUkNFLVBST0RfYTMwNjY2ZmItMDBmYy00NGMwLWFlOTEtNWJjODg1NWUwMTkwIg0KfQ=="
+			"encryptedCredential": "ew0KICAiVmVyc2lvbiI6ICIyMDE3LTExLTMwIiwNCiAgIlByb3RlY3Rpb25Nb2RlIjogIktleSIsDQogICJTZWNyZXRDb250ZW50VHlwZSI6ICJQbGFpbnRleHQiLA0KICAiQ3JlZGVudGlhbElkIjogIkhFLVBBUlRTLURGX2EwZjQ0ZTQ1LWIzMDUtNGJhNi05ODc3LTFjMzY0N2ZjMWM4OCINCn0="
 		}
 	}
 }
