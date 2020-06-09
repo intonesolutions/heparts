@@ -7,7 +7,7 @@
 		"type": "AzureFunction",
 		"typeProperties": {
 			"functionAppUrl": "https://hesfintegration.azurewebsites.net",
-			"encryptedCredential": "ew0KICAiVmVyc2lvbiI6ICIyMDE3LTExLTMwIiwNCiAgIlByb3RlY3Rpb25Nb2RlIjogIktleSIsDQogICJTZWNyZXRDb250ZW50VHlwZSI6ICJQbGFpbnRleHQiLA0KICAiQ3JlZGVudGlhbElkIjogIkhFLUFERi1TQUxFU0ZPUkNFLVBST0RfY2RhNzU4YzktNmZjYS00Y2FhLTllMzEtZWFmYWQ0NWM0Y2UxIg0KfQ=="
+			"encryptedCredential": "ew0KICAiVmVyc2lvbiI6ICIyMDE3LTExLTMwIiwNCiAgIlByb3RlY3Rpb25Nb2RlIjogIktleSIsDQogICJTZWNyZXRDb250ZW50VHlwZSI6ICJQbGFpbnRleHQiLA0KICAiQ3JlZGVudGlhbElkIjogIkhFLUFERi1TQUxFU0ZPUkNFLVBST0RfMDcxZjQxYTQtMTYwNi00NjM0LThkMTgtMzcyOTlmZjRkYjI2Ig0KfQ=="
 		}
 	}
 }
