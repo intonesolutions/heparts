@@ -1,5 +1,5 @@
 {
-	"name": "pipeline1",
+	"name": "after pass1 for bulk",
 	"properties": {
 		"activities": [
 			{
