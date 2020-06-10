@@ -21,6 +21,9 @@
 							"type": "AzureBlobStorageReadSettings",
 							"recursive": false,
 							"enablePartitionDiscovery": false
+						},
+						"formatSettings": {
+							"type": "JsonReadSettings"
 						}
 					},
 					"sink": {
@@ -37,7 +40,7 @@
 							"referenceName": "blob",
 							"type": "LinkedServiceReference"
 						},
-						"path": "data/logs"
+						"path": "data/logs/opphead"
 					},
 					"translator": {
 						"type": "TabularTranslator",
@@ -516,6 +519,9 @@
 							"type": "AzureBlobStorageReadSettings",
 							"recursive": false,
 							"enablePartitionDiscovery": false
+						},
+						"formatSettings": {
+							"type": "JsonReadSettings"
 						}
 					},
 					"sink": {
@@ -527,6 +533,13 @@
 					},
 					"enableStaging": false,
 					"enableSkipIncompatibleRow": true,
+					"logStorageSettings": {
+						"linkedServiceName": {
+							"referenceName": "blob",
+							"type": "LinkedServiceReference"
+						},
+						"path": "data/logs/invhead"
+					},
 					"translator": {
 						"type": "TabularTranslator",
 						"mappings": [
@@ -913,6 +926,9 @@
 							"type": "AzureBlobStorageReadSettings",
 							"recursive": false,
 							"enablePartitionDiscovery": false
+						},
+						"formatSettings": {
+							"type": "JsonReadSettings"
 						}
 					},
 					"dataset": {
