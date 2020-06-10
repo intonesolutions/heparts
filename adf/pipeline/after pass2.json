@@ -40,7 +40,7 @@
 							"referenceName": "blob",
 							"type": "LinkedServiceReference"
 						},
-						"path": "data/logs/oppline_upsert"
+						"path": "data/logs/oppline"
 					},
 					"translator": {
 						"type": "TabularTranslator",
@@ -314,7 +314,7 @@
 							"referenceName": "blob",
 							"type": "LinkedServiceReference"
 						},
-						"path": "data/logs/invline_upsert"
+						"path": "data/logs/invline"
 					},
 					"translator": {
 						"type": "TabularTranslator",
