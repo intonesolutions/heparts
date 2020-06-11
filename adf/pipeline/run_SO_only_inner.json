@@ -62,7 +62,8 @@
 						"writeBatchSize": 40,
 						"writeBehavior": "upsert",
 						"externalIdFieldName": "Morgan_External_ID__c",
-						"ignoreNullValues": true
+						"ignoreNullValues": true,
+						"maxConcurrentConnections": 1
 					},
 					"enableStaging": false,
 					"enableSkipIncompatibleRow": true,
@@ -560,7 +561,8 @@
 						"writeBatchSize": 1000,
 						"writeBehavior": "upsert",
 						"externalIdFieldName": "External_ID__c",
-						"ignoreNullValues": true
+						"ignoreNullValues": true,
+						"maxConcurrentConnections": 1
 					},
 					"enableStaging": false,
 					"enableSkipIncompatibleRow": true,
@@ -885,7 +887,8 @@
 						"writeBatchSize": 40,
 						"writeBehavior": "upsert",
 						"externalIdFieldName": "External_ID__c",
-						"ignoreNullValues": true
+						"ignoreNullValues": true,
+						"maxConcurrentConnections": 1
 					},
 					"enableStaging": false,
 					"enableSkipIncompatibleRow": true,
@@ -1286,7 +1289,8 @@
 						"writeBatchSize": 1000,
 						"writeBehavior": "upsert",
 						"externalIdFieldName": "External_ID__c",
-						"ignoreNullValues": true
+						"ignoreNullValues": true,
+						"maxConcurrentConnections": 1
 					},
 					"enableStaging": false,
 					"enableSkipIncompatibleRow": true,
