@@ -28,7 +28,7 @@
 					},
 					"sink": {
 						"type": "SalesforceSink",
-						"writeBatchSize": 50,
+						"writeBatchSize": 40,
 						"writeBehavior": "upsert",
 						"externalIdFieldName": "Morgan_External_ID__c",
 						"ignoreNullValues": true
@@ -526,7 +526,7 @@
 					},
 					"sink": {
 						"type": "SalesforceSink",
-						"writeBatchSize": 50,
+						"writeBatchSize": 40,
 						"writeBehavior": "upsert",
 						"externalIdFieldName": "External_ID__c",
 						"ignoreNullValues": true
