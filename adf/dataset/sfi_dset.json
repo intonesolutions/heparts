@@ -1,0 +1,24 @@
+{
+	"name": "sfi_dset",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "sfi",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"pass": {
+				"type": "string",
+				"defaultValue": "x"
+			}
+		},
+		"annotations": [],
+		"type": "RestResource",
+		"typeProperties": {
+			"relativeUrl": {
+				"value": "@concat('?pass=',dataset().pass)",
+				"type": "Expression"
+			}
+		},
+		"schema": []
+	}
+}
