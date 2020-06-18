@@ -120,7 +120,7 @@
 							"typeProperties": {
 								"variableName": "nn",
 								"value": {
-									"value": "@activity('getNN').output",
+									"value": "@activity('getNN').output.firstRow.Prop_0",
 									"type": "Expression"
 								}
 							}
