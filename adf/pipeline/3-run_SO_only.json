@@ -110,7 +110,7 @@
 							"type": "SetVariable",
 							"dependsOn": [
 								{
-									"activity": "call pass q-so",
+									"activity": "getNN",
 									"dependencyConditions": [
 										"Succeeded"
 									]
@@ -120,7 +120,7 @@
 							"typeProperties": {
 								"variableName": "nn",
 								"value": {
-									"value": "@string(activity('call pass_q-so').output.status)",
+									"value": "@activity('getNN').output",
 									"type": "Expression"
 								}
 							}
@@ -269,6 +269,47 @@
 									}
 								}
 							]
+						},
+						{
+							"name": "getNN",
+							"type": "Lookup",
+							"dependsOn": [
+								{
+									"activity": "call pass q-so",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "7.00:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "DelimitedTextSource",
+									"storeSettings": {
+										"type": "AzureBlobStorageReadSettings",
+										"recursive": false,
+										"enablePartitionDiscovery": false
+									},
+									"formatSettings": {
+										"type": "DelimitedTextReadSettings"
+									}
+								},
+								"dataset": {
+									"referenceName": "blob_TEXT",
+									"type": "DatasetReference",
+									"parameters": {
+										"folder": "runs",
+										"filename": "sfi_call.txt"
+									}
+								}
+							}
 						}
 					],
 					"timeout": "7.00:00:00"
