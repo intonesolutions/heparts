@@ -52,17 +52,28 @@
 							"type": "AzureBlobStorageReadSettings",
 							"recursive": false,
 							"enablePartitionDiscovery": false
+						},
+						"formatSettings": {
+							"type": "JsonReadSettings"
 						}
 					},
 					"sink": {
 						"type": "SalesforceSink",
-						"writeBatchSize": 100,
+						"writeBatchSize": 40,
 						"writeBehavior": "upsert",
 						"externalIdFieldName": "Morgan_External_ID__c",
-						"ignoreNullValues": true
+						"ignoreNullValues": true,
+						"maxConcurrentConnections": 1
 					},
 					"enableStaging": false,
 					"enableSkipIncompatibleRow": true,
+					"logStorageSettings": {
+						"linkedServiceName": {
+							"referenceName": "blob",
+							"type": "LinkedServiceReference"
+						},
+						"path": "data/logs/opphead"
+					},
 					"translator": {
 						"type": "TabularTranslator",
 						"mappings": [
@@ -540,17 +551,28 @@
 							"type": "AzureBlobStorageReadSettings",
 							"recursive": false,
 							"enablePartitionDiscovery": false
+						},
+						"formatSettings": {
+							"type": "JsonReadSettings"
 						}
 					},
 					"sink": {
 						"type": "SalesforceSink",
-						"writeBatchSize": 5000,
+						"writeBatchSize": 1000,
 						"writeBehavior": "upsert",
 						"externalIdFieldName": "External_ID__c",
-						"ignoreNullValues": true
+						"ignoreNullValues": true,
+						"maxConcurrentConnections": 1
 					},
 					"enableStaging": false,
 					"enableSkipIncompatibleRow": true,
+					"logStorageSettings": {
+						"linkedServiceName": {
+							"referenceName": "blob",
+							"type": "LinkedServiceReference"
+						},
+						"path": "data/logs/oppline"
+					},
 					"translator": {
 						"type": "TabularTranslator",
 						"mappings": [
@@ -855,17 +877,28 @@
 							"type": "AzureBlobStorageReadSettings",
 							"recursive": false,
 							"enablePartitionDiscovery": false
+						},
+						"formatSettings": {
+							"type": "JsonReadSettings"
 						}
 					},
 					"sink": {
 						"type": "SalesforceSink",
-						"writeBatchSize": 100,
+						"writeBatchSize": 40,
 						"writeBehavior": "upsert",
 						"externalIdFieldName": "External_ID__c",
-						"ignoreNullValues": true
+						"ignoreNullValues": true,
+						"maxConcurrentConnections": 1
 					},
 					"enableStaging": false,
 					"enableSkipIncompatibleRow": true,
+					"logStorageSettings": {
+						"linkedServiceName": {
+							"referenceName": "blob",
+							"type": "LinkedServiceReference"
+						},
+						"path": "data/logs/invhead"
+					},
 					"translator": {
 						"type": "TabularTranslator",
 						"mappings": [
@@ -1246,17 +1279,28 @@
 							"type": "AzureBlobStorageReadSettings",
 							"recursive": false,
 							"enablePartitionDiscovery": false
+						},
+						"formatSettings": {
+							"type": "JsonReadSettings"
 						}
 					},
 					"sink": {
 						"type": "SalesforceSink",
-						"writeBatchSize": 5000,
+						"writeBatchSize": 1000,
 						"writeBehavior": "upsert",
 						"externalIdFieldName": "External_ID__c",
-						"ignoreNullValues": true
+						"ignoreNullValues": true,
+						"maxConcurrentConnections": 1
 					},
 					"enableStaging": false,
 					"enableSkipIncompatibleRow": true,
+					"logStorageSettings": {
+						"linkedServiceName": {
+							"referenceName": "blob",
+							"type": "LinkedServiceReference"
+						},
+						"path": "data/logs/invline"
+					},
 					"translator": {
 						"type": "TabularTranslator",
 						"mappings": [
