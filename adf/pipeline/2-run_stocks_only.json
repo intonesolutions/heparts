@@ -59,37 +59,6 @@
 				]
 			},
 			{
-				"name": "call pass stock",
-				"type": "AzureFunctionActivity",
-				"dependsOn": [
-					{
-						"activity": "STOCK_MASTER",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
-				"policy": {
-					"timeout": "7.00:00:00",
-					"retry": 0,
-					"retryIntervalInSeconds": 30,
-					"secureOutput": false,
-					"secureInput": false
-				},
-				"userProperties": [],
-				"typeProperties": {
-					"functionName": "HttpTrigger1",
-					"method": "POST",
-					"body": {
-						"pass": "stock"
-					}
-				},
-				"linkedServiceName": {
-					"referenceName": "AzureFunction1",
-					"type": "LinkedServiceReference"
-				}
-			},
-			{
 				"name": "products",
 				"type": "Copy",
 				"dependsOn": [
@@ -287,6 +256,65 @@
 						"useBinaryTransfer": true
 					}
 				}
+			},
+			{
+				"name": "call pass stock",
+				"type": "Copy",
+				"dependsOn": [
+					{
+						"activity": "STOCK_MASTER",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "RestSource",
+						"httpRequestTimeout": "00:01:40",
+						"requestInterval": "00.00:00:00.010",
+						"requestMethod": "GET"
+					},
+					"sink": {
+						"type": "DelimitedTextSink",
+						"storeSettings": {
+							"type": "AzureBlobStorageWriteSettings"
+						},
+						"formatSettings": {
+							"type": "DelimitedTextWriteSettings",
+							"quoteAllText": true,
+							"fileExtension": ".txt"
+						}
+					},
+					"enableStaging": false
+				},
+				"inputs": [
+					{
+						"referenceName": "sfi_dset",
+						"type": "DatasetReference",
+						"parameters": {
+							"pass": "stock"
+						}
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "blob_TEXT",
+						"type": "DatasetReference",
+						"parameters": {
+							"folder": "runs",
+							"filename": "sfi_call.txt"
+						}
+					}
+				]
 			}
 		],
 		"folder": {
