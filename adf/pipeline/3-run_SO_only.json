@@ -144,26 +144,6 @@
 								},
 								"ifTrueActivities": [
 									{
-										"name": "run_so_only_inner",
-										"type": "ExecutePipeline",
-										"dependsOn": [
-											{
-												"activity": "call pass 0-so",
-												"dependencyConditions": [
-													"Succeeded"
-												]
-											}
-										],
-										"userProperties": [],
-										"typeProperties": {
-											"pipeline": {
-												"referenceName": "run_SO_only_inner",
-												"type": "PipelineReference"
-											},
-											"waitOnCompletion": true
-										}
-									},
-									{
 										"name": "call pass 0-so",
 										"type": "Copy",
 										"dependsOn": [],
@@ -214,6 +194,26 @@
 												}
 											}
 										]
+									},
+									{
+										"name": "Execute Pipeline1",
+										"type": "ExecutePipeline",
+										"dependsOn": [
+											{
+												"activity": "call pass 0-so",
+												"dependencyConditions": [
+													"Succeeded"
+												]
+											}
+										],
+										"userProperties": [],
+										"typeProperties": {
+											"pipeline": {
+												"referenceName": "run_SO_only_inner",
+												"type": "PipelineReference"
+											},
+											"waitOnCompletion": true
+										}
 									}
 								]
 							}
