@@ -26,6 +26,9 @@
 		"customer_properties_typeProperties_fileName": {
 			"value": "CUSTOMER.xml"
 		},
+		"AzureFunction1_properties_typeProperties_functionAppUrl": {
+			"value": "https://hesfintegration-qa.azurewebsites.net"
+		},
 		"RestService1_properties_typeProperties_url": {
 			"value": "https://hewebutils.azurewebsites.net/"
 		},
@@ -46,6 +49,9 @@
 		},
 		"pronto_ftp_properties_typeProperties_userName": {
 			"value": "prontosalesforce_qa"
+		},
+		"sfi_properties_typeProperties_url": {
+			"value": "http://40.77.111.157/qa"
 		},
 		"containerUri": {
 			"value": ""

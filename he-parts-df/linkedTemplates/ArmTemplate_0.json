@@ -31,6 +31,10 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'securityToken' of 'hepartspartialsb_hepartial'"
 		},
+		"AzureFunction1_properties_typeProperties_functionAppUrl": {
+			"type": "string",
+			"defaultValue": "https://hesfintegration-qa.azurewebsites.net"
+		},
 		"pronto_extract_properties_typeProperties_host": {
 			"type": "string",
 			"defaultValue": "\\\\hepiftpdiag.file.core.windows.net\\pronto-extract"
@@ -46,6 +50,10 @@
 		"pronto_ftp_properties_typeProperties_userName": {
 			"type": "string",
 			"defaultValue": "prontosalesforce_qa"
+		},
+		"sfi_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "http://40.77.111.157/qa"
 		},
 		"customer_properties_typeProperties_fileName": {
 			"type": "string",
@@ -76,7 +84,7 @@
 				"annotations": [],
 				"type": "AzureFunction",
 				"typeProperties": {
-					"functionAppUrl": "https://hesfintegration-qa.azurewebsites.net",
+					"functionAppUrl": "[parameters('AzureFunction1_properties_typeProperties_functionAppUrl')]",
 					"functionKey": {
 						"type": "SecureString",
 						"value": "[parameters('AzureFunction1_functionKey')]"
@@ -153,6 +161,21 @@
 							"timeToLive": 0
 						}
 					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/sfi')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "RestService",
+				"typeProperties": {
+					"url": "[parameters('sfi_properties_typeProperties_url')]",
+					"enableServerCertificateValidation": true,
+					"authenticationType": "Anonymous"
 				}
 			},
 			"dependsOn": []
@@ -435,6 +458,35 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/integrationRuntimes/IRforSF')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/sfi_dset')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "sfi",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"pass": {
+						"type": "string",
+						"defaultValue": "x"
+					}
+				},
+				"annotations": [],
+				"type": "RestResource",
+				"typeProperties": {
+					"relativeUrl": {
+						"value": "@concat('?pass=',dataset().pass)",
+						"type": "Expression"
+					}
+				},
+				"schema": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/sfi')]"
 			]
 		},
 		{
@@ -962,160 +1014,6 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/x1')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "so_ftp_to_blob",
-						"type": "Copy",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "BinarySource",
-								"storeSettings": {
-									"type": "FtpReadSettings",
-									"recursive": false,
-									"wildcardFileName": "SALES_ORDER_PRONTO-*.xml",
-									"useBinaryTransfer": true
-								}
-							},
-							"sink": {
-								"type": "BinarySink",
-								"storeSettings": {
-									"type": "AzureBlobStorageWriteSettings"
-								}
-							},
-							"enableStaging": false
-						},
-						"inputs": [
-							{
-								"referenceName": "FTP_BIN",
-								"type": "DatasetReference",
-								"parameters": {
-									"folder": "/"
-								}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "blob_bin",
-								"type": "DatasetReference",
-								"parameters": {
-									"folder": "queue"
-								}
-							}
-						]
-					},
-					{
-						"name": "so_lines_ftp_to_blob",
-						"type": "Copy",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "BinarySource",
-								"storeSettings": {
-									"type": "FtpReadSettings",
-									"recursive": false,
-									"wildcardFileName": "SALES_ORDER_LINE-*.xml",
-									"useBinaryTransfer": true
-								}
-							},
-							"sink": {
-								"type": "BinarySink",
-								"storeSettings": {
-									"type": "AzureBlobStorageWriteSettings"
-								}
-							},
-							"enableStaging": false
-						},
-						"inputs": [
-							{
-								"referenceName": "FTP_BIN",
-								"type": "DatasetReference",
-								"parameters": {
-									"folder": "/"
-								}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "blob_bin",
-								"type": "DatasetReference",
-								"parameters": {
-									"folder": "queue"
-								}
-							}
-						]
-					},
-					{
-						"name": "delete_ftp",
-						"type": "Delete",
-						"dependsOn": [
-							{
-								"activity": "so_lines_ftp_to_blob",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							},
-							{
-								"activity": "so_ftp_to_blob",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"dataset": {
-								"referenceName": "FTP_BIN",
-								"type": "DatasetReference",
-								"parameters": {
-									"folder": "/"
-								}
-							},
-							"enableLogging": false,
-							"storeSettings": {
-								"type": "FtpReadSettings",
-								"recursive": false,
-								"wildcardFileName": "SALES_ORDER*.xml",
-								"useBinaryTransfer": true
-							}
-						}
-					}
-				],
-				"annotations": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/FTP_BIN')]",
-				"[concat(variables('factoryId'), '/datasets/blob_bin')]"
-			]
-		},
-		{
 			"name": "[concat(parameters('factoryName'), '/Opportunity')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -1133,34 +1031,6 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/linkedServices/hepartspartialsb_hepartial')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/SharePointWebAPI')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "RestService1",
-					"type": "LinkedServiceReference"
-				},
-				"parameters": {
-					"APIURL": {
-						"type": "string"
-					}
-				},
-				"annotations": [],
-				"type": "RestResource",
-				"typeProperties": {
-					"relativeUrl": {
-						"value": "@dataset().APIURL",
-						"type": "Expression"
-					}
-				},
-				"schema": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/RestService1')]"
 			]
 		}
 	]

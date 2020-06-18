@@ -35,6 +35,10 @@
 			"type": "string",
 			"defaultValue": "CUSTOMER.xml"
 		},
+		"AzureFunction1_properties_typeProperties_functionAppUrl": {
+			"type": "string",
+			"defaultValue": "https://hesfintegration-qa.azurewebsites.net"
+		},
 		"RestService1_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://hewebutils.azurewebsites.net/"
@@ -62,6 +66,10 @@
 		"pronto_ftp_properties_typeProperties_userName": {
 			"type": "string",
 			"defaultValue": "prontosalesforce_qa"
+		},
+		"sfi_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "http://40.77.111.157/qa"
 		},
 		"containerUri": {
 			"type": "string",
@@ -108,6 +116,9 @@
 					"hepartspartialsb_hepartial_securityToken": {
 						"value": "[parameters('hepartspartialsb_hepartial_securityToken')]"
 					},
+					"AzureFunction1_properties_typeProperties_functionAppUrl": {
+						"value": "[parameters('AzureFunction1_properties_typeProperties_functionAppUrl')]"
+					},
 					"pronto_extract_properties_typeProperties_host": {
 						"value": "[parameters('pronto_extract_properties_typeProperties_host')]"
 					},
@@ -119,6 +130,9 @@
 					},
 					"pronto_ftp_properties_typeProperties_userName": {
 						"value": "[parameters('pronto_ftp_properties_typeProperties_userName')]"
+					},
+					"sfi_properties_typeProperties_url": {
+						"value": "[parameters('sfi_properties_typeProperties_url')]"
 					},
 					"customer_properties_typeProperties_fileName": {
 						"value": "[parameters('customer_properties_typeProperties_fileName')]"
