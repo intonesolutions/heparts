@@ -3,35 +3,11 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "call pass1",
-				"type": "AzureFunctionActivity",
-				"dependsOn": [],
-				"policy": {
-					"timeout": "7.00:00:00",
-					"retry": 0,
-					"retryIntervalInSeconds": 30,
-					"secureOutput": false,
-					"secureInput": false
-				},
-				"userProperties": [],
-				"typeProperties": {
-					"functionName": "HttpTrigger1",
-					"method": "POST",
-					"body": {
-						"pass": "1"
-					}
-				},
-				"linkedServiceName": {
-					"referenceName": "AzureFunction1",
-					"type": "LinkedServiceReference"
-				}
-			},
-			{
 				"name": "opportunity_to_sf",
 				"type": "Copy",
 				"dependsOn": [
 					{
-						"activity": "call pass1",
+						"activity": "call pass 1",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -489,48 +465,11 @@
 				]
 			},
 			{
-				"name": "call pass2",
-				"type": "AzureFunctionActivity",
-				"dependsOn": [
-					{
-						"activity": "get inv from sf",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					},
-					{
-						"activity": "get Opp from sf",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
-				"policy": {
-					"timeout": "7.00:00:00",
-					"retry": 0,
-					"retryIntervalInSeconds": 30,
-					"secureOutput": false,
-					"secureInput": false
-				},
-				"userProperties": [],
-				"typeProperties": {
-					"functionName": "HttpTrigger1",
-					"method": "POST",
-					"body": {
-						"pass": "2"
-					}
-				},
-				"linkedServiceName": {
-					"referenceName": "AzureFunction1",
-					"type": "LinkedServiceReference"
-				}
-			},
-			{
 				"name": "OppLine_upsert",
 				"type": "Copy",
 				"dependsOn": [
 					{
-						"activity": "call pass2",
+						"activity": "call pass 2",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -856,7 +795,7 @@
 				"type": "Copy",
 				"dependsOn": [
 					{
-						"activity": "call pass1",
+						"activity": "call pass 1",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -1258,7 +1197,7 @@
 				"type": "Copy",
 				"dependsOn": [
 					{
-						"activity": "call pass2",
+						"activity": "call pass 2",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -1648,6 +1587,123 @@
 						"type": "Expression"
 					}
 				}
+			},
+			{
+				"name": "call pass 1",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "RestSource",
+						"httpRequestTimeout": "00:01:40",
+						"requestInterval": "00.00:00:00.010",
+						"requestMethod": "GET"
+					},
+					"sink": {
+						"type": "DelimitedTextSink",
+						"storeSettings": {
+							"type": "AzureBlobStorageWriteSettings"
+						},
+						"formatSettings": {
+							"type": "DelimitedTextWriteSettings",
+							"quoteAllText": true,
+							"fileExtension": ".txt"
+						}
+					},
+					"enableStaging": false
+				},
+				"inputs": [
+					{
+						"referenceName": "sfi_dset",
+						"type": "DatasetReference",
+						"parameters": {
+							"pass": "1"
+						}
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "blob_TEXT",
+						"type": "DatasetReference",
+						"parameters": {
+							"folder": "runs",
+							"filename": "sfi_call.txt"
+						}
+					}
+				]
+			},
+			{
+				"name": "call pass 2",
+				"type": "Copy",
+				"dependsOn": [
+					{
+						"activity": "get inv from sf",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "get Opp from sf",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "RestSource",
+						"httpRequestTimeout": "00:01:40",
+						"requestInterval": "00.00:00:00.010",
+						"requestMethod": "GET"
+					},
+					"sink": {
+						"type": "DelimitedTextSink",
+						"storeSettings": {
+							"type": "AzureBlobStorageWriteSettings"
+						},
+						"formatSettings": {
+							"type": "DelimitedTextWriteSettings",
+							"quoteAllText": true,
+							"fileExtension": ".txt"
+						}
+					},
+					"enableStaging": false
+				},
+				"inputs": [
+					{
+						"referenceName": "sfi_dset",
+						"type": "DatasetReference",
+						"parameters": {
+							"pass": "2"
+						}
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "blob_TEXT",
+						"type": "DatasetReference",
+						"parameters": {
+							"folder": "runs",
+							"filename": "sfi_call.txt"
+						}
+					}
+				]
 			}
 		],
 		"variables": {
