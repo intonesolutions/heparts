@@ -23,6 +23,9 @@
 		"customer_properties_typeProperties_fileName": {
 			"value": "CUSTOMER.xml"
 		},
+		"AzureFunction1_properties_typeProperties_functionAppUrl": {
+			"value": "https://hesfintegration.azurewebsites.net"
+		},
 		"hepartspartialsb_hepartial_properties_typeProperties_environmentUrl": {
 			"value": "https://login.salesforce.com"
 		},
@@ -34,6 +37,9 @@
 		},
 		"pronto_ftp_properties_typeProperties_userName": {
 			"value": "prontosalesforce"
+		},
+		"sfi_properties_typeProperties_url": {
+			"value": "http://40.77.111.157/prod"
 		},
 		"containerUri": {
 			"value": ""
