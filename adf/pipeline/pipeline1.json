@@ -1,0 +1,314 @@
+{
+	"name": "pipeline1",
+	"properties": {
+		"activities": [
+			{
+				"name": "call pass deb",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "RestSource",
+						"httpRequestTimeout": "00:01:40",
+						"requestInterval": "00.00:00:00.010",
+						"requestMethod": "GET"
+					},
+					"sink": {
+						"type": "DelimitedTextSink",
+						"storeSettings": {
+							"type": "AzureBlobStorageWriteSettings"
+						},
+						"formatSettings": {
+							"type": "DelimitedTextWriteSettings",
+							"quoteAllText": true,
+							"fileExtension": ".txt"
+						}
+					},
+					"enableStaging": false
+				},
+				"inputs": [
+					{
+						"referenceName": "sfi_dset",
+						"type": "DatasetReference",
+						"parameters": {
+							"pass": "deb"
+						}
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "blob_TEXT",
+						"type": "DatasetReference",
+						"parameters": {
+							"folder": "runs",
+							"filename": "sfi_call.txt"
+						}
+					}
+				]
+			},
+			{
+				"name": "account_to_sf",
+				"type": "Copy",
+				"dependsOn": [
+					{
+						"activity": "call pass deb",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "JsonSource",
+						"storeSettings": {
+							"type": "AzureBlobStorageReadSettings",
+							"recursive": true
+						},
+						"formatSettings": {
+							"type": "JsonReadSettings"
+						}
+					},
+					"sink": {
+						"type": "SalesforceSink",
+						"writeBatchSize": 5000,
+						"writeBehavior": "upsert",
+						"externalIdFieldName": "Pronto_Global_Account__c",
+						"ignoreNullValues": true
+					},
+					"enableStaging": false,
+					"enableSkipIncompatibleRow": true,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"path": "$['Id']"
+								},
+								"sink": {
+									"name": "Id",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['MSUS_Pronto__c']"
+								},
+								"sink": {
+									"name": "MSUS_Pronto__c",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['Canada_Pronto__c']"
+								},
+								"sink": {
+									"name": "Canada_Pronto__c",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['ESUS_Pronto__c']"
+								},
+								"sink": {
+									"name": "ESUS_Pronto__c"
+								}
+							},
+							{
+								"source": {
+									"path": "$['MSAU_Pronto__c']"
+								},
+								"sink": {
+									"name": "MSAU_Pronto__c",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['MSAU_CD_Pronto__c']"
+								},
+								"sink": {
+									"name": "MSAU_CD_Pronto__c",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['Pronto_Global_Account__c']"
+								},
+								"sink": {
+									"name": "Pronto_Global_Account__c",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['Name']"
+								},
+								"sink": {
+									"name": "Name",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['BillingStreet']"
+								},
+								"sink": {
+									"name": "BillingStreet",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['BillingCity']"
+								},
+								"sink": {
+									"name": "BillingCity",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['BillingState']"
+								},
+								"sink": {
+									"name": "BillingState",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['BillingPostalCode']"
+								},
+								"sink": {
+									"name": "BillingPostalCode",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['BillingCountry']"
+								},
+								"sink": {
+									"name": "BillingCountry",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['ShippingStreet']"
+								},
+								"sink": {
+									"name": "ShippingStreet",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['ShippingCity']"
+								},
+								"sink": {
+									"name": "ShippingCity",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['ShippingState']"
+								},
+								"sink": {
+									"name": "ShippingState",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['ShippingPostalCode']"
+								},
+								"sink": {
+									"name": "ShippingPostalCode",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['ShippingCountry']"
+								},
+								"sink": {
+									"name": "ShippingCountry",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['Phone']"
+								},
+								"sink": {
+									"name": "Phone",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['CurrencyIsoCode']"
+								},
+								"sink": {
+									"name": "CurrencyIsoCode",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['Territory_ID__c']"
+								},
+								"sink": {
+									"name": "Territory_ID__c",
+									"type": "String"
+								}
+							}
+						],
+						"collectionReference": ""
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "blob_json",
+						"type": "DatasetReference",
+						"parameters": {
+							"folder": "stage",
+							"filename": "account.json"
+						}
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "salesforce_OBJ",
+						"type": "DatasetReference",
+						"parameters": {
+							"objName": "Account"
+						}
+					}
+				]
+			}
+		],
+		"annotations": []
+	}
+}
