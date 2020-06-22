@@ -1657,7 +1657,7 @@
 						]
 					},
 					{
-						"activity": "get Opp from sf_copy1",
+						"activity": "get all opps from sf",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -1712,7 +1712,7 @@
 				]
 			},
 			{
-				"name": "get Opp from sf_copy1",
+				"name": "get all opps from sf",
 				"type": "Copy",
 				"dependsOn": [
 					{
