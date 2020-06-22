@@ -7,7 +7,7 @@
 				"type": "Copy",
 				"dependsOn": [
 					{
-						"activity": "call pass 11",
+						"activity": "call pass 1",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -795,7 +795,7 @@
 				"type": "Copy",
 				"dependsOn": [
 					{
-						"activity": "call pass 11",
+						"activity": "call pass 1",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -1589,7 +1589,7 @@
 				}
 			},
 			{
-				"name": "call pass 11",
+				"name": "call pass 1",
 				"type": "Copy",
 				"dependsOn": [],
 				"policy": {
