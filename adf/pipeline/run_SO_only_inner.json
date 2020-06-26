@@ -1469,7 +1469,7 @@
 					"source": {
 						"type": "SalesforceSource",
 						"query": {
-							"value": "@concat('select Id,Name from Opportunity where Crown_Quote_ID__c in (',activity('getOppKeys').output.firstRow.keys,')')",
+							"value": "@concat('select Id,Name,Morgan_External_ID__c from Opportunity where Crown_Quote_ID__c in (',activity('getOppKeys').output.firstRow.keys,')')",
 							"type": "Expression"
 						},
 						"readBehavior": "query"
@@ -1733,7 +1733,7 @@
 				"typeProperties": {
 					"source": {
 						"type": "SalesforceSource",
-						"query": "select Id,Name from Opportunity",
+						"query": "select Id,Name,Morgan_External_ID__c from Opportunity",
 						"readBehavior": "query"
 					},
 					"sink": {
