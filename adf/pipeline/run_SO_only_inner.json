@@ -1434,6 +1434,9 @@
 							"type": "AzureBlobStorageReadSettings",
 							"recursive": false,
 							"enablePartitionDiscovery": false
+						},
+						"formatSettings": {
+							"type": "JsonReadSettings"
 						}
 					},
 					"dataset": {
@@ -1652,12 +1655,6 @@
 					},
 					{
 						"activity": "get Opp from sf",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					},
-					{
-						"activity": "get all opps from sf",
 						"dependencyConditions": [
 							"Succeeded"
 						]
