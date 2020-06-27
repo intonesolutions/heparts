@@ -1655,12 +1655,6 @@
 						"dependencyConditions": [
 							"Succeeded"
 						]
-					},
-					{
-						"activity": "get all opps from sf",
-						"dependencyConditions": [
-							"Succeeded"
-						]
 					}
 				],
 				"policy": {
@@ -1707,63 +1701,6 @@
 						"parameters": {
 							"folder": "runs",
 							"filename": "sfi_call.txt"
-						}
-					}
-				]
-			},
-			{
-				"name": "get all opps from sf",
-				"type": "Copy",
-				"dependsOn": [
-					{
-						"activity": "get Opp from sf",
-						"dependencyConditions": [
-							"Failed"
-						]
-					}
-				],
-				"policy": {
-					"timeout": "7.00:00:00",
-					"retry": 0,
-					"retryIntervalInSeconds": 30,
-					"secureOutput": false,
-					"secureInput": false
-				},
-				"userProperties": [],
-				"typeProperties": {
-					"source": {
-						"type": "SalesforceSource",
-						"query": "select Id,Name from Opportunity",
-						"readBehavior": "query"
-					},
-					"sink": {
-						"type": "JsonSink",
-						"storeSettings": {
-							"type": "AzureBlobStorageWriteSettings"
-						},
-						"formatSettings": {
-							"type": "JsonWriteSettings",
-							"quoteAllText": true
-						}
-					},
-					"enableStaging": false
-				},
-				"inputs": [
-					{
-						"referenceName": "salesforce_OBJ",
-						"type": "DatasetReference",
-						"parameters": {
-							"objName": "Opportunity"
-						}
-					}
-				],
-				"outputs": [
-					{
-						"referenceName": "blob_json",
-						"type": "DatasetReference",
-						"parameters": {
-							"folder": "intake",
-							"filename": "opps_head.json"
 						}
 					}
 				]
