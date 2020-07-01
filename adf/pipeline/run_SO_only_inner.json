@@ -82,15 +82,6 @@
 							},
 							{
 								"source": {
-									"path": "$['Crown_Quote_ID__c']"
-								},
-								"sink": {
-									"name": "Crown_Quote_ID__c",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
 									"path": "$['Morgan_External_ID__c']"
 								},
 								"sink": {
@@ -1472,7 +1463,7 @@
 					"source": {
 						"type": "SalesforceSource",
 						"query": {
-							"value": "@concat('select Id,Name,Morgan_External_ID__c from Opportunity where Crown_Quote_ID__c in (',activity('getOppKeys').output.firstRow.keys,')')",
+							"value": "@concat('select Id,Name,Morgan_External_ID__c from Opportunity where Morgan_External_ID__c in (',activity('getOppKeys').output.firstRow.keys,')')",
 							"type": "Expression"
 						},
 						"readBehavior": "query"
