@@ -11,10 +11,10 @@
 			"location": {
 				"type": "FtpServerLocation"
 			},
-			"columnDelimiter": "\u0001",
-			"rowDelimiter": "\n",
-			"escapeChar": "\\",
-			"firstRowAsHeader": false,
+			"columnDelimiter": "|",
+			"rowDelimiter": "\r\n",
+			"escapeChar": "",
+			"firstRowAsHeader": true,
 			"quoteChar": ""
 		},
 		"schema": []
