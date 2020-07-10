@@ -11,13 +11,11 @@
 			"location": {
 				"type": "FtpServerLocation"
 			},
-			"columnDelimiter": "\u0001",
-			"rowDelimiter": "\n",
-			"escapeChar": "\\",
-			"firstRowAsHeader": false,
+			"columnDelimiter": "|",
+			"escapeChar": "",
+			"firstRowAsHeader": true,
 			"quoteChar": ""
 		},
 		"schema": []
-	},
-	"type": "Microsoft.DataFactory/factories/datasets"
+	}
 }
