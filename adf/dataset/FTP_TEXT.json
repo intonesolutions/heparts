@@ -12,7 +12,6 @@
 				"type": "FtpServerLocation"
 			},
 			"columnDelimiter": "|",
-			"rowDelimiter": "\r\n",
 			"escapeChar": "",
 			"firstRowAsHeader": true,
 			"quoteChar": ""
