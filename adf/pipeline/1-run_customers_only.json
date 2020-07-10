@@ -39,7 +39,8 @@
 							"fileExtension": ".txt"
 						}
 					},
-					"enableStaging": false
+					"enableStaging": false,
+					"parallelCopies": 1
 				},
 				"inputs": [
 					{
@@ -95,7 +96,8 @@
 							"fileExtension": ".txt"
 						}
 					},
-					"enableStaging": false
+					"enableStaging": false,
+					"parallelCopies": 1
 				},
 				"inputs": [
 					{
