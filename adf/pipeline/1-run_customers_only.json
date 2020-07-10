@@ -515,6 +515,13 @@
 					},
 					"enableStaging": false,
 					"enableSkipIncompatibleRow": true,
+					"logStorageSettings": {
+						"linkedServiceName": {
+							"referenceName": "blob",
+							"type": "LinkedServiceReference"
+						},
+						"path": "data/logs/accounts"
+					},
 					"translator": {
 						"type": "TabularTranslator",
 						"mappings": [
