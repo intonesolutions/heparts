@@ -103,7 +103,8 @@
 									"fileExtension": ".txt"
 								}
 							},
-							"enableStaging": false
+							"enableStaging": false,
+							"parallelCopies": 1
 						},
 						"inputs": [
 							{
@@ -160,7 +161,8 @@
 									"fileExtension": ".txt"
 								}
 							},
-							"enableStaging": false
+							"enableStaging": false,
+							"parallelCopies": 1
 						},
 						"inputs": [
 							{
@@ -581,6 +583,13 @@
 							},
 							"enableStaging": false,
 							"enableSkipIncompatibleRow": true,
+							"logStorageSettings": {
+								"linkedServiceName": {
+									"referenceName": "blob",
+									"type": "LinkedServiceReference"
+								},
+								"path": "data/logs/accounts"
+							},
 							"translator": {
 								"type": "TabularTranslator",
 								"mappings": [
@@ -809,7 +818,8 @@
 				"[concat(variables('factoryId'), '/datasets/blob_json')]",
 				"[concat(variables('factoryId'), '/datasets/FTP_BIN')]",
 				"[concat(variables('factoryId'), '/datasets/blob_bin')]",
-				"[concat(variables('factoryId'), '/datasets/sfi_dset')]"
+				"[concat(variables('factoryId'), '/datasets/sfi_dset')]",
+				"[concat(variables('factoryId'), '/linkedServices/blob')]"
 			]
 		},
 		{
@@ -855,7 +865,8 @@
 									"fileExtension": ".txt"
 								}
 							},
-							"enableStaging": false
+							"enableStaging": false,
+							"parallelCopies": 1
 						},
 						"inputs": [
 							{
@@ -3424,993 +3435,6 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/run_so_res')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "OppLine_upsert",
-						"type": "Copy",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "JsonSource",
-								"storeSettings": {
-									"type": "AzureBlobStorageReadSettings",
-									"recursive": false,
-									"enablePartitionDiscovery": false
-								},
-								"formatSettings": {
-									"type": "JsonReadSettings"
-								}
-							},
-							"sink": {
-								"type": "SalesforceSink",
-								"writeBatchSize": 1000,
-								"writeBehavior": "upsert",
-								"externalIdFieldName": "External_ID__c",
-								"ignoreNullValues": true,
-								"maxConcurrentConnections": 1
-							},
-							"enableStaging": false,
-							"enableSkipIncompatibleRow": true,
-							"logStorageSettings": {
-								"linkedServiceName": {
-									"referenceName": "blob",
-									"type": "LinkedServiceReference"
-								},
-								"path": "data/logs/oppline"
-							},
-							"translator": {
-								"type": "TabularTranslator",
-								"mappings": [
-									{
-										"source": {
-											"path": "$['Id']"
-										},
-										"sink": {
-											"name": "Id",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "$['External_ID__c']"
-										},
-										"sink": {
-											"name": "External_ID__c",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "$['rowstate__c']"
-										},
-										"sink": {
-											"name": "rowstate__c",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "$['OpportunityId']"
-										},
-										"sink": {
-											"name": "OpportunityId",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "$['PricebookEntryId']"
-										},
-										"sink": {
-											"name": "PricebookEntryId",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "$['SortOrder__c']"
-										},
-										"sink": {
-											"name": "SortOrder__c",
-											"type": "Decimal"
-										}
-									},
-									{
-										"source": {
-											"path": "$['UnitPrice']"
-										},
-										"sink": {
-											"name": "UnitPrice",
-											"type": "Decimal"
-										}
-									},
-									{
-										"source": {
-											"path": "$['CME_Item_Cost__c']"
-										},
-										"sink": {
-											"name": "CME_Item_Cost__c",
-											"type": "Decimal"
-										}
-									},
-									{
-										"source": {
-											"path": "$['Shipped_Value__c']"
-										},
-										"sink": {
-											"name": "Shipped_Value__c",
-											"type": "Decimal"
-										}
-									},
-									{
-										"source": {
-											"path": "$['CME_Total_Cost__c']"
-										},
-										"sink": {
-											"name": "CME_Total_Cost__c",
-											"type": "Decimal"
-										}
-									},
-									{
-										"source": {
-											"path": "$['Stock_Code__c']"
-										},
-										"sink": {
-											"name": "Stock_Code__c",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "$['CME_Product_Group_Code__c']"
-										},
-										"sink": {
-											"name": "CME_Product_Group_Code__c",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "$['CME_Product_Group_Name__c']"
-										},
-										"sink": {
-											"name": "CME_Product_Group_Name__c",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "$['Back_Order_Suffix__c']"
-										},
-										"sink": {
-											"name": "Back_Order_Suffix__c",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "$['Morgan_Line__c']"
-										},
-										"sink": {
-											"name": "Morgan_Line__c",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "$['Transaction_Type__c']"
-										},
-										"sink": {
-											"name": "Transaction_Type__c",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "$['Quantity']"
-										},
-										"sink": {
-											"name": "Quantity",
-											"type": "Decimal"
-										}
-									},
-									{
-										"source": {
-											"path": "$['Back_Order_Qty__c']"
-										},
-										"sink": {
-											"name": "Back_Order_Qty__c",
-											"type": "Decimal"
-										}
-									},
-									{
-										"source": {
-											"path": "$['Shipped_Qty__c']"
-										},
-										"sink": {
-											"name": "Shipped_Qty__c",
-											"type": "Decimal"
-										}
-									},
-									{
-										"source": {
-											"path": "$['Crown_Customer_ID_Number__c']"
-										},
-										"sink": {
-											"name": "Crown_Customer_ID_Number__c",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "$['Tax_Rate__c']"
-										},
-										"sink": {
-											"name": "Tax_Rate__c",
-											"type": "Decimal"
-										}
-									},
-									{
-										"source": {
-											"path": "$['Total_Ordered_Tax_Amount__c']"
-										},
-										"sink": {
-											"name": "Total_Ordered_Tax_Amount__c",
-											"type": "Decimal"
-										}
-									},
-									{
-										"source": {
-											"path": "$['Total_Ordered_Line_Amount__c']"
-										},
-										"sink": {
-											"name": "Total_Ordered_Line_Amount__c",
-											"type": "Decimal"
-										}
-									}
-								],
-								"collectionReference": ""
-							}
-						},
-						"inputs": [
-							{
-								"referenceName": "blob_json",
-								"type": "DatasetReference",
-								"parameters": {
-									"folder": "stage",
-									"filename": "opportunity_line_upsert.json"
-								}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "salesforce_OBJ",
-								"type": "DatasetReference",
-								"parameters": {
-									"objName": "OpportunityLineItem"
-								}
-							}
-						]
-					},
-					{
-						"name": "invLine_upsert",
-						"type": "Copy",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "JsonSource",
-								"storeSettings": {
-									"type": "AzureBlobStorageReadSettings",
-									"recursive": false,
-									"enablePartitionDiscovery": false
-								},
-								"formatSettings": {
-									"type": "JsonReadSettings"
-								}
-							},
-							"sink": {
-								"type": "SalesforceSink",
-								"writeBatchSize": 1000,
-								"writeBehavior": "upsert",
-								"externalIdFieldName": "External_ID__c",
-								"ignoreNullValues": true,
-								"maxConcurrentConnections": 1
-							},
-							"enableStaging": false,
-							"enableSkipIncompatibleRow": true,
-							"logStorageSettings": {
-								"linkedServiceName": {
-									"referenceName": "blob",
-									"type": "LinkedServiceReference"
-								},
-								"path": "data/logs/invline"
-							},
-							"translator": {
-								"type": "TabularTranslator",
-								"mappings": [
-									{
-										"source": {
-											"path": "$['RecordTypeId']"
-										},
-										"sink": {
-											"name": "RecordTypeId",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "$['External_ID__c']"
-										},
-										"sink": {
-											"name": "External_ID__c",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "$['Invoices_Crown__c']"
-										},
-										"sink": {
-											"name": "Invoices_Crown__c",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "$['Product__c']"
-										},
-										"sink": {
-											"name": "Product__c",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "$['Stock_Code__c']"
-										},
-										"sink": {
-											"name": "Stock_Code__c",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "$['Product_Class__c']"
-										},
-										"sink": {
-											"name": "Product_Class__c",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "$['B_O_Suffix__c']"
-										},
-										"sink": {
-											"name": "B_O_Suffix__c",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "$['Morgan_Line__c']"
-										},
-										"sink": {
-											"name": "Morgan_Line__c",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "$['Quantity__c']"
-										},
-										"sink": {
-											"name": "Quantity__c",
-											"type": "Decimal"
-										}
-									},
-									{
-										"source": {
-											"path": "$['Quantity_B_O__c']"
-										},
-										"sink": {
-											"name": "Quantity_B_O__c",
-											"type": "Decimal"
-										}
-									},
-									{
-										"source": {
-											"path": "$['Quantity_Shipped__c']"
-										},
-										"sink": {
-											"name": "Quantity_Shipped__c",
-											"type": "Decimal"
-										}
-									},
-									{
-										"source": {
-											"path": "$['Total_Amount__c']"
-										},
-										"sink": {
-											"name": "Total_Amount__c",
-											"type": "Decimal"
-										}
-									},
-									{
-										"source": {
-											"path": "$['Price_per_Part__c']"
-										},
-										"sink": {
-											"name": "Price_per_Part__c",
-											"type": "Decimal"
-										}
-									},
-									{
-										"source": {
-											"path": "$['H_E_Partner__c']"
-										},
-										"sink": {
-											"name": "H_E_Partner__c",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "$['CurrencyIsoCode']"
-										},
-										"sink": {
-											"name": "CurrencyIsoCode",
-											"type": "String"
-										}
-									}
-								],
-								"collectionReference": ""
-							}
-						},
-						"inputs": [
-							{
-								"referenceName": "blob_json",
-								"type": "DatasetReference",
-								"parameters": {
-									"folder": "stage",
-									"filename": "invoice_lines.json"
-								}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "salesforce_OBJ",
-								"type": "DatasetReference",
-								"parameters": {
-									"objName": "Invoice_Line_Item_Crown__c"
-								}
-							}
-						]
-					}
-				],
-				"folder": {
-					"name": "Pronto_SF"
-				},
-				"annotations": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/blob_json')]",
-				"[concat(variables('factoryId'), '/datasets/salesforce_OBJ')]",
-				"[concat(variables('factoryId'), '/linkedServices/blob')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/FTP_BIN')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "pronto_ftp",
-					"type": "LinkedServiceReference"
-				},
-				"parameters": {
-					"folder": {
-						"type": "string"
-					}
-				},
-				"annotations": [],
-				"type": "Binary",
-				"typeProperties": {
-					"location": {
-						"type": "FtpServerLocation",
-						"folderPath": {
-							"value": "@dataset().folder",
-							"type": "Expression"
-						}
-					}
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/pronto_ftp')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/FTP_TEXT')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "pronto_ftp",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "DelimitedText",
-				"typeProperties": {
-					"location": {
-						"type": "FtpServerLocation"
-					},
-					"columnDelimiter": "\u0001",
-					"rowDelimiter": "\n",
-					"escapeChar": "\\",
-					"firstRowAsHeader": false,
-					"quoteChar": ""
-				},
-				"schema": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/pronto_ftp')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/Opportunity')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "hepartspartialsb_hepartial",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "SalesforceObject",
-				"schema": [],
-				"typeProperties": {
-					"objectApiName": "Opportunity"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/hepartspartialsb_hepartial')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/blob_TEXT')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "blob",
-					"type": "LinkedServiceReference"
-				},
-				"parameters": {
-					"folder": {
-						"type": "string"
-					},
-					"filename": {
-						"type": "string"
-					}
-				},
-				"annotations": [],
-				"type": "DelimitedText",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobStorageLocation",
-						"fileName": {
-							"value": "@dataset().filename",
-							"type": "Expression"
-						},
-						"folderPath": {
-							"value": "@dataset().folder",
-							"type": "Expression"
-						},
-						"container": "data"
-					},
-					"columnDelimiter": ",",
-					"escapeChar": "\\",
-					"quoteChar": ""
-				},
-				"schema": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/blob')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/blob_bin')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "blob",
-					"type": "LinkedServiceReference"
-				},
-				"parameters": {
-					"folder": {
-						"type": "string"
-					}
-				},
-				"annotations": [],
-				"type": "Binary",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobStorageLocation",
-						"folderPath": {
-							"value": "@dataset().folder",
-							"type": "Expression"
-						},
-						"container": "data"
-					}
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/blob')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/blob_csv')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "blob",
-					"type": "LinkedServiceReference"
-				},
-				"parameters": {
-					"folder": {
-						"type": "string"
-					},
-					"filename": {
-						"type": "string"
-					}
-				},
-				"annotations": [],
-				"type": "DelimitedText",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobStorageLocation",
-						"fileName": {
-							"value": "@dataset().filename",
-							"type": "Expression"
-						},
-						"folderPath": {
-							"value": "@dataset().folder",
-							"type": "Expression"
-						},
-						"container": "data"
-					},
-					"columnDelimiter": ",",
-					"escapeChar": "\\",
-					"firstRowAsHeader": true,
-					"quoteChar": ""
-				},
-				"schema": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/blob')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/blob_json')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "blob",
-					"type": "LinkedServiceReference"
-				},
-				"parameters": {
-					"folder": {
-						"type": "string"
-					},
-					"filename": {
-						"type": "string"
-					}
-				},
-				"annotations": [],
-				"type": "Json",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobStorageLocation",
-						"fileName": {
-							"value": "@dataset().filename",
-							"type": "Expression"
-						},
-						"folderPath": {
-							"value": "@dataset().folder",
-							"type": "Expression"
-						},
-						"container": "data"
-					}
-				},
-				"schema": {}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/blob')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/customer')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "pronto_ftp",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "FileShare",
-				"typeProperties": {
-					"fileName": "[parameters('customer_properties_typeProperties_fileName')]"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/pronto_ftp')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/salesforce_OBJ')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "hepartspartialsb_hepartial",
-					"type": "LinkedServiceReference"
-				},
-				"parameters": {
-					"objName": {
-						"type": "string"
-					}
-				},
-				"annotations": [],
-				"type": "SalesforceObject",
-				"schema": [],
-				"typeProperties": {
-					"objectApiName": {
-						"value": "@dataset().objName",
-						"type": "Expression"
-					}
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/hepartspartialsb_hepartial')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/sfi_dset')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "sfi",
-					"type": "LinkedServiceReference"
-				},
-				"parameters": {
-					"pass": {
-						"type": "string",
-						"defaultValue": "x"
-					}
-				},
-				"annotations": [],
-				"type": "RestResource",
-				"typeProperties": {
-					"relativeUrl": {
-						"value": "@concat('?pass=',dataset().pass)",
-						"type": "Expression"
-					}
-				},
-				"schema": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/sfi')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/AzureFunction1')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"description": "https://hesfintegration.azurewebsites.net/api/HttpTrigger1?code=Qvr7LLHCVuE7GKJmsGRy1Whx8TcNTgTOgc9UXjTzV62vEpRoqji2kA==",
-				"annotations": [],
-				"type": "AzureFunction",
-				"typeProperties": {
-					"functionAppUrl": "[parameters('AzureFunction1_properties_typeProperties_functionAppUrl')]",
-					"functionKey": {
-						"type": "SecureString",
-						"value": "[parameters('AzureFunction1_functionKey')]"
-					}
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/blob')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "AzureBlobStorage",
-				"typeProperties": {
-					"connectionString": "[parameters('blob_connectionString')]"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/hepartspartialsb_hepartial')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "Salesforce",
-				"typeProperties": {
-					"environmentUrl": "[parameters('hepartspartialsb_hepartial_properties_typeProperties_environmentUrl')]",
-					"username": "[parameters('hepartspartialsb_hepartial_properties_typeProperties_username')]",
-					"password": {
-						"type": "SecureString",
-						"value": "[parameters('hepartspartialsb_hepartial_password')]"
-					},
-					"securityToken": {
-						"type": "SecureString",
-						"value": "[parameters('hepartspartialsb_hepartial_securityToken')]"
-					}
-				},
-				"connectVia": {
-					"referenceName": "IRforSF",
-					"type": "IntegrationRuntimeReference"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/integrationRuntimes/IRforSF')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/pronto_ftp')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "FtpServer",
-				"typeProperties": {
-					"host": "[parameters('pronto_ftp_properties_typeProperties_host')]",
-					"port": 21,
-					"enableSsl": false,
-					"enableServerCertificateValidation": false,
-					"authenticationType": "Basic",
-					"userName": "[parameters('pronto_ftp_properties_typeProperties_userName')]",
-					"password": {
-						"type": "SecureString",
-						"value": "[parameters('pronto_ftp_password')]"
-					}
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/sfi')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "RestService",
-				"typeProperties": {
-					"url": "[parameters('sfi_properties_typeProperties_url')]",
-					"enableServerCertificateValidation": true,
-					"authenticationType": "Anonymous"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/trigger1')]",
-			"type": "Microsoft.DataFactory/factories/triggers",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"runtimeState": "Stopped",
-				"pipelines": [
-					{
-						"pipelineReference": {
-							"referenceName": "2-run_stocks_only",
-							"type": "PipelineReference"
-						},
-						"parameters": {}
-					},
-					{
-						"pipelineReference": {
-							"referenceName": "1-run_customers_only",
-							"type": "PipelineReference"
-						},
-						"parameters": {}
-					}
-				],
-				"type": "ScheduleTrigger",
-				"typeProperties": {
-					"recurrence": {
-						"frequency": "Minute",
-						"interval": 30,
-						"startTime": "2020-03-06T14:00:00.000Z",
-						"timeZone": "UTC"
-					}
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/pipelines/2-run_stocks_only')]",
-				"[concat(variables('factoryId'), '/pipelines/1-run_customers_only')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/trigger2')]",
-			"type": "Microsoft.DataFactory/factories/triggers",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"runtimeState": "Stopped",
-				"pipelines": [
-					{
-						"pipelineReference": {
-							"referenceName": "3-run_SO_only",
-							"type": "PipelineReference"
-						},
-						"parameters": {}
-					}
-				],
-				"type": "ScheduleTrigger",
-				"typeProperties": {
-					"recurrence": {
-						"frequency": "Minute",
-						"interval": 30,
-						"startTime": "2020-03-07T02:15:00.000Z",
-						"timeZone": "UTC"
-					}
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/pipelines/3-run_SO_only')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/IRforSF')]",
-			"type": "Microsoft.DataFactory/factories/integrationRuntimes",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"type": "Managed",
-				"typeProperties": {
-					"computeProperties": {
-						"location": "East US",
-						"dataFlowProperties": {
-							"computeType": "General",
-							"coreCount": 8,
-							"timeToLive": 0
-						}
-					}
-				}
-			},
-			"dependsOn": []
-		},
-		{
 			"name": "[concat(parameters('factoryName'), '/run_SO_only_inner')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
@@ -6132,6 +5156,992 @@
 				"[concat(variables('factoryId'), '/datasets/blob_TEXT')]",
 				"[concat(variables('factoryId'), '/linkedServices/blob')]"
 			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/run_so_res')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "OppLine_upsert",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "JsonSource",
+								"storeSettings": {
+									"type": "AzureBlobStorageReadSettings",
+									"recursive": false,
+									"enablePartitionDiscovery": false
+								},
+								"formatSettings": {
+									"type": "JsonReadSettings"
+								}
+							},
+							"sink": {
+								"type": "SalesforceSink",
+								"writeBatchSize": 1000,
+								"writeBehavior": "upsert",
+								"externalIdFieldName": "External_ID__c",
+								"ignoreNullValues": true,
+								"maxConcurrentConnections": 1
+							},
+							"enableStaging": false,
+							"enableSkipIncompatibleRow": true,
+							"logStorageSettings": {
+								"linkedServiceName": {
+									"referenceName": "blob",
+									"type": "LinkedServiceReference"
+								},
+								"path": "data/logs/oppline"
+							},
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"path": "$['Id']"
+										},
+										"sink": {
+											"name": "Id",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "$['External_ID__c']"
+										},
+										"sink": {
+											"name": "External_ID__c",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "$['rowstate__c']"
+										},
+										"sink": {
+											"name": "rowstate__c",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "$['OpportunityId']"
+										},
+										"sink": {
+											"name": "OpportunityId",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "$['PricebookEntryId']"
+										},
+										"sink": {
+											"name": "PricebookEntryId",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "$['SortOrder__c']"
+										},
+										"sink": {
+											"name": "SortOrder__c",
+											"type": "Decimal"
+										}
+									},
+									{
+										"source": {
+											"path": "$['UnitPrice']"
+										},
+										"sink": {
+											"name": "UnitPrice",
+											"type": "Decimal"
+										}
+									},
+									{
+										"source": {
+											"path": "$['CME_Item_Cost__c']"
+										},
+										"sink": {
+											"name": "CME_Item_Cost__c",
+											"type": "Decimal"
+										}
+									},
+									{
+										"source": {
+											"path": "$['Shipped_Value__c']"
+										},
+										"sink": {
+											"name": "Shipped_Value__c",
+											"type": "Decimal"
+										}
+									},
+									{
+										"source": {
+											"path": "$['CME_Total_Cost__c']"
+										},
+										"sink": {
+											"name": "CME_Total_Cost__c",
+											"type": "Decimal"
+										}
+									},
+									{
+										"source": {
+											"path": "$['Stock_Code__c']"
+										},
+										"sink": {
+											"name": "Stock_Code__c",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "$['CME_Product_Group_Code__c']"
+										},
+										"sink": {
+											"name": "CME_Product_Group_Code__c",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "$['CME_Product_Group_Name__c']"
+										},
+										"sink": {
+											"name": "CME_Product_Group_Name__c",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "$['Back_Order_Suffix__c']"
+										},
+										"sink": {
+											"name": "Back_Order_Suffix__c",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "$['Morgan_Line__c']"
+										},
+										"sink": {
+											"name": "Morgan_Line__c",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "$['Transaction_Type__c']"
+										},
+										"sink": {
+											"name": "Transaction_Type__c",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "$['Quantity']"
+										},
+										"sink": {
+											"name": "Quantity",
+											"type": "Decimal"
+										}
+									},
+									{
+										"source": {
+											"path": "$['Back_Order_Qty__c']"
+										},
+										"sink": {
+											"name": "Back_Order_Qty__c",
+											"type": "Decimal"
+										}
+									},
+									{
+										"source": {
+											"path": "$['Shipped_Qty__c']"
+										},
+										"sink": {
+											"name": "Shipped_Qty__c",
+											"type": "Decimal"
+										}
+									},
+									{
+										"source": {
+											"path": "$['Crown_Customer_ID_Number__c']"
+										},
+										"sink": {
+											"name": "Crown_Customer_ID_Number__c",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "$['Tax_Rate__c']"
+										},
+										"sink": {
+											"name": "Tax_Rate__c",
+											"type": "Decimal"
+										}
+									},
+									{
+										"source": {
+											"path": "$['Total_Ordered_Tax_Amount__c']"
+										},
+										"sink": {
+											"name": "Total_Ordered_Tax_Amount__c",
+											"type": "Decimal"
+										}
+									},
+									{
+										"source": {
+											"path": "$['Total_Ordered_Line_Amount__c']"
+										},
+										"sink": {
+											"name": "Total_Ordered_Line_Amount__c",
+											"type": "Decimal"
+										}
+									}
+								],
+								"collectionReference": ""
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "blob_json",
+								"type": "DatasetReference",
+								"parameters": {
+									"folder": "stage",
+									"filename": "opportunity_line_upsert.json"
+								}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "salesforce_OBJ",
+								"type": "DatasetReference",
+								"parameters": {
+									"objName": "OpportunityLineItem"
+								}
+							}
+						]
+					},
+					{
+						"name": "invLine_upsert",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "JsonSource",
+								"storeSettings": {
+									"type": "AzureBlobStorageReadSettings",
+									"recursive": false,
+									"enablePartitionDiscovery": false
+								},
+								"formatSettings": {
+									"type": "JsonReadSettings"
+								}
+							},
+							"sink": {
+								"type": "SalesforceSink",
+								"writeBatchSize": 1000,
+								"writeBehavior": "upsert",
+								"externalIdFieldName": "External_ID__c",
+								"ignoreNullValues": true,
+								"maxConcurrentConnections": 1
+							},
+							"enableStaging": false,
+							"enableSkipIncompatibleRow": true,
+							"logStorageSettings": {
+								"linkedServiceName": {
+									"referenceName": "blob",
+									"type": "LinkedServiceReference"
+								},
+								"path": "data/logs/invline"
+							},
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"path": "$['RecordTypeId']"
+										},
+										"sink": {
+											"name": "RecordTypeId",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "$['External_ID__c']"
+										},
+										"sink": {
+											"name": "External_ID__c",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "$['Invoices_Crown__c']"
+										},
+										"sink": {
+											"name": "Invoices_Crown__c",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "$['Product__c']"
+										},
+										"sink": {
+											"name": "Product__c",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "$['Stock_Code__c']"
+										},
+										"sink": {
+											"name": "Stock_Code__c",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "$['Product_Class__c']"
+										},
+										"sink": {
+											"name": "Product_Class__c",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "$['B_O_Suffix__c']"
+										},
+										"sink": {
+											"name": "B_O_Suffix__c",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "$['Morgan_Line__c']"
+										},
+										"sink": {
+											"name": "Morgan_Line__c",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "$['Quantity__c']"
+										},
+										"sink": {
+											"name": "Quantity__c",
+											"type": "Decimal"
+										}
+									},
+									{
+										"source": {
+											"path": "$['Quantity_B_O__c']"
+										},
+										"sink": {
+											"name": "Quantity_B_O__c",
+											"type": "Decimal"
+										}
+									},
+									{
+										"source": {
+											"path": "$['Quantity_Shipped__c']"
+										},
+										"sink": {
+											"name": "Quantity_Shipped__c",
+											"type": "Decimal"
+										}
+									},
+									{
+										"source": {
+											"path": "$['Total_Amount__c']"
+										},
+										"sink": {
+											"name": "Total_Amount__c",
+											"type": "Decimal"
+										}
+									},
+									{
+										"source": {
+											"path": "$['Price_per_Part__c']"
+										},
+										"sink": {
+											"name": "Price_per_Part__c",
+											"type": "Decimal"
+										}
+									},
+									{
+										"source": {
+											"path": "$['H_E_Partner__c']"
+										},
+										"sink": {
+											"name": "H_E_Partner__c",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "$['CurrencyIsoCode']"
+										},
+										"sink": {
+											"name": "CurrencyIsoCode",
+											"type": "String"
+										}
+									}
+								],
+								"collectionReference": ""
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "blob_json",
+								"type": "DatasetReference",
+								"parameters": {
+									"folder": "stage",
+									"filename": "invoice_lines.json"
+								}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "salesforce_OBJ",
+								"type": "DatasetReference",
+								"parameters": {
+									"objName": "Invoice_Line_Item_Crown__c"
+								}
+							}
+						]
+					}
+				],
+				"folder": {
+					"name": "Pronto_SF"
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/blob_json')]",
+				"[concat(variables('factoryId'), '/datasets/salesforce_OBJ')]",
+				"[concat(variables('factoryId'), '/linkedServices/blob')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/FTP_BIN')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "pronto_ftp",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"folder": {
+						"type": "string"
+					}
+				},
+				"annotations": [],
+				"type": "Binary",
+				"typeProperties": {
+					"location": {
+						"type": "FtpServerLocation",
+						"folderPath": {
+							"value": "@dataset().folder",
+							"type": "Expression"
+						}
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/pronto_ftp')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/FTP_TEXT')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "pronto_ftp",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "FtpServerLocation"
+					},
+					"columnDelimiter": "|",
+					"escapeChar": "",
+					"firstRowAsHeader": true,
+					"quoteChar": ""
+				},
+				"schema": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/pronto_ftp')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Opportunity')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "hepartspartialsb_hepartial",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "SalesforceObject",
+				"schema": [],
+				"typeProperties": {
+					"objectApiName": "Opportunity"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/hepartspartialsb_hepartial')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/blob_TEXT')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "blob",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"folder": {
+						"type": "string"
+					},
+					"filename": {
+						"type": "string"
+					}
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": {
+							"value": "@dataset().filename",
+							"type": "Expression"
+						},
+						"folderPath": {
+							"value": "@dataset().folder",
+							"type": "Expression"
+						},
+						"container": "data"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"quoteChar": ""
+				},
+				"schema": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/blob')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/blob_bin')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "blob",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"folder": {
+						"type": "string"
+					}
+				},
+				"annotations": [],
+				"type": "Binary",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"folderPath": {
+							"value": "@dataset().folder",
+							"type": "Expression"
+						},
+						"container": "data"
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/blob')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/blob_csv')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "blob",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"folder": {
+						"type": "string"
+					},
+					"filename": {
+						"type": "string"
+					}
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": {
+							"value": "@dataset().filename",
+							"type": "Expression"
+						},
+						"folderPath": {
+							"value": "@dataset().folder",
+							"type": "Expression"
+						},
+						"container": "data"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": ""
+				},
+				"schema": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/blob')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/blob_json')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "blob",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"folder": {
+						"type": "string"
+					},
+					"filename": {
+						"type": "string"
+					}
+				},
+				"annotations": [],
+				"type": "Json",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": {
+							"value": "@dataset().filename",
+							"type": "Expression"
+						},
+						"folderPath": {
+							"value": "@dataset().folder",
+							"type": "Expression"
+						},
+						"container": "data"
+					}
+				},
+				"schema": {}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/blob')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/customer')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "pronto_ftp",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "FileShare",
+				"typeProperties": {
+					"fileName": "[parameters('customer_properties_typeProperties_fileName')]"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/pronto_ftp')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/salesforce_OBJ')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "hepartspartialsb_hepartial",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"objName": {
+						"type": "string"
+					}
+				},
+				"annotations": [],
+				"type": "SalesforceObject",
+				"schema": [],
+				"typeProperties": {
+					"objectApiName": {
+						"value": "@dataset().objName",
+						"type": "Expression"
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/hepartspartialsb_hepartial')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/sfi_dset')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "sfi",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"pass": {
+						"type": "string",
+						"defaultValue": "x"
+					}
+				},
+				"annotations": [],
+				"type": "RestResource",
+				"typeProperties": {
+					"relativeUrl": {
+						"value": "@concat('?pass=',dataset().pass)",
+						"type": "Expression"
+					}
+				},
+				"schema": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/sfi')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/AzureFunction1')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "https://hesfintegration.azurewebsites.net/api/HttpTrigger1?code=Qvr7LLHCVuE7GKJmsGRy1Whx8TcNTgTOgc9UXjTzV62vEpRoqji2kA==",
+				"annotations": [],
+				"type": "AzureFunction",
+				"typeProperties": {
+					"functionAppUrl": "[parameters('AzureFunction1_properties_typeProperties_functionAppUrl')]",
+					"functionKey": {
+						"type": "SecureString",
+						"value": "[parameters('AzureFunction1_functionKey')]"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/blob')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureBlobStorage",
+				"typeProperties": {
+					"connectionString": "[parameters('blob_connectionString')]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/hepartspartialsb_hepartial')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "Salesforce",
+				"typeProperties": {
+					"environmentUrl": "[parameters('hepartspartialsb_hepartial_properties_typeProperties_environmentUrl')]",
+					"username": "[parameters('hepartspartialsb_hepartial_properties_typeProperties_username')]",
+					"password": {
+						"type": "SecureString",
+						"value": "[parameters('hepartspartialsb_hepartial_password')]"
+					},
+					"securityToken": {
+						"type": "SecureString",
+						"value": "[parameters('hepartspartialsb_hepartial_securityToken')]"
+					}
+				},
+				"connectVia": {
+					"referenceName": "IRforSF",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/integrationRuntimes/IRforSF')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/pronto_ftp')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "FtpServer",
+				"typeProperties": {
+					"host": "[parameters('pronto_ftp_properties_typeProperties_host')]",
+					"port": 21,
+					"enableSsl": false,
+					"enableServerCertificateValidation": false,
+					"authenticationType": "Basic",
+					"userName": "[parameters('pronto_ftp_properties_typeProperties_userName')]",
+					"password": {
+						"type": "SecureString",
+						"value": "[parameters('pronto_ftp_password')]"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/sfi')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "RestService",
+				"typeProperties": {
+					"url": "[parameters('sfi_properties_typeProperties_url')]",
+					"enableServerCertificateValidation": true,
+					"authenticationType": "Anonymous"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/trigger1')]",
+			"type": "Microsoft.DataFactory/factories/triggers",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"runtimeState": "Started",
+				"pipelines": [
+					{
+						"pipelineReference": {
+							"referenceName": "2-run_stocks_only",
+							"type": "PipelineReference"
+						},
+						"parameters": {}
+					},
+					{
+						"pipelineReference": {
+							"referenceName": "1-run_customers_only",
+							"type": "PipelineReference"
+						},
+						"parameters": {}
+					}
+				],
+				"type": "ScheduleTrigger",
+				"typeProperties": {
+					"recurrence": {
+						"frequency": "Minute",
+						"interval": 30,
+						"startTime": "2020-03-06T14:00:00.000Z",
+						"timeZone": "UTC"
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/pipelines/2-run_stocks_only')]",
+				"[concat(variables('factoryId'), '/pipelines/1-run_customers_only')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/trigger2')]",
+			"type": "Microsoft.DataFactory/factories/triggers",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"runtimeState": "Started",
+				"pipelines": [
+					{
+						"pipelineReference": {
+							"referenceName": "3-run_SO_only",
+							"type": "PipelineReference"
+						},
+						"parameters": {}
+					}
+				],
+				"type": "ScheduleTrigger",
+				"typeProperties": {
+					"recurrence": {
+						"frequency": "Minute",
+						"interval": 30,
+						"startTime": "2020-03-07T02:15:00.000Z",
+						"timeZone": "UTC"
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/pipelines/3-run_SO_only')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/IRforSF')]",
+			"type": "Microsoft.DataFactory/factories/integrationRuntimes",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "Managed",
+				"typeProperties": {
+					"computeProperties": {
+						"location": "East US",
+						"dataFlowProperties": {
+							"computeType": "General",
+							"coreCount": 8,
+							"timeToLive": 0
+						}
+					}
+				}
+			},
+			"dependsOn": []
 		}
 	]
 }
