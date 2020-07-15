@@ -707,6 +707,22 @@
 									"name": "Territory_ID__c",
 									"type": "String"
 								}
+							},
+							{
+								"source": {
+									"path": "$['Allgo_Pronto__c']"
+								},
+								"sink": {
+									"name": "Allgo_Pronto__c"
+								}
+							},
+							{
+								"source": {
+									"path": "$['Zambia_Pronto__c']"
+								},
+								"sink": {
+									"name": "Zambia_Pronto__c"
+								}
 							}
 						],
 						"collectionReference": ""
