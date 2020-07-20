@@ -739,7 +739,7 @@
 							},
 							{
 								"source": {
-									"path": "$['MSUS_Rep_Code__c']"
+									"path": "$['Crown_Sales_Rep__c']"
 								},
 								"sink": {
 									"name": "MSUS_Rep_Code__c",
