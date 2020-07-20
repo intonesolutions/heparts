@@ -742,8 +742,7 @@
 									"path": "$['Crown_Sales_Rep__c']"
 								},
 								"sink": {
-									"name": "MSUS_Rep_Code__c",
-									"type": "String"
+									"name": "Crown_Sales_Rep__c"
 								}
 							},
 							{
