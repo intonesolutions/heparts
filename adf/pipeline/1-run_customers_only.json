@@ -742,7 +742,8 @@
 									"path": "$['Crown_Sales_Rep__c']"
 								},
 								"sink": {
-									"name": "Crown_Sales_Rep__c"
+									"name": "Crown_Sales_Rep__c",
+									"type": "String"
 								}
 							},
 							{
