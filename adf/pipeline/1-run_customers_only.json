@@ -334,6 +334,9 @@
 							"recursive": false,
 							"wildcardFileName": "DEB_MASTER*.xml",
 							"useBinaryTransfer": true
+						},
+						"formatSettings": {
+							"type": "BinaryReadSettings"
 						}
 					},
 					"sink": {
@@ -722,6 +725,70 @@
 								},
 								"sink": {
 									"name": "Zambia_Pronto__c"
+								}
+							},
+							{
+								"source": {
+									"path": "$['MSUS_Rep_Code__c']"
+								},
+								"sink": {
+									"name": "MSUS_Rep_Code__c"
+								}
+							},
+							{
+								"source": {
+									"path": "$['Morgan_Canada_Rep_Code__c']"
+								},
+								"sink": {
+									"name": "Morgan_Canada_Rep_Code__c"
+								}
+							},
+							{
+								"source": {
+									"path": "$['ESUS_Rep_Code__c']"
+								},
+								"sink": {
+									"name": "ESUS_Rep_Code__c"
+								}
+							},
+							{
+								"source": {
+									"path": "$['MSAU_CD_Rep_Code__c']"
+								},
+								"sink": {
+									"name": "MSAU_CD_Rep_Code__c"
+								}
+							},
+							{
+								"source": {
+									"path": "$['MSAU_ED_Rep_Code__c']"
+								},
+								"sink": {
+									"name": "MSAU_ED_Rep_Code__c"
+								}
+							},
+							{
+								"source": {
+									"path": "$['Birrana_Rep_Code__c']"
+								},
+								"sink": {
+									"name": "Birrana_Rep_Code__c"
+								}
+							},
+							{
+								"source": {
+									"path": "$['Allgo_Rep_Code__c']"
+								},
+								"sink": {
+									"name": "Allgo_Rep_Code__c"
+								}
+							},
+							{
+								"source": {
+									"path": "$['Zambia_Rep_Code__c']"
+								},
+								"sink": {
+									"name": "Zambia_Rep_Code__c"
 								}
 							}
 						],
