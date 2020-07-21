@@ -748,10 +748,10 @@
 							},
 							{
 								"source": {
-									"path": "$['Morgan_Canada_Rep_Code__c']"
+									"path": "$['Morgan_Canada_Sales_Rep__c']"
 								},
 								"sink": {
-									"name": "Morgan_Canada_Rep_Code__c",
+									"name": "Morgan_Canada_Sales_Rep__c",
 									"type": "String"
 								}
 							},
