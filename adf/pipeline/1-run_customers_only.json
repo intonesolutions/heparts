@@ -757,55 +757,55 @@
 							},
 							{
 								"source": {
-									"path": "$['ESUS_Rep_Code__c']"
+									"path": "$['B_G_Sales_Rep__c']"
 								},
 								"sink": {
-									"name": "ESUS_Rep_Code__c",
+									"name": "B_G_Sales_Rep__c",
 									"type": "String"
 								}
 							},
 							{
 								"source": {
-									"path": "$['MSAU_CD_Rep_Code__c']"
+									"path": "$['MSAU_CD_Sales_Rep__c']"
 								},
 								"sink": {
-									"name": "MSAU_CD_Rep_Code__c",
+									"name": "MSAU_CD_Sales_Rep__c",
 									"type": "String"
 								}
 							},
 							{
 								"source": {
-									"path": "$['MSAU_ED_Rep_Code__c']"
+									"path": "$['MSAU_ED_Sales_Rep__c']"
 								},
 								"sink": {
-									"name": "MSAU_ED_Rep_Code__c",
+									"name": "MSAU_ED_Sales_Rep__c",
 									"type": "String"
 								}
 							},
 							{
 								"source": {
-									"path": "$['Birrana_Rep_Code__c']"
+									"path": "$['Birrana_Sales_Rep__c']"
 								},
 								"sink": {
-									"name": "Birrana_Rep_Code__c",
+									"name": "Birrana_Sales_Rep__c",
 									"type": "String"
 								}
 							},
 							{
 								"source": {
-									"path": "$['Allgo_Rep_Code__c']"
+									"path": "$['Allgo_Sales_Rep__c']"
 								},
 								"sink": {
-									"name": "Allgo_Rep_Code__c",
+									"name": "Allgo_Sales_Rep__c",
 									"type": "String"
 								}
 							},
 							{
 								"source": {
-									"path": "$['Zambia_Rep_Code__c']"
+									"path": "$['MSZM_Sales_Rep__c']"
 								},
 								"sink": {
-									"name": "Zambia_Rep_Code__c",
+									"name": "MSZM_Sales_Rep__c",
 									"type": "String"
 								}
 							}
