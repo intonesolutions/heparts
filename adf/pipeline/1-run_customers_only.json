@@ -334,6 +334,9 @@
 							"recursive": false,
 							"wildcardFileName": "DEB_MASTER*.xml",
 							"useBinaryTransfer": true
+						},
+						"formatSettings": {
+							"type": "BinaryReadSettings"
 						}
 					},
 					"sink": {
@@ -559,7 +562,8 @@
 									"path": "$['ESUS_Pronto__c']"
 								},
 								"sink": {
-									"name": "ESUS_Pronto__c"
+									"name": "ESUS_Pronto__c",
+									"type": "String"
 								}
 							},
 							{
@@ -712,6 +716,96 @@
 								},
 								"sink": {
 									"name": "Territory_ID__c",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['Allgo_Pronto__c']"
+								},
+								"sink": {
+									"name": "Allgo_Pronto__c",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['Zambia_Pronto__c']"
+								},
+								"sink": {
+									"name": "Zambia_Pronto__c",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['Crown_Sales_Rep__c']"
+								},
+								"sink": {
+									"name": "Crown_Sales_Rep__c",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['Morgan_Canada_Sales_Rep__c']"
+								},
+								"sink": {
+									"name": "Morgan_Canada_Sales_Rep__c",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['B_G_Sales_Rep__c']"
+								},
+								"sink": {
+									"name": "B_G_Sales_Rep__c",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['MSAU_CD_Sales_Rep__c']"
+								},
+								"sink": {
+									"name": "MSAU_CD_Sales_Rep__c",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['MSAU_ED_Sales_Rep__c']"
+								},
+								"sink": {
+									"name": "MSAU_ED_Sales_Rep__c",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['Birrana_Sales_Rep__c']"
+								},
+								"sink": {
+									"name": "Birrana_Sales_Rep__c",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['Allgo_Sales_Rep__c']"
+								},
+								"sink": {
+									"name": "Allgo_Sales_Rep__c",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['MSZM_Sales_Rep__c']"
+								},
+								"sink": {
+									"name": "MSZM_Sales_Rep__c",
 									"type": "String"
 								}
 							}
