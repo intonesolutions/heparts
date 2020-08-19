@@ -85,6 +85,9 @@
 							"type": "AzureBlobStorageReadSettings",
 							"recursive": false,
 							"enablePartitionDiscovery": false
+						},
+						"formatSettings": {
+							"type": "JsonReadSettings"
 						}
 					},
 					"sink": {
@@ -196,6 +199,11 @@
 								"sink": {
 									"name": "Family",
 									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['Product_Category__c']"
 								}
 							}
 						],
