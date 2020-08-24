@@ -149,10 +149,10 @@
 							},
 							{
 								"source": {
-									"path": "$['Description']"
+									"path": "$['ProductCode']"
 								},
 								"sink": {
-									"name": "Description",
+									"name": "ProductCode",
 									"type": "String"
 								}
 							},
@@ -163,24 +163,6 @@
 								"sink": {
 									"name": "Part_num__c",
 									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"path": "$['Crown_Standard_Price__c']"
-								},
-								"sink": {
-									"name": "Crown_Standard_Price__c",
-									"type": "Decimal"
-								}
-							},
-							{
-								"source": {
-									"path": "$['OEM_Retail_Price__c']"
-								},
-								"sink": {
-									"name": "OEM_Retail_Price__c",
-									"type": "Decimal"
 								}
 							},
 							{
@@ -203,7 +185,11 @@
 							},
 							{
 								"source": {
-									"path": "$['Product_Category__c']"
+									"path": "$['Description']"
+								},
+								"sink": {
+									"name": "Description",
+									"type": "String"
 								}
 							}
 						],
