@@ -191,6 +191,14 @@
 									"name": "Description",
 									"type": "String"
 								}
+							},
+							{
+								"source": {
+									"path": "$['Product_Category__c']"
+								},
+								"sink": {
+									"name": "Product_Category__c"
+								}
 							}
 						],
 						"collectionReference": ""
