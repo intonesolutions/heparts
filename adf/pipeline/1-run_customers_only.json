@@ -812,7 +812,8 @@
 									"path": "$['CSAU_Pronto__c']"
 								},
 								"sink": {
-									"name": "CSAU_Pronto__C"
+									"name": "CSAU_Pronto__c",
+									"type": "String"
 								}
 							},
 							{
@@ -820,7 +821,8 @@
 									"path": "$['CME_Sales_Rep__c']"
 								},
 								"sink": {
-									"name": "CME_Sales_Rep__c"
+									"name": "CME_Sales_Rep__c",
+									"type": "String"
 								}
 							}
 						],
