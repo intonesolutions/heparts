@@ -147,8 +147,7 @@
 							"type": "AzureBlobStorageWriteSettings"
 						},
 						"formatSettings": {
-							"type": "JsonWriteSettings",
-							"quoteAllText": true
+							"type": "JsonWriteSettings"
 						}
 					},
 					"enableStaging": false
@@ -209,8 +208,7 @@
 							"type": "AzureBlobStorageWriteSettings"
 						},
 						"formatSettings": {
-							"type": "JsonWriteSettings",
-							"quoteAllText": true
+							"type": "JsonWriteSettings"
 						}
 					},
 					"enableStaging": false
@@ -807,6 +805,22 @@
 								"sink": {
 									"name": "MSZM_Sales_Rep__c",
 									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['Crushing_Pronto__c']"
+								},
+								"sink": {
+									"name": "Crushing_Pronto__c"
+								}
+							},
+							{
+								"source": {
+									"path": "$['CME_Sales_Rep__c']"
+								},
+								"sink": {
+									"name": "CME_Sales_Rep__c"
 								}
 							}
 						],
