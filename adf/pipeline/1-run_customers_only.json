@@ -809,7 +809,7 @@
 							},
 							{
 								"source": {
-									"path": "$['CSAU_Pronto__C']"
+									"path": "$['CSAU_Pronto__c']"
 								},
 								"sink": {
 									"name": "CSAU_Pronto__C"
