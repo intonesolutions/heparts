@@ -149,10 +149,10 @@
 							},
 							{
 								"source": {
-									"path": "$['ProductCode']"
+									"path": "$['Description']"
 								},
 								"sink": {
-									"name": "ProductCode",
+									"name": "Description",
 									"type": "String"
 								}
 							},
@@ -163,6 +163,24 @@
 								"sink": {
 									"name": "Part_num__c",
 									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['Crown_Standard_Price__c']"
+								},
+								"sink": {
+									"name": "Crown_Standard_Price__c",
+									"type": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"path": "$['OEM_Retail_Price__c']"
+								},
+								"sink": {
+									"name": "OEM_Retail_Price__c",
+									"type": "Decimal"
 								}
 							},
 							{
@@ -180,15 +198,6 @@
 								},
 								"sink": {
 									"name": "Family",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"path": "$['Description']"
-								},
-								"sink": {
-									"name": "Description",
 									"type": "String"
 								}
 							},
@@ -282,7 +291,7 @@
 				"typeProperties": {
 					"source": {
 						"type": "RestSource",
-						"httpRequestTimeout": "00:01:40",
+						"httpRequestTimeout": "00:15:40",
 						"requestInterval": "00.00:00:00.010",
 						"requestMethod": "GET"
 					},
