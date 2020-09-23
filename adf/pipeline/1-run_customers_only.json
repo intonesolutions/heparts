@@ -147,8 +147,7 @@
 							"type": "AzureBlobStorageWriteSettings"
 						},
 						"formatSettings": {
-							"type": "JsonWriteSettings",
-							"quoteAllText": true
+							"type": "JsonWriteSettings"
 						}
 					},
 					"enableStaging": false
@@ -209,8 +208,7 @@
 							"type": "AzureBlobStorageWriteSettings"
 						},
 						"formatSettings": {
-							"type": "JsonWriteSettings",
-							"quoteAllText": true
+							"type": "JsonWriteSettings"
 						}
 					},
 					"enableStaging": false
@@ -444,7 +442,7 @@
 				"typeProperties": {
 					"source": {
 						"type": "RestSource",
-						"httpRequestTimeout": "00:01:40",
+						"httpRequestTimeout": "00:15:40",
 						"requestInterval": "00.00:00:00.010",
 						"requestMethod": "GET"
 					},
@@ -806,6 +804,24 @@
 								},
 								"sink": {
 									"name": "MSZM_Sales_Rep__c",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['CSAU_Pronto__c']"
+								},
+								"sink": {
+									"name": "CSAU_Pronto__c",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['CME_Sales_Rep__c']"
+								},
+								"sink": {
+									"name": "CME_Sales_Rep__c",
 									"type": "String"
 								}
 							}
