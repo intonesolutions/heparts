@@ -208,6 +208,35 @@
 								"sink": {
 									"name": "Product_Category__c"
 								}
+							},
+							{
+								"source": {
+									"path": "$['Product_Group_Code__c']"
+								},
+								"sink": {
+									"name": "Product_Group_Code__c"
+								}
+							},
+							{
+								"source": {
+									"path": "$['Product_Group_Description__c']"
+								},
+								"sink": {
+									"name": "Product_Group_Description__c"
+								}
+							},
+							{
+								"source": {
+									"path": "$['Product_Class__c']"
+								},
+								"sink": {
+									"name": "Product_Class__c"
+								}
+							},
+							{
+								"source": {
+									"path": "$['Product_Category__c']"
+								}
 							}
 						],
 						"collectionReference": ""
