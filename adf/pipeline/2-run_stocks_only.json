@@ -206,7 +206,8 @@
 									"path": "$['Product_Category__c']"
 								},
 								"sink": {
-									"name": "Product_Category__c"
+									"name": "Product_Category__c",
+									"type": "String"
 								}
 							},
 							{
@@ -214,7 +215,8 @@
 									"path": "$['Product_Group_Code__c']"
 								},
 								"sink": {
-									"name": "Product_Group_Code__c"
+									"name": "Product_Group_Code__c",
+									"type": "String"
 								}
 							},
 							{
@@ -222,7 +224,8 @@
 									"path": "$['Product_Group_Description__c']"
 								},
 								"sink": {
-									"name": "Product_Group_Description__c"
+									"name": "Product_Group_Description__c",
+									"type": "String"
 								}
 							},
 							{
@@ -230,7 +233,8 @@
 									"path": "$['Product_Class__c']"
 								},
 								"sink": {
-									"name": "Product_Class__c"
+									"name": "Product_Class__c",
+									"type": "String"
 								}
 							}
 						],
