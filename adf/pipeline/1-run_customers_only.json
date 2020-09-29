@@ -189,7 +189,7 @@
 						]
 					},
 					{
-						"activity": "stock master",
+						"activity": "STOCK_HIERARCHY_MASTER",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -856,7 +856,7 @@
 				]
 			},
 			{
-				"name": "stock master",
+				"name": "STOCK_HIERARCHY_MASTER",
 				"type": "Copy",
 				"dependsOn": [],
 				"policy": {
@@ -873,7 +873,7 @@
 						"storeSettings": {
 							"type": "FtpReadSettings",
 							"recursive": false,
-							"wildcardFileName": "STOCK_MASTER-*.xml",
+							"wildcardFileName": "STOCK_HIERARCHY_MASTER-*.xml",
 							"useBinaryTransfer": false
 						},
 						"formatSettings": {
@@ -907,13 +907,13 @@
 						"type": "DatasetReference",
 						"parameters": {
 							"folder": "intake",
-							"filename": "stock_master.xml"
+							"filename": "stock_h_master.xml"
 						}
 					}
 				]
 			},
 			{
-				"name": "delete_ftp_stock_master",
+				"name": "delete_ftp_stock_h_master",
 				"type": "Delete",
 				"dependsOn": [
 					{
@@ -943,7 +943,7 @@
 					"storeSettings": {
 						"type": "FtpReadSettings",
 						"recursive": false,
-						"wildcardFileName": "STOCK_MASTER*.xml",
+						"wildcardFileName": "STOCK_HIERARCHY_MASTER*.xml",
 						"useBinaryTransfer": true
 					}
 				}
