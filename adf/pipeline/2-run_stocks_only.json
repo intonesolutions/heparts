@@ -232,11 +232,6 @@
 								"sink": {
 									"name": "Product_Class__c"
 								}
-							},
-							{
-								"source": {
-									"path": "$['Product_Category__c']"
-								}
 							}
 						],
 						"collectionReference": ""
