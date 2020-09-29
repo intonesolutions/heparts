@@ -278,6 +278,12 @@
 						"dependencyConditions": [
 							"Succeeded"
 						]
+					},
+					{
+						"activity": "STOCK_HIERARCHY_MASTER",
+						"dependencyConditions": [
+							"Succeeded"
+						]
 					}
 				],
 				"policy": {
@@ -327,6 +333,99 @@
 						}
 					}
 				]
+			},
+			{
+				"name": "STOCK_HIERARCHY_MASTER",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "DelimitedTextSource",
+						"storeSettings": {
+							"type": "FtpReadSettings",
+							"recursive": false,
+							"wildcardFileName": "STOCK_HIERARCHY_MASTER-*.xml",
+							"useBinaryTransfer": false
+						},
+						"formatSettings": {
+							"type": "DelimitedTextReadSettings"
+						}
+					},
+					"sink": {
+						"type": "DelimitedTextSink",
+						"storeSettings": {
+							"type": "AzureBlobStorageWriteSettings",
+							"copyBehavior": "MergeFiles"
+						},
+						"formatSettings": {
+							"type": "DelimitedTextWriteSettings",
+							"quoteAllText": true,
+							"fileExtension": ".txt"
+						}
+					},
+					"enableStaging": false,
+					"parallelCopies": 1
+				},
+				"inputs": [
+					{
+						"referenceName": "FTP_TEXT",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "blob_TEXT",
+						"type": "DatasetReference",
+						"parameters": {
+							"folder": "intake",
+							"filename": "stock_h_master.xml"
+						}
+					}
+				]
+			},
+			{
+				"name": "delete_ftp_stock_h_master",
+				"type": "Delete",
+				"dependsOn": [
+					{
+						"activity": "delete_ftp_copy1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"dataset": {
+						"referenceName": "FTP_BIN",
+						"type": "DatasetReference",
+						"parameters": {
+							"folder": "/"
+						}
+					},
+					"enableLogging": false,
+					"storeSettings": {
+						"type": "FtpReadSettings",
+						"recursive": false,
+						"wildcardFileName": "STOCK_HIERARCHY_MASTER*.xml",
+						"useBinaryTransfer": true
+					}
+				}
 			}
 		],
 		"folder": {
