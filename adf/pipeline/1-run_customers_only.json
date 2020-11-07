@@ -270,7 +270,7 @@
 				}
 			},
 			{
-				"name": "delete_ftp_copy1",
+				"name": "delete_ftp_name_and_address",
 				"type": "Delete",
 				"dependsOn": [
 					{
@@ -822,6 +822,42 @@
 								},
 								"sink": {
 									"name": "CME_Sales_Rep__c",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['Dom_Ex_Pronto__c']"
+								},
+								"sink": {
+									"name": "Dom_Ex_Pronto__c",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['Chile_Pronto__c']"
+								},
+								"sink": {
+									"name": "Chile_Pronto__c",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['Dom_Ex_Sales_Rep__c']"
+								},
+								"sink": {
+									"name": "Dom_Ex_Sales_Rep__c",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['Morgan_Chile_Sales_Rep__c']"
+								},
+								"sink": {
+									"name": "Morgan_Chile_Sales_Rep__c",
 									"type": "String"
 								}
 							}
