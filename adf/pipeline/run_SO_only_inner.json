@@ -1157,8 +1157,7 @@
 							"type": "AzureBlobStorageWriteSettings"
 						},
 						"formatSettings": {
-							"type": "JsonWriteSettings",
-							"quoteAllText": true
+							"type": "JsonWriteSettings"
 						}
 					},
 					"enableStaging": false
@@ -1276,15 +1275,6 @@
 								},
 								"sink": {
 									"name": "Stock_Code__c",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"path": "$['Product_Class__c']"
-								},
-								"sink": {
-									"name": "Product_Class__c",
 									"type": "String"
 								}
 							},
@@ -1474,8 +1464,7 @@
 							"type": "AzureBlobStorageWriteSettings"
 						},
 						"formatSettings": {
-							"type": "JsonWriteSettings",
-							"quoteAllText": true
+							"type": "JsonWriteSettings"
 						}
 					},
 					"enableStaging": false
