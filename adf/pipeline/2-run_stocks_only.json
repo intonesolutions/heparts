@@ -502,40 +502,45 @@
 				"userProperties": [],
 				"typeProperties": {
 					"source": {
-						"type": "BinarySource",
+						"type": "DelimitedTextSource",
 						"storeSettings": {
 							"type": "FtpReadSettings",
 							"recursive": false,
-							"wildcardFileName": "SALES_ORDER*.xml",
-							"useBinaryTransfer": true
+							"wildcardFileName": "SALES_ORDER_LINE-*.xml",
+							"useBinaryTransfer": false
 						},
 						"formatSettings": {
-							"type": "BinaryReadSettings"
+							"type": "DelimitedTextReadSettings"
 						}
 					},
 					"sink": {
-						"type": "BinarySink",
+						"type": "DelimitedTextSink",
 						"storeSettings": {
-							"type": "AzureBlobStorageWriteSettings"
+							"type": "AzureBlobStorageWriteSettings",
+							"copyBehavior": "MergeFiles"
+						},
+						"formatSettings": {
+							"type": "DelimitedTextWriteSettings",
+							"quoteAllText": true,
+							"fileExtension": ".txt"
 						}
 					},
-					"enableStaging": false
+					"enableStaging": false,
+					"parallelCopies": 1
 				},
 				"inputs": [
 					{
-						"referenceName": "FTP_BIN",
-						"type": "DatasetReference",
-						"parameters": {
-							"folder": "/"
-						}
+						"referenceName": "FTP_TEXT",
+						"type": "DatasetReference"
 					}
 				],
 				"outputs": [
 					{
-						"referenceName": "blob_bin",
+						"referenceName": "blob_TEXT",
 						"type": "DatasetReference",
 						"parameters": {
-							"folder": "queue"
+							"folder": "intake",
+							"filename": "salesorder_lines.xml"
 						}
 					}
 				]
