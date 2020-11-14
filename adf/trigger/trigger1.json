@@ -15,6 +15,12 @@
 					"referenceName": "1-run_customers_only",
 					"type": "PipelineReference"
 				}
+			},
+			{
+				"pipelineReference": {
+					"referenceName": "0-run_all",
+					"type": "PipelineReference"
+				}
 			}
 		],
 		"type": "ScheduleTrigger",
@@ -22,7 +28,7 @@
 			"recurrence": {
 				"frequency": "Minute",
 				"interval": 30,
-				"startTime": "2020-03-06T14:00:00.000Z",
+				"startTime": "2020-03-06T14:00:00Z",
 				"timeZone": "UTC"
 			}
 		}
