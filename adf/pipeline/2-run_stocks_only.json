@@ -292,7 +292,7 @@
 					"storeSettings": {
 						"type": "FtpReadSettings",
 						"recursive": false,
-						"wildcardFileName": "STOCK_*.xml",
+						"wildcardFileName": "STOCK_MASTER*.xml",
 						"useBinaryTransfer": true
 					}
 				}
