@@ -1,0 +1,64 @@
+{
+	"name": "0-run_all",
+	"properties": {
+		"activities": [
+			{
+				"name": "1-run_customers_only",
+				"type": "ExecutePipeline",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "1-run_customers_only",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			},
+			{
+				"name": "2-run_stocks_only",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "1-run_customers_only",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "2-run_stocks_only",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			},
+			{
+				"name": "3-run_SO_only",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "2-run_stocks_only",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "3-run_SO_only",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			}
+		],
+		"folder": {
+			"name": "Pronto_SF"
+		},
+		"annotations": []
+	}
+}
