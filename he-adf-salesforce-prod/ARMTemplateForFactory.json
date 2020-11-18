@@ -5906,30 +5906,9 @@
 			"properties": {
 				"activities": [
 					{
-						"name": "1-run_customers_only",
-						"type": "ExecutePipeline",
-						"dependsOn": [],
-						"userProperties": [],
-						"typeProperties": {
-							"pipeline": {
-								"referenceName": "1-run_customers_only",
-								"type": "PipelineReference"
-							},
-							"waitOnCompletion": true,
-							"parameters": {}
-						}
-					},
-					{
 						"name": "2-run_stocks_only",
 						"type": "ExecutePipeline",
-						"dependsOn": [
-							{
-								"activity": "1-run_customers_only",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
+						"dependsOn": [],
 						"userProperties": [],
 						"typeProperties": {
 							"pipeline": {
@@ -5968,7 +5947,6 @@
 				"annotations": []
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/pipelines/1-run_customers_only')]",
 				"[concat(variables('factoryId'), '/pipelines/2-run_stocks_only')]",
 				"[concat(variables('factoryId'), '/pipelines/3-run_SO_only')]"
 			]
