@@ -3724,7 +3724,14 @@
 					{
 						"name": "2-run_stocks_only",
 						"type": "ExecutePipeline",
-						"dependsOn": [],
+						"dependsOn": [
+							{
+								"activity": "1-run_customers_only",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
 						"userProperties": [],
 						"typeProperties": {
 							"pipeline": {
@@ -3750,6 +3757,20 @@
 						"typeProperties": {
 							"pipeline": {
 								"referenceName": "3-run_SO_only",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {}
+						}
+					},
+					{
+						"name": "1-run_customers_only",
+						"type": "ExecutePipeline",
+						"dependsOn": [],
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "1-run_customers_only",
 								"type": "PipelineReference"
 							},
 							"waitOnCompletion": true,
