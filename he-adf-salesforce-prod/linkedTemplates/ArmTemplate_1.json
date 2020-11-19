@@ -2858,8 +2858,7 @@
 							"sink": {
 								"type": "SalesforceSink",
 								"writeBatchSize": 5000,
-								"writeBehavior": "upsert",
-								"externalIdFieldName": "Product_Key__c",
+								"writeBehavior": "insert",
 								"ignoreNullValues": true
 							},
 							"enableStaging": false,
