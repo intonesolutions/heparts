@@ -22,6 +22,9 @@
 							"recursive": false,
 							"wildcardFileName": "SALES_ORDER*.xml",
 							"useBinaryTransfer": true
+						},
+						"formatSettings": {
+							"type": "BinaryReadSettings"
 						}
 					},
 					"sink": {
@@ -144,68 +147,9 @@
 								},
 								"ifTrueActivities": [
 									{
-										"name": "call pass 0-so",
-										"type": "Copy",
-										"dependsOn": [],
-										"policy": {
-											"timeout": "7.00:00:00",
-											"retry": 0,
-											"retryIntervalInSeconds": 30,
-											"secureOutput": false,
-											"secureInput": false
-										},
-										"userProperties": [],
-										"typeProperties": {
-											"source": {
-												"type": "RestSource",
-												"httpRequestTimeout": "00:15:40",
-												"requestInterval": "00.00:00:00.010",
-												"requestMethod": "GET"
-											},
-											"sink": {
-												"type": "DelimitedTextSink",
-												"storeSettings": {
-													"type": "AzureBlobStorageWriteSettings"
-												},
-												"formatSettings": {
-													"type": "DelimitedTextWriteSettings",
-													"quoteAllText": true,
-													"fileExtension": ".txt"
-												}
-											},
-											"enableStaging": false
-										},
-										"inputs": [
-											{
-												"referenceName": "sfi_dset",
-												"type": "DatasetReference",
-												"parameters": {
-													"pass": "0-so"
-												}
-											}
-										],
-										"outputs": [
-											{
-												"referenceName": "blob_TEXT",
-												"type": "DatasetReference",
-												"parameters": {
-													"folder": "runs",
-													"filename": "sfi_call.txt"
-												}
-											}
-										]
-									},
-									{
 										"name": "Execute Pipeline1",
 										"type": "ExecutePipeline",
-										"dependsOn": [
-											{
-												"activity": "call pass 0-so",
-												"dependencyConditions": [
-													"Succeeded"
-												]
-											}
-										],
+										"dependsOn": [],
 										"userProperties": [],
 										"typeProperties": {
 											"pipeline": {
@@ -345,8 +289,7 @@
 							"type": "AzureBlobStorageWriteSettings"
 						},
 						"formatSettings": {
-							"type": "JsonWriteSettings",
-							"quoteAllText": true
+							"type": "JsonWriteSettings"
 						}
 					},
 					"enableStaging": false
