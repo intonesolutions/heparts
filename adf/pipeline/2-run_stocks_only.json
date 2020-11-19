@@ -236,6 +236,14 @@
 									"name": "Product_Class__c",
 									"type": "String"
 								}
+							},
+							{
+								"source": {
+									"path": "$['CurrencyIsoCode']"
+								},
+								"sink": {
+									"name": "CurrencyIsoCode"
+								}
 							}
 						],
 						"collectionReference": ""
