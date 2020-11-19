@@ -119,7 +119,8 @@
 									"fileExtension": ".txt"
 								}
 							},
-							"enableStaging": false
+							"enableStaging": false,
+							"parallelCopies": 1
 						},
 						"inputs": [
 							{
@@ -176,7 +177,8 @@
 									"fileExtension": ".txt"
 								}
 							},
-							"enableStaging": false
+							"enableStaging": false,
+							"parallelCopies": 1
 						},
 						"inputs": [
 							{
@@ -227,8 +229,7 @@
 									"type": "AzureBlobStorageWriteSettings"
 								},
 								"formatSettings": {
-									"type": "JsonWriteSettings",
-									"quoteAllText": true
+									"type": "JsonWriteSettings"
 								}
 							},
 							"enableStaging": false
@@ -289,8 +290,7 @@
 									"type": "AzureBlobStorageWriteSettings"
 								},
 								"formatSettings": {
-									"type": "JsonWriteSettings",
-									"quoteAllText": true
+									"type": "JsonWriteSettings"
 								}
 							},
 							"enableStaging": false
@@ -352,7 +352,7 @@
 						}
 					},
 					{
-						"name": "delete_ftp_copy1",
+						"name": "delete_ftp_name_and_address",
 						"type": "Delete",
 						"dependsOn": [
 							{
@@ -414,6 +414,9 @@
 									"recursive": false,
 									"wildcardFileName": "DEB_MASTER*.xml",
 									"useBinaryTransfer": true
+								},
+								"formatSettings": {
+									"type": "BinaryReadSettings"
 								}
 							},
 							"sink": {
@@ -521,7 +524,7 @@
 						"typeProperties": {
 							"source": {
 								"type": "RestSource",
-								"httpRequestTimeout": "00:01:40",
+								"httpRequestTimeout": "00:15:40",
 								"requestInterval": "00.00:00:00.010",
 								"requestMethod": "GET"
 							},
@@ -597,6 +600,13 @@
 							},
 							"enableStaging": false,
 							"enableSkipIncompatibleRow": true,
+							"logStorageSettings": {
+								"linkedServiceName": {
+									"referenceName": "blob",
+									"type": "LinkedServiceReference"
+								},
+								"path": "data/logs/accounts"
+							},
 							"translator": {
 								"type": "TabularTranslator",
 								"mappings": [
@@ -632,7 +642,8 @@
 											"path": "$['ESUS_Pronto__c']"
 										},
 										"sink": {
-											"name": "ESUS_Pronto__c"
+											"name": "ESUS_Pronto__c",
+											"type": "String"
 										}
 									},
 									{
@@ -787,6 +798,150 @@
 											"name": "Territory_ID__c",
 											"type": "String"
 										}
+									},
+									{
+										"source": {
+											"path": "$['Allgo_Pronto__c']"
+										},
+										"sink": {
+											"name": "Allgo_Pronto__c",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "$['Zambia_Pronto__c']"
+										},
+										"sink": {
+											"name": "Zambia_Pronto__c",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "$['Crown_Sales_Rep__c']"
+										},
+										"sink": {
+											"name": "Crown_Sales_Rep__c",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "$['Morgan_Canada_Sales_Rep__c']"
+										},
+										"sink": {
+											"name": "Morgan_Canada_Sales_Rep__c",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "$['B_G_Sales_Rep__c']"
+										},
+										"sink": {
+											"name": "B_G_Sales_Rep__c",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "$['MSAU_CD_Sales_Rep__c']"
+										},
+										"sink": {
+											"name": "MSAU_CD_Sales_Rep__c",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "$['MSAU_ED_Sales_Rep__c']"
+										},
+										"sink": {
+											"name": "MSAU_ED_Sales_Rep__c",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "$['Birrana_Sales_Rep__c']"
+										},
+										"sink": {
+											"name": "Birrana_Sales_Rep__c",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "$['Allgo_Sales_Rep__c']"
+										},
+										"sink": {
+											"name": "Allgo_Sales_Rep__c",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "$['MSZM_Sales_Rep__c']"
+										},
+										"sink": {
+											"name": "MSZM_Sales_Rep__c",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "$['CSAU_Pronto__c']"
+										},
+										"sink": {
+											"name": "CSAU_Pronto__c",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "$['CME_Sales_Rep__c']"
+										},
+										"sink": {
+											"name": "CME_Sales_Rep__c",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "$['Dom_Ex_Pronto__c']"
+										},
+										"sink": {
+											"name": "Dom_Ex_Pronto__c",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "$['Chile_Pronto__c']"
+										},
+										"sink": {
+											"name": "Chile_Pronto__c",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "$['Dom_Ex_Sales_Rep__c']"
+										},
+										"sink": {
+											"name": "Dom_Ex_Sales_Rep__c",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "$['Morgan_Chile_Sales_Rep__c']"
+										},
+										"sink": {
+											"name": "Morgan_Chile_Sales_Rep__c",
+											"type": "String"
+										}
 									}
 								],
 								"collectionReference": ""
@@ -825,7 +980,8 @@
 				"[concat(variables('factoryId'), '/datasets/blob_json')]",
 				"[concat(variables('factoryId'), '/datasets/FTP_BIN')]",
 				"[concat(variables('factoryId'), '/datasets/blob_bin')]",
-				"[concat(variables('factoryId'), '/datasets/sfi_dset')]"
+				"[concat(variables('factoryId'), '/datasets/sfi_dset')]",
+				"[concat(variables('factoryId'), '/linkedServices/blob')]"
 			]
 		},
 		{
@@ -1159,8 +1315,7 @@
 									"type": "AzureBlobStorageWriteSettings"
 								},
 								"formatSettings": {
-									"type": "JsonWriteSettings",
-									"quoteAllText": true
+									"type": "JsonWriteSettings"
 								}
 							},
 							"enableStaging": false
@@ -1208,8 +1363,7 @@
 									"type": "AzureBlobStorageWriteSettings"
 								},
 								"formatSettings": {
-									"type": "JsonWriteSettings",
-									"quoteAllText": true
+									"type": "JsonWriteSettings"
 								}
 							},
 							"enableStaging": false
@@ -1257,8 +1411,7 @@
 									"type": "AzureBlobStorageWriteSettings"
 								},
 								"formatSettings": {
-									"type": "JsonWriteSettings",
-									"quoteAllText": true
+									"type": "JsonWriteSettings"
 								}
 							},
 							"enableStaging": false
@@ -1306,8 +1459,7 @@
 									"type": "AzureBlobStorageWriteSettings"
 								},
 								"formatSettings": {
-									"type": "JsonWriteSettings",
-									"quoteAllText": true
+									"type": "JsonWriteSettings"
 								}
 							},
 							"enableStaging": false
@@ -1355,8 +1507,7 @@
 									"type": "AzureBlobStorageWriteSettings"
 								},
 								"formatSettings": {
-									"type": "JsonWriteSettings",
-									"quoteAllText": true
+									"type": "JsonWriteSettings"
 								}
 							},
 							"enableStaging": false
@@ -1404,8 +1555,7 @@
 									"type": "AzureBlobStorageWriteSettings"
 								},
 								"formatSettings": {
-									"type": "JsonWriteSettings",
-									"quoteAllText": true
+									"type": "JsonWriteSettings"
 								}
 							},
 							"enableStaging": false
@@ -1484,7 +1634,8 @@
 									"fileExtension": ".txt"
 								}
 							},
-							"enableStaging": false
+							"enableStaging": false,
+							"parallelCopies": 1
 						},
 						"inputs": [
 							{
@@ -1530,6 +1681,9 @@
 									"type": "AzureBlobStorageReadSettings",
 									"recursive": false,
 									"enablePartitionDiscovery": false
+								},
+								"formatSettings": {
+									"type": "JsonReadSettings"
 								}
 							},
 							"sink": {
@@ -1642,6 +1796,42 @@
 											"name": "Family",
 											"type": "String"
 										}
+									},
+									{
+										"source": {
+											"path": "$['Product_Category__c']"
+										},
+										"sink": {
+											"name": "Product_Category__c",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "$['Product_Group_Code__c']"
+										},
+										"sink": {
+											"name": "Product_Group_Code__c",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "$['Product_Group_Description__c']"
+										},
+										"sink": {
+											"name": "Product_Group_Description__c",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "$['Product_Class__c']"
+										},
+										"sink": {
+											"name": "Product_Class__c",
+											"type": "String"
+										}
 									}
 								],
 								"collectionReference": ""
@@ -1698,7 +1888,7 @@
 							"storeSettings": {
 								"type": "FtpReadSettings",
 								"recursive": false,
-								"wildcardFileName": "STOCK_*.xml",
+								"wildcardFileName": "STOCK_MASTER*.xml",
 								"useBinaryTransfer": true
 							}
 						}
@@ -1709,6 +1899,24 @@
 						"dependsOn": [
 							{
 								"activity": "STOCK_MASTER",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							},
+							{
+								"activity": "STOCK_HIERARCHY_MASTER",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							},
+							{
+								"activity": "STOCK_HIERARCHY_TREE",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							},
+							{
+								"activity": "SALES_ORDER_LINES",
 								"dependencyConditions": [
 									"Succeeded"
 								]
@@ -1725,7 +1933,7 @@
 						"typeProperties": {
 							"source": {
 								"type": "RestSource",
-								"httpRequestTimeout": "00:01:40",
+								"httpRequestTimeout": "00:15:40",
 								"requestInterval": "00.00:00:00.010",
 								"requestMethod": "GET"
 							},
@@ -1758,6 +1966,180 @@
 								"parameters": {
 									"folder": "runs",
 									"filename": "sfi_call.txt"
+								}
+							}
+						]
+					},
+					{
+						"name": "STOCK_HIERARCHY_MASTER",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "DelimitedTextSource",
+								"storeSettings": {
+									"type": "FtpReadSettings",
+									"recursive": false,
+									"wildcardFileName": "STOCK_HIERARCHY_MASTER-*.xml",
+									"useBinaryTransfer": false
+								},
+								"formatSettings": {
+									"type": "DelimitedTextReadSettings"
+								}
+							},
+							"sink": {
+								"type": "DelimitedTextSink",
+								"storeSettings": {
+									"type": "AzureBlobStorageWriteSettings",
+									"copyBehavior": "MergeFiles"
+								},
+								"formatSettings": {
+									"type": "DelimitedTextWriteSettings",
+									"quoteAllText": true,
+									"fileExtension": ".txt"
+								}
+							},
+							"enableStaging": false,
+							"parallelCopies": 1
+						},
+						"inputs": [
+							{
+								"referenceName": "FTP_TEXT",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "blob_TEXT",
+								"type": "DatasetReference",
+								"parameters": {
+									"folder": "intake",
+									"filename": "stock_h_master.xml"
+								}
+							}
+						]
+					},
+					{
+						"name": "STOCK_HIERARCHY_TREE",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "DelimitedTextSource",
+								"storeSettings": {
+									"type": "FtpReadSettings",
+									"recursive": false,
+									"wildcardFileName": "STOCK_HIERARCHY_TREE-*.xml",
+									"useBinaryTransfer": false
+								},
+								"formatSettings": {
+									"type": "DelimitedTextReadSettings"
+								}
+							},
+							"sink": {
+								"type": "DelimitedTextSink",
+								"storeSettings": {
+									"type": "AzureBlobStorageWriteSettings",
+									"copyBehavior": "MergeFiles"
+								},
+								"formatSettings": {
+									"type": "DelimitedTextWriteSettings",
+									"quoteAllText": true,
+									"fileExtension": ".txt"
+								}
+							},
+							"enableStaging": false,
+							"parallelCopies": 1
+						},
+						"inputs": [
+							{
+								"referenceName": "FTP_TEXT",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "blob_TEXT",
+								"type": "DatasetReference",
+								"parameters": {
+									"folder": "intake",
+									"filename": "stock_h_tree.xml"
+								}
+							}
+						]
+					},
+					{
+						"name": "SALES_ORDER_LINES",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "DelimitedTextSource",
+								"storeSettings": {
+									"type": "FtpReadSettings",
+									"recursive": false,
+									"wildcardFileName": "SALES_ORDER_LINE-*.xml",
+									"useBinaryTransfer": false
+								},
+								"formatSettings": {
+									"type": "DelimitedTextReadSettings"
+								}
+							},
+							"sink": {
+								"type": "DelimitedTextSink",
+								"storeSettings": {
+									"type": "AzureBlobStorageWriteSettings",
+									"copyBehavior": "MergeFiles"
+								},
+								"formatSettings": {
+									"type": "DelimitedTextWriteSettings",
+									"quoteAllText": true,
+									"fileExtension": ".txt"
+								}
+							},
+							"enableStaging": false,
+							"parallelCopies": 1
+						},
+						"inputs": [
+							{
+								"referenceName": "FTP_TEXT",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "blob_TEXT",
+								"type": "DatasetReference",
+								"parameters": {
+									"folder": "intake",
+									"filename": "salesorder_lines.xml"
 								}
 							}
 						]
@@ -1807,8 +2189,7 @@
 									"type": "AzureBlobStorageWriteSettings"
 								},
 								"formatSettings": {
-									"type": "JsonWriteSettings",
-									"quoteAllText": true
+									"type": "JsonWriteSettings"
 								}
 							},
 							"enableStaging": false
@@ -1856,8 +2237,7 @@
 									"type": "AzureBlobStorageWriteSettings"
 								},
 								"formatSettings": {
-									"type": "JsonWriteSettings",
-									"quoteAllText": true
+									"type": "JsonWriteSettings"
 								}
 							},
 							"enableStaging": false
@@ -1906,8 +2286,7 @@
 									"type": "AzureBlobStorageWriteSettings"
 								},
 								"formatSettings": {
-									"type": "JsonWriteSettings",
-									"quoteAllText": true
+									"type": "JsonWriteSettings"
 								}
 							},
 							"enableStaging": false,
@@ -1957,8 +2336,7 @@
 									"type": "AzureBlobStorageWriteSettings"
 								},
 								"formatSettings": {
-									"type": "JsonWriteSettings",
-									"quoteAllText": true
+									"type": "JsonWriteSettings"
 								}
 							},
 							"enableStaging": false
@@ -2007,8 +2385,7 @@
 									"type": "AzureBlobStorageWriteSettings"
 								},
 								"formatSettings": {
-									"type": "JsonWriteSettings",
-									"quoteAllText": true
+									"type": "JsonWriteSettings"
 								}
 							},
 							"enableStaging": false
@@ -2070,6 +2447,9 @@
 									"recursive": false,
 									"wildcardFileName": "SALES_ORDER*.xml",
 									"useBinaryTransfer": true
+								},
+								"formatSettings": {
+									"type": "BinaryReadSettings"
 								}
 							},
 							"sink": {
@@ -2192,68 +2572,9 @@
 										},
 										"ifTrueActivities": [
 											{
-												"name": "call pass 0-so",
-												"type": "Copy",
-												"dependsOn": [],
-												"policy": {
-													"timeout": "7.00:00:00",
-													"retry": 0,
-													"retryIntervalInSeconds": 30,
-													"secureOutput": false,
-													"secureInput": false
-												},
-												"userProperties": [],
-												"typeProperties": {
-													"source": {
-														"type": "RestSource",
-														"httpRequestTimeout": "00:01:40",
-														"requestInterval": "00.00:00:00.010",
-														"requestMethod": "GET"
-													},
-													"sink": {
-														"type": "DelimitedTextSink",
-														"storeSettings": {
-															"type": "AzureBlobStorageWriteSettings"
-														},
-														"formatSettings": {
-															"type": "DelimitedTextWriteSettings",
-															"quoteAllText": true,
-															"fileExtension": ".txt"
-														}
-													},
-													"enableStaging": false
-												},
-												"inputs": [
-													{
-														"referenceName": "sfi_dset",
-														"type": "DatasetReference",
-														"parameters": {
-															"pass": "0-so"
-														}
-													}
-												],
-												"outputs": [
-													{
-														"referenceName": "blob_TEXT",
-														"type": "DatasetReference",
-														"parameters": {
-															"folder": "runs",
-															"filename": "sfi_call.txt"
-														}
-													}
-												]
-											},
-											{
 												"name": "Execute Pipeline1",
 												"type": "ExecutePipeline",
-												"dependsOn": [
-													{
-														"activity": "call pass 0-so",
-														"dependencyConditions": [
-															"Succeeded"
-														]
-													}
-												],
+												"dependsOn": [],
 												"userProperties": [],
 												"typeProperties": {
 													"pipeline": {
@@ -2282,7 +2603,7 @@
 									"typeProperties": {
 										"source": {
 											"type": "RestSource",
-											"httpRequestTimeout": "00:01:40",
+											"httpRequestTimeout": "00:15:40",
 											"requestInterval": "00.00:00:00.010",
 											"requestMethod": "GET"
 										},
@@ -2394,8 +2715,7 @@
 									"type": "AzureBlobStorageWriteSettings"
 								},
 								"formatSettings": {
-									"type": "JsonWriteSettings",
-									"quoteAllText": true
+									"type": "JsonWriteSettings"
 								}
 							},
 							"enableStaging": false
@@ -3001,8 +3321,7 @@
 									"type": "AzureBlobStorageWriteSettings"
 								},
 								"formatSettings": {
-									"type": "JsonWriteSettings",
-									"quoteAllText": true
+									"type": "JsonWriteSettings"
 								}
 							},
 							"enableStaging": false
@@ -3058,8 +3377,7 @@
 									"type": "AzureBlobStorageWriteSettings"
 								},
 								"formatSettings": {
-									"type": "JsonWriteSettings",
-									"quoteAllText": true
+									"type": "JsonWriteSettings"
 								}
 							},
 							"enableStaging": false
@@ -3127,8 +3445,7 @@
 									"type": "AzureBlobStorageWriteSettings"
 								},
 								"formatSettings": {
-									"type": "JsonWriteSettings",
-									"quoteAllText": true
+									"type": "JsonWriteSettings"
 								}
 							},
 							"enableStaging": false,
@@ -3741,8 +4058,7 @@
 									"type": "AzureBlobStorageWriteSettings"
 								},
 								"formatSettings": {
-									"type": "JsonWriteSettings",
-									"quoteAllText": true
+									"type": "JsonWriteSettings"
 								}
 							},
 							"enableStaging": false
@@ -3926,8 +4242,7 @@
 									"type": "AzureBlobStorageWriteSettings"
 								},
 								"formatSettings": {
-									"type": "JsonWriteSettings",
-									"quoteAllText": true
+									"type": "JsonWriteSettings"
 								}
 							},
 							"enableStaging": false
@@ -4081,1554 +4396,6 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/after pass1')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "opportunity_to_sf",
-						"type": "Copy",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "JsonSource",
-								"storeSettings": {
-									"type": "AzureBlobStorageReadSettings",
-									"recursive": false,
-									"enablePartitionDiscovery": false
-								}
-							},
-							"sink": {
-								"type": "SalesforceSink",
-								"writeBatchSize": 5000,
-								"writeBehavior": "upsert",
-								"externalIdFieldName": "Morgan_External_ID__c",
-								"ignoreNullValues": true
-							},
-							"enableStaging": false,
-							"enableSkipIncompatibleRow": false,
-							"translator": {
-								"type": "TabularTranslator",
-								"mappings": [
-									{
-										"source": {
-											"path": "$['Id']"
-										},
-										"sink": {
-											"name": "Id",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "$['Name']"
-										},
-										"sink": {
-											"name": "Name",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "$['SoInvoiceNo__c']"
-										},
-										"sink": {
-											"name": "Invoice__c",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "$['Crown_Quote_ID__c']"
-										},
-										"sink": {
-											"name": "Crown_Quote_ID__c",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "$['Morgan_External_ID__c']"
-										},
-										"sink": {
-											"name": "Morgan_External_ID__c",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "$['AccountId']"
-										},
-										"sink": {
-											"name": "AccountId",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "$['Pronto_Account__c']"
-										},
-										"sink": {
-											"name": "Pronto_Account__c",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "$['RecordTypeId']"
-										},
-										"sink": {
-											"name": "RecordTypeId",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "$['HE_Partner__c']"
-										},
-										"sink": {
-											"name": "HE_Partner__c",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "$['Sales_Rep_Code__c']"
-										},
-										"sink": {
-											"name": "CME_Sales_Rep_Code__c",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "$['Crown_Quoted_By__c']"
-										},
-										"sink": {
-											"name": "Crown_Quoted_By__c",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "$['Crown_Sales_Rep__c']"
-										},
-										"sink": {
-											"name": "Crown_Sales_Rep__c",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "$['CurrencyIsoCode']"
-										},
-										"sink": {
-											"name": "CurrencyIsoCode",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "$['OwnerId']"
-										},
-										"sink": {
-											"name": "OwnerId",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "$['Date_Quote_Created__c']"
-										},
-										"sink": {
-											"name": "Date_Quote_Created__c",
-											"type": "DateTime"
-										}
-									},
-									{
-										"source": {
-											"path": "$['CME_Order_Status_Code__c']"
-										},
-										"sink": {
-											"name": "CME_Order_Status_Code__c",
-											"type": "Decimal"
-										}
-									},
-									{
-										"source": {
-											"path": "$['CloseDate']"
-										},
-										"sink": {
-											"name": "CloseDate",
-											"type": "DateTime"
-										}
-									},
-									{
-										"source": {
-											"path": "$['StageName']"
-										},
-										"sink": {
-											"name": "StageName",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "$['Order_Status__c']"
-										},
-										"sink": {
-											"name": "Order_Status__c",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "$['Amount']"
-										},
-										"sink": {
-											"name": "Amount",
-											"type": "Decimal"
-										}
-									},
-									{
-										"source": {
-											"path": "$['Territory_Code__c']"
-										},
-										"sink": {
-											"name": "Territory_Code__c",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "$['Crown_Quote_Total__c']"
-										},
-										"sink": {
-											"name": "Crown_Quote_Total__c",
-											"type": "Decimal"
-										}
-									},
-									{
-										"source": {
-											"path": "$['Customer_PO_No__c']"
-										},
-										"sink": {
-											"name": "Customer_PO_No__c",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "$['Customer_P_O__c']"
-										},
-										"sink": {
-											"name": "Customer_P_O__c",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "$['Delivery_Date__c']"
-										},
-										"sink": {
-											"name": "Delivery_Date__c",
-											"type": "DateTime"
-										}
-									},
-									{
-										"source": {
-											"path": "$['Morgan_GST_Tax__c']"
-										},
-										"sink": {
-											"name": "Morgan_GST_Tax__c",
-											"type": "Decimal"
-										}
-									},
-									{
-										"source": {
-											"path": "$['CME_Invoice_No__c']"
-										},
-										"sink": {
-											"name": "CME_Invoice_No__c",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "$['Invoice_Date__c']"
-										},
-										"sink": {
-											"name": "Invoice_Date__c",
-											"type": "DateTime"
-										}
-									},
-									{
-										"source": {
-											"path": "$['CME_Total_Cost__c']"
-										},
-										"sink": {
-											"name": "CME_Total_Cost__c",
-											"type": "Decimal"
-										}
-									},
-									{
-										"source": {
-											"path": "$['Total_Charges__c']"
-										},
-										"sink": {
-											"name": "Total_Charges__c",
-											"type": "Decimal"
-										}
-									},
-									{
-										"source": {
-											"path": "$['Total_Amount__c']"
-										},
-										"sink": {
-											"name": "Total_Amount__c",
-											"type": "Decimal"
-										}
-									},
-									{
-										"source": {
-											"path": "$['Total_Ordered_Tax_Adj__c']"
-										},
-										"sink": {
-											"name": "Total_Ordered_Tax_Adj__c",
-											"type": "Decimal"
-										}
-									},
-									{
-										"source": {
-											"path": "$['Total_Ordered_Discount__c']"
-										},
-										"sink": {
-											"name": "Total_Ordered_Discount__c",
-											"type": "Decimal"
-										}
-									},
-									{
-										"source": {
-											"path": "$['Total_Shipped_Discount__c']"
-										},
-										"sink": {
-											"name": "Total_Shipped_Discount__c",
-											"type": "Decimal"
-										}
-									},
-									{
-										"source": {
-											"path": "$['Total_Shipped_Amount__c']"
-										},
-										"sink": {
-											"name": "Total_Shipped_Amount__c",
-											"type": "Decimal"
-										}
-									},
-									{
-										"source": {
-											"path": "$['Total_Shipped_Tax__c']"
-										},
-										"sink": {
-											"name": "Total_Shipped_Tax__c",
-											"type": "Decimal"
-										}
-									},
-									{
-										"source": {
-											"path": "$['Total_Shipped_Tax_Adj__c']"
-										},
-										"sink": {
-											"name": "Total_Shipped_Tax_Adj__c",
-											"type": "Decimal"
-										}
-									},
-									{
-										"source": {
-											"path": "$['Total_Shipped_Cost__c']"
-										},
-										"sink": {
-											"name": "Total_Shipped_Cost__c",
-											"type": "Decimal"
-										}
-									},
-									{
-										"source": {
-											"path": "$['Total_Ordered_Cost__c']"
-										},
-										"sink": {
-											"name": "Total_Ordered_Cost__c",
-											"type": "Decimal"
-										}
-									},
-									{
-										"source": {
-											"path": "$['Total_Ordered_Tax__c']"
-										},
-										"sink": {
-											"name": "Total_Ordered_Tax__c",
-											"type": "Decimal"
-										}
-									},
-									{
-										"source": {
-											"path": "$['Warehouse_Code__c']"
-										},
-										"sink": {
-											"name": "Warehouse_Code__c",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "$['Warehouse__c']"
-										},
-										"sink": {
-											"name": "Warehouse__c",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "$['imported__c']"
-										},
-										"sink": {
-											"name": "imported__c",
-											"type": "String"
-										}
-									}
-								],
-								"collectionReference": ""
-							}
-						},
-						"inputs": [
-							{
-								"referenceName": "blob_json",
-								"type": "DatasetReference",
-								"parameters": {
-									"folder": "stage",
-									"filename": "opportunity.json"
-								}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "salesforce_OBJ",
-								"type": "DatasetReference",
-								"parameters": {
-									"objName": "Opportunity"
-								}
-							}
-						]
-					},
-					{
-						"name": "invoice_to_sf",
-						"type": "Copy",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "JsonSource",
-								"storeSettings": {
-									"type": "AzureBlobStorageReadSettings",
-									"recursive": false,
-									"enablePartitionDiscovery": false
-								}
-							},
-							"sink": {
-								"type": "SalesforceSink",
-								"writeBatchSize": 5000,
-								"writeBehavior": "upsert",
-								"externalIdFieldName": "Crown_Invoice__c",
-								"ignoreNullValues": true
-							},
-							"enableStaging": false,
-							"enableSkipIncompatibleRow": false,
-							"translator": {
-								"type": "TabularTranslator",
-								"mappings": [
-									{
-										"source": {
-											"path": "$['Name']"
-										},
-										"sink": {
-											"name": "Name",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "$['Sales_Order_No__c']"
-										},
-										"sink": {
-											"name": "Sales_Order_No__c",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "$['RecordTypeId']"
-										},
-										"sink": {
-											"name": "RecordTypeId",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "$['H_E_Partner__c']"
-										},
-										"sink": {
-											"name": "H_E_Partner__c",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "$['External_ID__c']"
-										},
-										"sink": {
-											"name": "External_ID__c",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "$['Crown_Invoice__c']"
-										},
-										"sink": {
-											"name": "Crown_Invoice__c",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "$['Account_Name__c']"
-										},
-										"sink": {
-											"name": "Account_Name__c",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "$['Pronto_Account__c']"
-										},
-										"sink": {
-											"name": "Pronto_Account__c",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "$['OwnerId']"
-										},
-										"sink": {
-											"name": "OwnerId",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "$['Invoice_Date__c']"
-										},
-										"sink": {
-											"name": "Invoice_Date__c",
-											"type": "DateTime"
-										}
-									},
-									{
-										"source": {
-											"path": "$['CurrencyIsoCode']"
-										},
-										"sink": {
-											"name": "CurrencyIsoCode",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "$['Total_Ordered_Amount__c']"
-										},
-										"sink": {
-											"name": "Total_Ordered_Amount__c",
-											"type": "Decimal"
-										}
-									},
-									{
-										"source": {
-											"path": "$['Territory_Code__c']"
-										},
-										"sink": {
-											"name": "Territory_Code__c",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "$['Crown_Sales_Rep__c']"
-										},
-										"sink": {
-											"name": "Crown_Sales_Rep__c",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "$['Sales_Rep_Code__c']"
-										},
-										"sink": {
-											"name": "Sales_Rep_Code__c",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "$['Delivery_Date__c']"
-										},
-										"sink": {
-											"name": "Delivery_Date__c",
-											"type": "DateTime"
-										}
-									},
-									{
-										"source": {
-											"path": "$['Total_Ordered_Cost__c']"
-										},
-										"sink": {
-											"name": "Total_Ordered_Cost__c",
-											"type": "Decimal"
-										}
-									},
-									{
-										"source": {
-											"path": "$['Total_Charges__c']"
-										},
-										"sink": {
-											"name": "Total_Charges__c",
-											"type": "Decimal"
-										}
-									},
-									{
-										"source": {
-											"path": "$['Total_Ordered_Tax__c']"
-										},
-										"sink": {
-											"name": "Total_Ordered_Tax__c",
-											"type": "Decimal"
-										}
-									},
-									{
-										"source": {
-											"path": "$['Sales_Value__c']"
-										},
-										"sink": {
-											"name": "Sales_Value__c",
-											"type": "Decimal"
-										}
-									},
-									{
-										"source": {
-											"path": "$['Total_Ordered_Tax_Adj__c']"
-										},
-										"sink": {
-											"name": "Total_Ordered_Tax_Adj__c",
-											"type": "Decimal"
-										}
-									},
-									{
-										"source": {
-											"path": "$['Total_Ordered_Discount__c']"
-										},
-										"sink": {
-											"name": "Total_Ordered_Discount__c",
-											"type": "Decimal"
-										}
-									},
-									{
-										"source": {
-											"path": "$['Total_Shipped_Discount__c']"
-										},
-										"sink": {
-											"name": "Total_Shipped_Discount__c",
-											"type": "Decimal"
-										}
-									},
-									{
-										"source": {
-											"path": "$['Total_Shipped_Amount__c']"
-										},
-										"sink": {
-											"name": "Total_Shipped_Amount__c",
-											"type": "Decimal"
-										}
-									},
-									{
-										"source": {
-											"path": "$['Total_Shipped_Tax__c']"
-										},
-										"sink": {
-											"name": "Total_Shipped_Tax__c",
-											"type": "Decimal"
-										}
-									},
-									{
-										"source": {
-											"path": "$['Total_Shipped_Tax_Adj__c']"
-										},
-										"sink": {
-											"name": "Total_Shipped_Tax_Adj__c",
-											"type": "Decimal"
-										}
-									},
-									{
-										"source": {
-											"path": "$['Total_Shipped_Cost__c']"
-										},
-										"sink": {
-											"name": "Total_Shipped_Cost__c",
-											"type": "Decimal"
-										}
-									},
-									{
-										"source": {
-											"path": "$['Warehouse_Code__c']"
-										},
-										"sink": {
-											"name": "Warehouse_Code__c",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "$['Warehouse__c']"
-										},
-										"sink": {
-											"name": "Warehouse__c",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "$['imported__c']"
-										},
-										"sink": {
-											"name": "imported__c",
-											"type": "String"
-										}
-									}
-								],
-								"collectionReference": ""
-							}
-						},
-						"inputs": [
-							{
-								"referenceName": "blob_json",
-								"type": "DatasetReference",
-								"parameters": {
-									"folder": "stage",
-									"filename": "invoices.json"
-								}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "salesforce_OBJ",
-								"type": "DatasetReference",
-								"parameters": {
-									"objName": "Invoices_Crown__c"
-								}
-							}
-						]
-					},
-					{
-						"name": "getProdKeys",
-						"type": "Lookup",
-						"dependsOn": [
-							{
-								"activity": "opportunity_to_sf",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							},
-							{
-								"activity": "invoice_to_sf",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "JsonSource",
-								"storeSettings": {
-									"type": "AzureBlobStorageReadSettings",
-									"recursive": false,
-									"enablePartitionDiscovery": false
-								}
-							},
-							"dataset": {
-								"referenceName": "blob_json",
-								"type": "DatasetReference",
-								"parameters": {
-									"folder": "stage",
-									"filename": "salesorder_prodkeys.json"
-								}
-							}
-						}
-					},
-					{
-						"name": "getOppKeys",
-						"type": "Lookup",
-						"dependsOn": [
-							{
-								"activity": "opportunity_to_sf",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							},
-							{
-								"activity": "invoice_to_sf",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "JsonSource",
-								"storeSettings": {
-									"type": "AzureBlobStorageReadSettings",
-									"recursive": false,
-									"enablePartitionDiscovery": false
-								}
-							},
-							"dataset": {
-								"referenceName": "blob_json",
-								"type": "DatasetReference",
-								"parameters": {
-									"folder": "stage",
-									"filename": "opportunity_keys.json"
-								}
-							}
-						}
-					},
-					{
-						"name": "get Opp from sf",
-						"type": "Copy",
-						"dependsOn": [
-							{
-								"activity": "getOppKeys",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "SalesforceSource",
-								"query": {
-									"value": "@concat('select Id,Name from Opportunity where Crown_Quote_ID__c in (',activity('getOppKeys').output.firstRow.keys,')')",
-									"type": "Expression"
-								},
-								"readBehavior": "query"
-							},
-							"sink": {
-								"type": "JsonSink",
-								"storeSettings": {
-									"type": "AzureBlobStorageWriteSettings"
-								},
-								"formatSettings": {
-									"type": "JsonWriteSettings",
-									"quoteAllText": true
-								}
-							},
-							"enableStaging": false
-						},
-						"inputs": [
-							{
-								"referenceName": "salesforce_OBJ",
-								"type": "DatasetReference",
-								"parameters": {
-									"objName": "Opportunity"
-								}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "blob_json",
-								"type": "DatasetReference",
-								"parameters": {
-									"folder": "intake",
-									"filename": "opps_head.json"
-								}
-							}
-						]
-					},
-					{
-						"name": "set query",
-						"type": "SetVariable",
-						"dependsOn": [
-							{
-								"activity": "getProdKeys",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"userProperties": [],
-						"typeProperties": {
-							"variableName": "q",
-							"value": {
-								"value": "@concat('select Id,Product2.Id,Product2.Product_Key__c,CurrencyIsoCode from PriceBookEntry where IsActive=true',if(greater(lastindexof(activity('getProdKeys').output.firstRow.keys,','),90000),'',concat(' and Product2.Product_Key__c in (',activity('getProdKeys').output.firstRow.keys,')')))",
-								"type": "Expression"
-							}
-						}
-					},
-					{
-						"name": "get inv from sf",
-						"type": "Copy",
-						"dependsOn": [
-							{
-								"activity": "get Prod and Pricebook",
-								"dependencyConditions": [
-									"Completed"
-								]
-							}
-						],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "SalesforceSource",
-								"query": "select Id,External_ID__c from Invoices_Crown__c",
-								"readBehavior": "query"
-							},
-							"sink": {
-								"type": "JsonSink",
-								"storeSettings": {
-									"type": "AzureBlobStorageWriteSettings"
-								},
-								"formatSettings": {
-									"type": "JsonWriteSettings",
-									"quoteAllText": true
-								}
-							},
-							"enableStaging": false
-						},
-						"inputs": [
-							{
-								"referenceName": "salesforce_OBJ",
-								"type": "DatasetReference",
-								"parameters": {
-									"objName": "Invoices_Crown__c"
-								}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "blob_json",
-								"type": "DatasetReference",
-								"parameters": {
-									"folder": "intake",
-									"filename": "invoices.json"
-								}
-							}
-						]
-					},
-					{
-						"name": "get Prod and Pricebook",
-						"type": "Copy",
-						"dependsOn": [
-							{
-								"activity": "set query",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "SalesforceSource",
-								"query": {
-									"value": "@variables('q')",
-									"type": "Expression"
-								},
-								"readBehavior": "query"
-							},
-							"sink": {
-								"type": "DelimitedTextSink",
-								"storeSettings": {
-									"type": "AzureBlobStorageWriteSettings"
-								},
-								"formatSettings": {
-									"type": "DelimitedTextWriteSettings",
-									"quoteAllText": true,
-									"fileExtension": ".txt"
-								}
-							},
-							"enableStaging": false,
-							"enableSkipIncompatibleRow": true
-						},
-						"inputs": [
-							{
-								"referenceName": "salesforce_OBJ",
-								"type": "DatasetReference",
-								"parameters": {
-									"objName": "Product2"
-								}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "blob_csv",
-								"type": "DatasetReference",
-								"parameters": {
-									"folder": "stage",
-									"filename": "productpricebook.csv"
-								}
-							}
-						]
-					}
-				],
-				"variables": {
-					"q": {
-						"type": "String"
-					}
-				},
-				"annotations": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/blob_json')]",
-				"[concat(variables('factoryId'), '/datasets/salesforce_OBJ')]",
-				"[concat(variables('factoryId'), '/datasets/blob_csv')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/after pass2')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "OppLine_upsert",
-						"type": "Copy",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "JsonSource",
-								"storeSettings": {
-									"type": "AzureBlobStorageReadSettings",
-									"recursive": false,
-									"enablePartitionDiscovery": false
-								}
-							},
-							"sink": {
-								"type": "SalesforceSink",
-								"writeBatchSize": 5000,
-								"writeBehavior": "upsert",
-								"externalIdFieldName": "External_ID__c",
-								"ignoreNullValues": true
-							},
-							"enableStaging": false,
-							"enableSkipIncompatibleRow": true,
-							"translator": {
-								"type": "TabularTranslator",
-								"mappings": [
-									{
-										"source": {
-											"path": "$['Id']"
-										},
-										"sink": {
-											"name": "Id",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "$['External_ID__c']"
-										},
-										"sink": {
-											"name": "External_ID__c",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "$['rowstate__c']"
-										},
-										"sink": {
-											"name": "rowstate__c",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "$['OpportunityId']"
-										},
-										"sink": {
-											"name": "OpportunityId",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "$['PricebookEntryId']"
-										},
-										"sink": {
-											"name": "PricebookEntryId",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "$['SortOrder__c']"
-										},
-										"sink": {
-											"name": "SortOrder__c",
-											"type": "Decimal"
-										}
-									},
-									{
-										"source": {
-											"path": "$['UnitPrice']"
-										},
-										"sink": {
-											"name": "UnitPrice",
-											"type": "Decimal"
-										}
-									},
-									{
-										"source": {
-											"path": "$['CME_Item_Cost__c']"
-										},
-										"sink": {
-											"name": "CME_Item_Cost__c",
-											"type": "Decimal"
-										}
-									},
-									{
-										"source": {
-											"path": "$['Shipped_Value__c']"
-										},
-										"sink": {
-											"name": "Shipped_Value__c",
-											"type": "Decimal"
-										}
-									},
-									{
-										"source": {
-											"path": "$['CME_Total_Cost__c']"
-										},
-										"sink": {
-											"name": "CME_Total_Cost__c",
-											"type": "Decimal"
-										}
-									},
-									{
-										"source": {
-											"path": "$['Stock_Code__c']"
-										},
-										"sink": {
-											"name": "Stock_Code__c",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "$['CME_Product_Group_Code__c']"
-										},
-										"sink": {
-											"name": "CME_Product_Group_Code__c",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "$['CME_Product_Group_Name__c']"
-										},
-										"sink": {
-											"name": "CME_Product_Group_Name__c",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "$['Back_Order_Suffix__c']"
-										},
-										"sink": {
-											"name": "Back_Order_Suffix__c",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "$['Morgan_Line__c']"
-										},
-										"sink": {
-											"name": "Morgan_Line__c",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "$['Transaction_Type__c']"
-										},
-										"sink": {
-											"name": "Transaction_Type__c",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "$['Quantity']"
-										},
-										"sink": {
-											"name": "Quantity",
-											"type": "Decimal"
-										}
-									},
-									{
-										"source": {
-											"path": "$['Back_Order_Qty__c']"
-										},
-										"sink": {
-											"name": "Back_Order_Qty__c",
-											"type": "Decimal"
-										}
-									},
-									{
-										"source": {
-											"path": "$['Shipped_Qty__c']"
-										},
-										"sink": {
-											"name": "Shipped_Qty__c",
-											"type": "Decimal"
-										}
-									},
-									{
-										"source": {
-											"path": "$['Crown_Customer_ID_Number__c']"
-										},
-										"sink": {
-											"name": "Crown_Customer_ID_Number__c",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "$['Tax_Rate__c']"
-										},
-										"sink": {
-											"name": "Tax_Rate__c",
-											"type": "Decimal"
-										}
-									},
-									{
-										"source": {
-											"path": "$['Total_Ordered_Tax_Amount__c']"
-										},
-										"sink": {
-											"name": "Total_Ordered_Tax_Amount__c",
-											"type": "Decimal"
-										}
-									},
-									{
-										"source": {
-											"path": "$['Total_Ordered_Line_Amount__c']"
-										},
-										"sink": {
-											"name": "Total_Ordered_Line_Amount__c",
-											"type": "Decimal"
-										}
-									}
-								],
-								"collectionReference": ""
-							}
-						},
-						"inputs": [
-							{
-								"referenceName": "blob_json",
-								"type": "DatasetReference",
-								"parameters": {
-									"folder": "stage",
-									"filename": "opportunity_line_upsert.json"
-								}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "salesforce_OBJ",
-								"type": "DatasetReference",
-								"parameters": {
-									"objName": "OpportunityLineItem"
-								}
-							}
-						]
-					},
-					{
-						"name": "invLine_upsert",
-						"type": "Copy",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "JsonSource",
-								"storeSettings": {
-									"type": "AzureBlobStorageReadSettings",
-									"recursive": false,
-									"enablePartitionDiscovery": false
-								}
-							},
-							"sink": {
-								"type": "SalesforceSink",
-								"writeBatchSize": 5000,
-								"writeBehavior": "upsert",
-								"externalIdFieldName": "External_ID__c",
-								"ignoreNullValues": true
-							},
-							"enableStaging": false,
-							"enableSkipIncompatibleRow": true,
-							"translator": {
-								"type": "TabularTranslator",
-								"mappings": [
-									{
-										"source": {
-											"path": "$['RecordTypeId']"
-										},
-										"sink": {
-											"name": "RecordTypeId",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "$['External_ID__c']"
-										},
-										"sink": {
-											"name": "External_ID__c",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "$['Invoices_Crown__c']"
-										},
-										"sink": {
-											"name": "Invoices_Crown__c",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "$['Product__c']"
-										},
-										"sink": {
-											"name": "Product__c",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "$['Stock_Code__c']"
-										},
-										"sink": {
-											"name": "Stock_Code__c",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "$['Product_Class__c']"
-										},
-										"sink": {
-											"name": "Product_Class__c",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "$['B_O_Suffix__c']"
-										},
-										"sink": {
-											"name": "B_O_Suffix__c",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "$['Morgan_Line__c']"
-										},
-										"sink": {
-											"name": "Morgan_Line__c",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "$['Quantity__c']"
-										},
-										"sink": {
-											"name": "Quantity__c",
-											"type": "Decimal"
-										}
-									},
-									{
-										"source": {
-											"path": "$['Quantity_B_O__c']"
-										},
-										"sink": {
-											"name": "Quantity_B_O__c",
-											"type": "Decimal"
-										}
-									},
-									{
-										"source": {
-											"path": "$['Quantity_Shipped__c']"
-										},
-										"sink": {
-											"name": "Quantity_Shipped__c",
-											"type": "Decimal"
-										}
-									},
-									{
-										"source": {
-											"path": "$['Total_Amount__c']"
-										},
-										"sink": {
-											"name": "Total_Amount__c",
-											"type": "Decimal"
-										}
-									},
-									{
-										"source": {
-											"path": "$['Price_per_Part__c']"
-										},
-										"sink": {
-											"name": "Price_per_Part__c",
-											"type": "Decimal"
-										}
-									},
-									{
-										"source": {
-											"path": "$['H_E_Partner__c']"
-										},
-										"sink": {
-											"name": "H_E_Partner__c",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "$['CurrencyIsoCode']"
-										},
-										"sink": {
-											"name": "CurrencyIsoCode",
-											"type": "String"
-										}
-									}
-								],
-								"collectionReference": ""
-							}
-						},
-						"inputs": [
-							{
-								"referenceName": "blob_json",
-								"type": "DatasetReference",
-								"parameters": {
-									"folder": "stage",
-									"filename": "invoice_lines.json"
-								}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "salesforce_OBJ",
-								"type": "DatasetReference",
-								"parameters": {
-									"objName": "Invoice_Line_Item_Crown__c"
-								}
-							}
-						]
-					}
-				],
-				"annotations": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/blob_json')]",
-				"[concat(variables('factoryId'), '/datasets/salesforce_OBJ')]"
-			]
-		},
-		{
 			"name": "[concat(parameters('factoryName'), '/cleanup')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
@@ -5777,328 +4544,6 @@
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/FTP_BIN')]",
 				"[concat(variables('factoryId'), '/datasets/blob_json')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/pipeline1')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "call pass deb",
-						"type": "Copy",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "RestSource",
-								"httpRequestTimeout": "00:01:40",
-								"requestInterval": "00.00:00:00.010",
-								"requestMethod": "GET"
-							},
-							"sink": {
-								"type": "DelimitedTextSink",
-								"storeSettings": {
-									"type": "AzureBlobStorageWriteSettings"
-								},
-								"formatSettings": {
-									"type": "DelimitedTextWriteSettings",
-									"quoteAllText": true,
-									"fileExtension": ".txt"
-								}
-							},
-							"enableStaging": false
-						},
-						"inputs": [
-							{
-								"referenceName": "sfi_dset",
-								"type": "DatasetReference",
-								"parameters": {
-									"pass": "deb"
-								}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "blob_TEXT",
-								"type": "DatasetReference",
-								"parameters": {
-									"folder": "runs",
-									"filename": "sfi_call.txt"
-								}
-							}
-						]
-					},
-					{
-						"name": "account_to_sf",
-						"type": "Copy",
-						"dependsOn": [
-							{
-								"activity": "call pass deb",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "JsonSource",
-								"storeSettings": {
-									"type": "AzureBlobStorageReadSettings",
-									"recursive": true
-								},
-								"formatSettings": {
-									"type": "JsonReadSettings"
-								}
-							},
-							"sink": {
-								"type": "SalesforceSink",
-								"writeBatchSize": 5000,
-								"writeBehavior": "upsert",
-								"externalIdFieldName": "Pronto_Global_Account__c",
-								"ignoreNullValues": true
-							},
-							"enableStaging": false,
-							"enableSkipIncompatibleRow": true,
-							"translator": {
-								"type": "TabularTranslator",
-								"mappings": [
-									{
-										"source": {
-											"path": "$['Id']"
-										},
-										"sink": {
-											"name": "Id",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "$['MSUS_Pronto__c']"
-										},
-										"sink": {
-											"name": "MSUS_Pronto__c",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "$['Canada_Pronto__c']"
-										},
-										"sink": {
-											"name": "Canada_Pronto__c",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "$['ESUS_Pronto__c']"
-										},
-										"sink": {
-											"name": "ESUS_Pronto__c"
-										}
-									},
-									{
-										"source": {
-											"path": "$['MSAU_Pronto__c']"
-										},
-										"sink": {
-											"name": "MSAU_Pronto__c",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "$['MSAU_CD_Pronto__c']"
-										},
-										"sink": {
-											"name": "MSAU_CD_Pronto__c",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "$['Pronto_Global_Account__c']"
-										},
-										"sink": {
-											"name": "Pronto_Global_Account__c",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "$['Name']"
-										},
-										"sink": {
-											"name": "Name",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "$['BillingStreet']"
-										},
-										"sink": {
-											"name": "BillingStreet",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "$['BillingCity']"
-										},
-										"sink": {
-											"name": "BillingCity",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "$['BillingState']"
-										},
-										"sink": {
-											"name": "BillingState",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "$['BillingPostalCode']"
-										},
-										"sink": {
-											"name": "BillingPostalCode",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "$['BillingCountry']"
-										},
-										"sink": {
-											"name": "BillingCountry",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "$['ShippingStreet']"
-										},
-										"sink": {
-											"name": "ShippingStreet",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "$['ShippingCity']"
-										},
-										"sink": {
-											"name": "ShippingCity",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "$['ShippingState']"
-										},
-										"sink": {
-											"name": "ShippingState",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "$['ShippingPostalCode']"
-										},
-										"sink": {
-											"name": "ShippingPostalCode",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "$['ShippingCountry']"
-										},
-										"sink": {
-											"name": "ShippingCountry",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "$['Phone']"
-										},
-										"sink": {
-											"name": "Phone",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "$['CurrencyIsoCode']"
-										},
-										"sink": {
-											"name": "CurrencyIsoCode",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "$['Territory_ID__c']"
-										},
-										"sink": {
-											"name": "Territory_ID__c",
-											"type": "String"
-										}
-									}
-								],
-								"collectionReference": ""
-							}
-						},
-						"inputs": [
-							{
-								"referenceName": "blob_json",
-								"type": "DatasetReference",
-								"parameters": {
-									"folder": "stage",
-									"filename": "account.json"
-								}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "salesforce_OBJ",
-								"type": "DatasetReference",
-								"parameters": {
-									"objName": "Account"
-								}
-							}
-						]
-					}
-				],
-				"annotations": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/sfi_dset')]",
-				"[concat(variables('factoryId'), '/datasets/blob_TEXT')]",
-				"[concat(variables('factoryId'), '/datasets/blob_json')]",
-				"[concat(variables('factoryId'), '/datasets/salesforce_OBJ')]"
 			]
 		},
 		{
@@ -6300,15 +4745,6 @@
 										},
 										"sink": {
 											"name": "Invoice__c",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "$['Crown_Quote_ID__c']"
-										},
-										"sink": {
-											"name": "Crown_Quote_ID__c",
 											"type": "String"
 										}
 									},
@@ -7389,8 +5825,7 @@
 									"type": "AzureBlobStorageWriteSettings"
 								},
 								"formatSettings": {
-									"type": "JsonWriteSettings",
-									"quoteAllText": true
+									"type": "JsonWriteSettings"
 								}
 							},
 							"enableStaging": false
@@ -7508,15 +5943,6 @@
 										},
 										"sink": {
 											"name": "Stock_Code__c",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "$['Product_Class__c']"
-										},
-										"sink": {
-											"name": "Product_Class__c",
 											"type": "String"
 										}
 									},
@@ -7695,7 +6121,7 @@
 							"source": {
 								"type": "SalesforceSource",
 								"query": {
-									"value": "@concat('select Id,Name,Morgan_External_ID__c from Opportunity where Crown_Quote_ID__c in (',activity('getOppKeys').output.firstRow.keys,')')",
+									"value": "@concat('select Id,Name,Morgan_External_ID__c from Opportunity where Morgan_External_ID__c in (',activity('getOppKeys').output.firstRow.keys,')')",
 									"type": "Expression"
 								},
 								"readBehavior": "query"
@@ -7706,8 +6132,7 @@
 									"type": "AzureBlobStorageWriteSettings"
 								},
 								"formatSettings": {
-									"type": "JsonWriteSettings",
-									"quoteAllText": true
+									"type": "JsonWriteSettings"
 								}
 							},
 							"enableStaging": false
@@ -7817,7 +6242,14 @@
 					{
 						"name": "call pass 1",
 						"type": "Copy",
-						"dependsOn": [],
+						"dependsOn": [
+							{
+								"activity": "call pass 0-so",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
 						"policy": {
 							"timeout": "7.00:00:00",
 							"retry": 0,
@@ -7829,7 +6261,7 @@
 						"typeProperties": {
 							"source": {
 								"type": "RestSource",
-								"httpRequestTimeout": "00:01:40",
+								"httpRequestTimeout": "00:15:40",
 								"requestInterval": "00.00:00:00.010",
 								"requestMethod": "GET"
 							},
@@ -7894,7 +6326,7 @@
 						"typeProperties": {
 							"source": {
 								"type": "RestSource",
-								"httpRequestTimeout": "00:01:40",
+								"httpRequestTimeout": "00:15:40",
 								"requestInterval": "00.00:00:00.010",
 								"requestMethod": "GET"
 							},
@@ -7917,6 +6349,58 @@
 								"type": "DatasetReference",
 								"parameters": {
 									"pass": "2"
+								}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "blob_TEXT",
+								"type": "DatasetReference",
+								"parameters": {
+									"folder": "runs",
+									"filename": "sfi_call.txt"
+								}
+							}
+						]
+					},
+					{
+						"name": "call pass 0-so",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "RestSource",
+								"httpRequestTimeout": "00:15:40",
+								"requestInterval": "00.00:00:00.010",
+								"requestMethod": "GET"
+							},
+							"sink": {
+								"type": "DelimitedTextSink",
+								"storeSettings": {
+									"type": "AzureBlobStorageWriteSettings"
+								},
+								"formatSettings": {
+									"type": "DelimitedTextWriteSettings",
+									"quoteAllText": true,
+									"fileExtension": ".txt"
+								}
+							},
+							"enableStaging": false
+						},
+						"inputs": [
+							{
+								"referenceName": "sfi_dset",
+								"type": "DatasetReference",
+								"parameters": {
+									"pass": "0-so"
 								}
 							}
 						],
@@ -8516,283 +7000,6 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/x1-stock')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "STOCK_MASTER",
-						"type": "Copy",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "DelimitedTextSource",
-								"storeSettings": {
-									"type": "FtpReadSettings",
-									"recursive": false,
-									"wildcardFileName": "STOCK_MASTER-*.xml",
-									"useBinaryTransfer": false
-								},
-								"formatSettings": {
-									"type": "DelimitedTextReadSettings"
-								}
-							},
-							"sink": {
-								"type": "DelimitedTextSink",
-								"storeSettings": {
-									"type": "AzureBlobStorageWriteSettings",
-									"copyBehavior": "MergeFiles"
-								},
-								"formatSettings": {
-									"type": "DelimitedTextWriteSettings",
-									"quoteAllText": true,
-									"fileExtension": ".txt"
-								}
-							},
-							"enableStaging": false
-						},
-						"inputs": [
-							{
-								"referenceName": "FTP_TEXT",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "blob_TEXT",
-								"type": "DatasetReference",
-								"parameters": {
-									"folder": "intake",
-									"filename": "stock_master.xml"
-								}
-							}
-						]
-					}
-				],
-				"annotations": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/FTP_TEXT')]",
-				"[concat(variables('factoryId'), '/datasets/blob_TEXT')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/x2-stock')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "products",
-						"type": "Copy",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "JsonSource",
-								"storeSettings": {
-									"type": "AzureBlobStorageReadSettings",
-									"recursive": false,
-									"enablePartitionDiscovery": false
-								}
-							},
-							"sink": {
-								"type": "SalesforceSink",
-								"writeBatchSize": 5000,
-								"writeBehavior": "upsert",
-								"externalIdFieldName": "Product_Key__c",
-								"ignoreNullValues": true
-							},
-							"enableStaging": false,
-							"translator": {
-								"type": "TabularTranslator",
-								"mappings": [
-									{
-										"source": {
-											"path": "$['Id']"
-										},
-										"sink": {
-											"name": "Id",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "$['IsActive']"
-										},
-										"sink": {
-											"name": "IsActive",
-											"type": "Boolean"
-										}
-									},
-									{
-										"source": {
-											"path": "$['SKU__c']"
-										},
-										"sink": {
-											"name": "SKU__c",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "$['Stock_Code__c']"
-										},
-										"sink": {
-											"name": "Stock_Code__c",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "$['Name']"
-										},
-										"sink": {
-											"name": "Name",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "$['Description']"
-										},
-										"sink": {
-											"name": "Description",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "$['Part_num__c']"
-										},
-										"sink": {
-											"name": "Part_num__c",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "$['Crown_Standard_Price__c']"
-										},
-										"sink": {
-											"name": "Crown_Standard_Price__c",
-											"type": "Decimal"
-										}
-									},
-									{
-										"source": {
-											"path": "$['OEM_Retail_Price__c']"
-										},
-										"sink": {
-											"name": "OEM_Retail_Price__c",
-											"type": "Decimal"
-										}
-									},
-									{
-										"source": {
-											"path": "$['Product_Key__c']"
-										},
-										"sink": {
-											"name": "Product_Key__c",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "$['Family']"
-										},
-										"sink": {
-											"name": "Family",
-											"type": "String"
-										}
-									}
-								],
-								"collectionReference": ""
-							}
-						},
-						"inputs": [
-							{
-								"referenceName": "blob_json",
-								"type": "DatasetReference",
-								"parameters": {
-									"folder": "stage",
-									"filename": "product2.json"
-								}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "salesforce_OBJ",
-								"type": "DatasetReference",
-								"parameters": {
-									"objName": "Product2"
-								}
-							}
-						]
-					},
-					{
-						"name": "delete_ftp_copy1",
-						"type": "Delete",
-						"dependsOn": [
-							{
-								"activity": "products",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"dataset": {
-								"referenceName": "FTP_BIN",
-								"type": "DatasetReference",
-								"parameters": {
-									"folder": "/"
-								}
-							},
-							"enableLogging": false,
-							"storeSettings": {
-								"type": "FtpReadSettings",
-								"recursive": false,
-								"wildcardFileName": "STOCK_*.xml",
-								"useBinaryTransfer": true
-							}
-						}
-					}
-				],
-				"annotations": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/blob_json')]",
-				"[concat(variables('factoryId'), '/datasets/salesforce_OBJ')]",
-				"[concat(variables('factoryId'), '/datasets/FTP_BIN')]"
-			]
-		},
-		{
 			"name": "[concat(parameters('factoryName'), '/FTP_BIN')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -8837,10 +7044,9 @@
 					"location": {
 						"type": "FtpServerLocation"
 					},
-					"columnDelimiter": "\u0001",
-					"rowDelimiter": "\n",
-					"escapeChar": "\\",
-					"firstRowAsHeader": false,
+					"columnDelimiter": "|",
+					"escapeChar": "",
+					"firstRowAsHeader": true,
 					"quoteChar": ""
 				},
 				"schema": []
@@ -9269,22 +7475,7 @@
 			"properties": {
 				"annotations": [],
 				"runtimeState": "Stopped",
-				"pipelines": [
-					{
-						"pipelineReference": {
-							"referenceName": "2-run_stocks_only",
-							"type": "PipelineReference"
-						},
-						"parameters": {}
-					},
-					{
-						"pipelineReference": {
-							"referenceName": "1-run_customers_only",
-							"type": "PipelineReference"
-						},
-						"parameters": {}
-					}
-				],
+				"pipelines": [],
 				"type": "ScheduleTrigger",
 				"typeProperties": {
 					"recurrence": {
@@ -9295,10 +7486,7 @@
 					}
 				}
 			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/pipelines/2-run_stocks_only')]",
-				"[concat(variables('factoryId'), '/pipelines/1-run_customers_only')]"
-			]
+			"dependsOn": []
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/trigger2')]",
@@ -9307,15 +7495,7 @@
 			"properties": {
 				"annotations": [],
 				"runtimeState": "Stopped",
-				"pipelines": [
-					{
-						"pipelineReference": {
-							"referenceName": "3-run_SO_only",
-							"type": "PipelineReference"
-						},
-						"parameters": {}
-					}
-				],
+				"pipelines": [],
 				"type": "ScheduleTrigger",
 				"typeProperties": {
 					"recurrence": {
@@ -9326,9 +7506,7 @@
 					}
 				}
 			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/pipelines/3-run_SO_only')]"
-			]
+			"dependsOn": []
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/IRforSF')]",
@@ -9348,6 +7526,80 @@
 				}
 			},
 			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/0-run_all')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "1-run_customers_only",
+						"type": "ExecutePipeline",
+						"dependsOn": [],
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "1-run_customers_only",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {}
+						}
+					},
+					{
+						"name": "2-run_stocks_only",
+						"type": "ExecutePipeline",
+						"dependsOn": [
+							{
+								"activity": "1-run_customers_only",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "2-run_stocks_only",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {}
+						}
+					},
+					{
+						"name": "3-run_SO_only",
+						"type": "ExecutePipeline",
+						"dependsOn": [
+							{
+								"activity": "2-run_stocks_only",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "3-run_SO_only",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {}
+						}
+					}
+				],
+				"folder": {
+					"name": "Pronto_SF"
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/pipelines/1-run_customers_only')]",
+				"[concat(variables('factoryId'), '/pipelines/2-run_stocks_only')]",
+				"[concat(variables('factoryId'), '/pipelines/3-run_SO_only')]"
+			]
 		}
 	]
 }
