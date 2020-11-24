@@ -19,6 +19,7 @@
 						"type": "DelimitedTextSource",
 						"storeSettings": {
 							"type": "FtpReadSettings",
+							"maxConcurrentConnections": 1,
 							"recursive": false,
 							"wildcardFileName": "STOCK_MASTER-*.xml",
 							"useBinaryTransfer": false
@@ -31,6 +32,7 @@
 						"type": "DelimitedTextSink",
 						"storeSettings": {
 							"type": "AzureBlobStorageWriteSettings",
+							"maxConcurrentConnections": 1,
 							"copyBehavior": "MergeFiles"
 						},
 						"formatSettings": {
@@ -93,8 +95,7 @@
 					"sink": {
 						"type": "SalesforceSink",
 						"writeBatchSize": 5000,
-						"writeBehavior": "upsert",
-						"externalIdFieldName": "Product_Key__c",
+						"writeBehavior": "insert",
 						"ignoreNullValues": true
 					},
 					"enableStaging": false,
@@ -399,6 +400,7 @@
 						"type": "DelimitedTextSource",
 						"storeSettings": {
 							"type": "FtpReadSettings",
+							"maxConcurrentConnections": 1,
 							"recursive": false,
 							"wildcardFileName": "STOCK_HIERARCHY_MASTER-*.xml",
 							"useBinaryTransfer": false
@@ -411,6 +413,7 @@
 						"type": "DelimitedTextSink",
 						"storeSettings": {
 							"type": "AzureBlobStorageWriteSettings",
+							"maxConcurrentConnections": 1,
 							"copyBehavior": "MergeFiles"
 						},
 						"formatSettings": {
@@ -456,6 +459,7 @@
 						"type": "DelimitedTextSource",
 						"storeSettings": {
 							"type": "FtpReadSettings",
+							"maxConcurrentConnections": 1,
 							"recursive": false,
 							"wildcardFileName": "STOCK_HIERARCHY_TREE-*.xml",
 							"useBinaryTransfer": false
@@ -468,6 +472,7 @@
 						"type": "DelimitedTextSink",
 						"storeSettings": {
 							"type": "AzureBlobStorageWriteSettings",
+							"maxConcurrentConnections": 1,
 							"copyBehavior": "MergeFiles"
 						},
 						"formatSettings": {
@@ -513,6 +518,7 @@
 						"type": "DelimitedTextSource",
 						"storeSettings": {
 							"type": "FtpReadSettings",
+							"maxConcurrentConnections": 1,
 							"recursive": false,
 							"wildcardFileName": "SALES_ORDER_LINE-*.xml",
 							"useBinaryTransfer": false
@@ -525,6 +531,7 @@
 						"type": "DelimitedTextSink",
 						"storeSettings": {
 							"type": "AzureBlobStorageWriteSettings",
+							"maxConcurrentConnections": 1,
 							"copyBehavior": "MergeFiles"
 						},
 						"formatSettings": {
@@ -534,7 +541,15 @@
 						}
 					},
 					"enableStaging": false,
-					"parallelCopies": 1
+					"parallelCopies": 1,
+					"enableSkipIncompatibleRow": true,
+					"logStorageSettings": {
+						"linkedServiceName": {
+							"referenceName": "blob",
+							"type": "LinkedServiceReference"
+						},
+						"path": "data/logs"
+					}
 				},
 				"inputs": [
 					{
