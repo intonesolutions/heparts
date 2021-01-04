@@ -277,7 +277,8 @@
 					{
 						"activity": "products",
 						"dependencyConditions": [
-							"Succeeded"
+							"Succeeded",
+							"Failed"
 						]
 					}
 				],
