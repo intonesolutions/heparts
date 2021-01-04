@@ -1088,7 +1088,8 @@
 								}
 							},
 							"enableStaging": false,
-							"parallelCopies": 1
+							"parallelCopies": 1,
+							"enableSkipIncompatibleRow": true
 						},
 						"inputs": [
 							{
