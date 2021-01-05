@@ -1,0 +1,30 @@
+{
+	"name": "FTP_TEXT_dst",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "pronto_ftp",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"filename": {
+				"type": "string"
+			}
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "FtpServerLocation",
+				"fileName": {
+					"value": "@dataset().filename",
+					"type": "Expression"
+				}
+			},
+			"columnDelimiter": "|",
+			"escapeChar": "",
+			"firstRowAsHeader": true,
+			"quoteChar": ""
+		},
+		"schema": []
+	}
+}
