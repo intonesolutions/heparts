@@ -139,6 +139,9 @@
 					},
 					"sink": {
 						"type": "DelimitedTextSink",
+						"storeSettings": {
+							"type": "AzureBlobStorageWriteSettings"
+						},
 						"formatSettings": {
 							"type": "DelimitedTextWriteSettings",
 							"quoteAllText": true,
@@ -199,9 +202,10 @@
 				],
 				"outputs": [
 					{
-						"referenceName": "FTP_TEXT_dst",
+						"referenceName": "blob_csv",
 						"type": "DatasetReference",
 						"parameters": {
+							"folder": "/",
 							"filename": "__running.txt"
 						}
 					}
