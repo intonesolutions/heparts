@@ -5,20 +5,11 @@
 			"referenceName": "pronto_ftp",
 			"type": "LinkedServiceReference"
 		},
-		"parameters": {
-			"filename": {
-				"type": "string"
-			}
-		},
 		"annotations": [],
 		"type": "DelimitedText",
 		"typeProperties": {
 			"location": {
-				"type": "FtpServerLocation",
-				"fileName": {
-					"value": "@dataset().filename",
-					"type": "Expression"
-				}
+				"type": "FtpServerLocation"
 			},
 			"columnDelimiter": "|",
 			"escapeChar": "",
