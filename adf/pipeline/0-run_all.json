@@ -83,19 +83,18 @@
 				"userProperties": [],
 				"typeProperties": {
 					"dataset": {
-						"referenceName": "FTP_BIN",
+						"referenceName": "blob_csv",
 						"type": "DatasetReference",
 						"parameters": {
-							"folder": "/"
+							"folder": "/",
+							"filename": "__running.txt"
 						}
 					},
 					"enableLogging": false,
 					"storeSettings": {
-						"type": "FtpReadSettings",
+						"type": "AzureBlobStorageReadSettings",
 						"recursive": false,
-						"wildcardFileName": "__running.txt",
-						"enablePartitionDiscovery": false,
-						"useBinaryTransfer": true
+						"enablePartitionDiscovery": false
 					}
 				}
 			},
