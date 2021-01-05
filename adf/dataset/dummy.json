@@ -1,0 +1,17 @@
+{
+	"name": "dummy",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "pronto_ftp",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Binary",
+		"typeProperties": {
+			"location": {
+				"type": "FtpServerLocation",
+				"fileName": "__dummy_donot_remove.txt"
+			}
+		}
+	}
+}
