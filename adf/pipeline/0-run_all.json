@@ -204,6 +204,7 @@
 						"referenceName": "blob_csv",
 						"type": "DatasetReference",
 						"parameters": {
+							"folder": "/",
 							"filename": "__running.txt"
 						}
 					}
