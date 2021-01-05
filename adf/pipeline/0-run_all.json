@@ -199,7 +199,7 @@
 				],
 				"outputs": [
 					{
-						"referenceName": "FTP_TEXT",
+						"referenceName": "FTP_TEXT_dst",
 						"type": "DatasetReference",
 						"parameters": {
 							"filename": "__running.txt"
