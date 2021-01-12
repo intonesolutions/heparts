@@ -816,13 +816,6 @@
 							},
 							"enableStaging": false,
 							"enableSkipIncompatibleRow": true,
-							"logStorageSettings": {
-								"linkedServiceName": {
-									"referenceName": "blob",
-									"type": "LinkedServiceReference"
-								},
-								"path": "data/logs/accounts"
-							},
 							"translator": {
 								"type": "TabularTranslator",
 								"mappings": [
@@ -1751,14 +1744,7 @@
 							},
 							"enableStaging": false,
 							"parallelCopies": 1,
-							"enableSkipIncompatibleRow": true,
-							"logStorageSettings": {
-								"linkedServiceName": {
-									"referenceName": "blob",
-									"type": "LinkedServiceReference"
-								},
-								"path": "data/logs"
-							}
+							"enableSkipIncompatibleRow": true
 						},
 						"inputs": [
 							{
@@ -4064,7 +4050,10 @@
 									"referenceName": "blob",
 									"type": "LinkedServiceReference"
 								},
-								"path": "data/logs/opphead"
+								"path": {
+									"value": "@variables('tag')",
+									"type": "Expression"
+								}
 							},
 							"translator": {
 								"type": "TabularTranslator",
@@ -4517,7 +4506,10 @@
 									"referenceName": "blob",
 									"type": "LinkedServiceReference"
 								},
-								"path": "data/logs/oppline"
+								"path": {
+									"value": "@variables('tag')",
+									"type": "Expression"
+								}
 							},
 							"translator": {
 								"type": "TabularTranslator",
@@ -4843,7 +4835,10 @@
 									"referenceName": "blob",
 									"type": "LinkedServiceReference"
 								},
-								"path": "data/logs/invhead"
+								"path": {
+									"value": "@variables('tag')",
+									"type": "Expression"
+								}
 							},
 							"translator": {
 								"type": "TabularTranslator",
@@ -5244,7 +5239,10 @@
 									"referenceName": "blob",
 									"type": "LinkedServiceReference"
 								},
-								"path": "data/logs/invline"
+								"path": {
+									"value": "@variables('tag')",
+									"type": "Expression"
+								}
 							},
 							"translator": {
 								"type": "TabularTranslator",
@@ -5580,7 +5578,7 @@
 						],
 						"userProperties": [],
 						"typeProperties": {
-							"variableName": "q",
+							"variableName": "tag",
 							"value": {
 								"value": "@concat('select Id,Product2.Id,Product2.Product_Key__c,CurrencyIsoCode from PriceBookEntry where IsActive=true',if(greater(lastindexof(activity('getProdKeys').output.firstRow.keys,','),90000),'',concat(' and Product2.Product_Key__c in (',activity('getProdKeys').output.firstRow.keys,')')))",
 								"type": "Expression"
@@ -5714,7 +5712,14 @@
 					{
 						"name": "call pass 0-so",
 						"type": "Copy",
-						"dependsOn": [],
+						"dependsOn": [
+							{
+								"activity": "set tag",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
 						"policy": {
 							"timeout": "7.00:00:00",
 							"retry": 0,
@@ -5762,9 +5767,25 @@
 								}
 							}
 						]
+					},
+					{
+						"name": "set tag",
+						"type": "SetVariable",
+						"dependsOn": [],
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "tag",
+							"value": {
+								"value": "@concat('data/logs',formatDateTime(utcnow(),'yyyy-MM-ddTHH:mm'))",
+								"type": "Expression"
+							}
+						}
 					}
 				],
 				"variables": {
+					"tag": {
+						"type": "String"
+					},
 					"q": {
 						"type": "String"
 					}
