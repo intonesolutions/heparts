@@ -1774,7 +1774,7 @@
 				"typeProperties": {
 					"variableName": "tag",
 					"value": {
-						"value": "@concat('data/logs',formatDateTime(utcnow(),'yyyy-MM-ddTHH:mm'))",
+						"value": "@concat('data/logs/',formatDateTime(utcnow(),'yyyy-MM-ddTHH:mm'))",
 						"type": "Expression"
 					}
 				}
