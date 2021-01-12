@@ -1783,6 +1783,9 @@
 		"variables": {
 			"tag": {
 				"type": "String"
+			},
+			"q": {
+				"type": "String"
 			}
 		},
 		"folder": {
