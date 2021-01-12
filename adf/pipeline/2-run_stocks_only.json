@@ -544,14 +544,7 @@
 					},
 					"enableStaging": false,
 					"parallelCopies": 1,
-					"enableSkipIncompatibleRow": true,
-					"logStorageSettings": {
-						"linkedServiceName": {
-							"referenceName": "blob",
-							"type": "LinkedServiceReference"
-						},
-						"path": "data/logs"
-					}
+					"enableSkipIncompatibleRow": true
 				},
 				"inputs": [
 					{
