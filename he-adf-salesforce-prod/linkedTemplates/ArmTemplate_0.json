@@ -1597,8 +1597,7 @@
 				"[concat(variables('factoryId'), '/datasets/blob_json')]",
 				"[concat(variables('factoryId'), '/datasets/FTP_BIN')]",
 				"[concat(variables('factoryId'), '/datasets/blob_bin')]",
-				"[concat(variables('factoryId'), '/datasets/sfi_dset')]",
-				"[concat(variables('factoryId'), '/linkedServices/blob')]"
+				"[concat(variables('factoryId'), '/datasets/sfi_dset')]"
 			]
 		}
 	]
