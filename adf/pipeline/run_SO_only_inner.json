@@ -1605,7 +1605,7 @@
 				"typeProperties": {
 					"source": {
 						"type": "RestSource",
-						"httpRequestTimeout": "00:15:40",
+						"httpRequestTimeout": "00:30:40",
 						"requestInterval": "00.00:00:00.010",
 						"requestMethod": "GET"
 					},
@@ -1670,7 +1670,7 @@
 				"typeProperties": {
 					"source": {
 						"type": "RestSource",
-						"httpRequestTimeout": "00:15:40",
+						"httpRequestTimeout": "00:30:40",
 						"requestInterval": "00.00:00:00.010",
 						"requestMethod": "GET"
 					},
@@ -1729,7 +1729,7 @@
 				"typeProperties": {
 					"source": {
 						"type": "RestSource",
-						"httpRequestTimeout": "00:15:40",
+						"httpRequestTimeout": "00:30:40",
 						"requestInterval": "00.00:00:00.010",
 						"requestMethod": "GET"
 					},
