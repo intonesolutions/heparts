@@ -1576,7 +1576,7 @@
 				],
 				"userProperties": [],
 				"typeProperties": {
-					"variableName": "tag",
+					"variableName": "q",
 					"value": {
 						"value": "@concat('select Id,Product2.Id,Product2.Product_Key__c,CurrencyIsoCode from PriceBookEntry where IsActive=true',if(greater(lastindexof(activity('getProdKeys').output.firstRow.keys,','),90000),'',concat(' and Product2.Product_Key__c in (',activity('getProdKeys').output.firstRow.keys,')')))",
 						"type": "Expression"
