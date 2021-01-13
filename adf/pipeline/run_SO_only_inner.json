@@ -718,6 +718,15 @@
 									"name": "Total_Ordered_Line_Amount__c",
 									"type": "Decimal"
 								}
+							},
+							{
+								"source": {
+									"path": "$['Comments__c']"
+								},
+								"sink": {
+									"name": "Comments__c",
+									"type": "String"
+								}
 							}
 						],
 						"collectionReference": ""
@@ -775,6 +784,9 @@
 							"type": "AzureBlobStorageReadSettings",
 							"recursive": false,
 							"enablePartitionDiscovery": false
+						},
+						"formatSettings": {
+							"type": "JsonReadSettings"
 						}
 					},
 					"dataset": {
