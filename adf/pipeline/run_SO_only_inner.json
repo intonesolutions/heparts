@@ -48,7 +48,10 @@
 							"referenceName": "blob",
 							"type": "LinkedServiceReference"
 						},
-						"path": "data/logs/opphead"
+						"path": {
+							"value": "@variables('tag')",
+							"type": "Expression"
+						}
 					},
 					"translator": {
 						"type": "TabularTranslator",
@@ -501,7 +504,10 @@
 							"referenceName": "blob",
 							"type": "LinkedServiceReference"
 						},
-						"path": "data/logs/oppline"
+						"path": {
+							"value": "@variables('tag')",
+							"type": "Expression"
+						}
 					},
 					"translator": {
 						"type": "TabularTranslator",
@@ -712,6 +718,15 @@
 									"name": "Total_Ordered_Line_Amount__c",
 									"type": "Decimal"
 								}
+							},
+							{
+								"source": {
+									"path": "$['Comments__c']"
+								},
+								"sink": {
+									"name": "Comments__c",
+									"type": "String"
+								}
 							}
 						],
 						"collectionReference": ""
@@ -769,6 +784,9 @@
 							"type": "AzureBlobStorageReadSettings",
 							"recursive": false,
 							"enablePartitionDiscovery": false
+						},
+						"formatSettings": {
+							"type": "JsonReadSettings"
 						}
 					},
 					"dataset": {
@@ -827,7 +845,10 @@
 							"referenceName": "blob",
 							"type": "LinkedServiceReference"
 						},
-						"path": "data/logs/invhead"
+						"path": {
+							"value": "@variables('tag')",
+							"type": "Expression"
+						}
 					},
 					"translator": {
 						"type": "TabularTranslator",
@@ -1228,7 +1249,10 @@
 							"referenceName": "blob",
 							"type": "LinkedServiceReference"
 						},
-						"path": "data/logs/invline"
+						"path": {
+							"value": "@variables('tag')",
+							"type": "Expression"
+						}
 					},
 					"translator": {
 						"type": "TabularTranslator",
@@ -1593,7 +1617,7 @@
 				"typeProperties": {
 					"source": {
 						"type": "RestSource",
-						"httpRequestTimeout": "00:15:40",
+						"httpRequestTimeout": "00:30:40",
 						"requestInterval": "00.00:00:00.010",
 						"requestMethod": "GET"
 					},
@@ -1658,7 +1682,7 @@
 				"typeProperties": {
 					"source": {
 						"type": "RestSource",
-						"httpRequestTimeout": "00:15:40",
+						"httpRequestTimeout": "00:30:40",
 						"requestInterval": "00.00:00:00.010",
 						"requestMethod": "GET"
 					},
@@ -1698,7 +1722,14 @@
 			{
 				"name": "call pass 0-so",
 				"type": "Copy",
-				"dependsOn": [],
+				"dependsOn": [
+					{
+						"activity": "set tag",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
 				"policy": {
 					"timeout": "7.00:00:00",
 					"retry": 0,
@@ -1710,7 +1741,7 @@
 				"typeProperties": {
 					"source": {
 						"type": "RestSource",
-						"httpRequestTimeout": "00:15:40",
+						"httpRequestTimeout": "00:30:40",
 						"requestInterval": "00.00:00:00.010",
 						"requestMethod": "GET"
 					},
@@ -1746,9 +1777,25 @@
 						}
 					}
 				]
+			},
+			{
+				"name": "set tag",
+				"type": "SetVariable",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "tag",
+					"value": {
+						"value": "@concat('data/logs/',formatDateTime(utcnow(),'yyyy-MM-ddTHH:mm'))",
+						"type": "Expression"
+					}
+				}
 			}
 		],
 		"variables": {
+			"tag": {
+				"type": "String"
+			},
 			"q": {
 				"type": "String"
 			}
