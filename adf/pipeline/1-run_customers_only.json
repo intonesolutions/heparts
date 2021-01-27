@@ -853,6 +853,24 @@
 									"name": "Morgan_Chile_Sales_Rep__c",
 									"type": "String"
 								}
+							},
+							{
+								"source": {
+									"path": "$['Peru_Pronto__c']"
+								},
+								"sink": {
+									"name": "Peru_Pronto__c",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['Morgan_Peru_Sales_Rep__c']"
+								},
+								"sink": {
+									"name": "Morgan_Peru_Sales_Rep__c",
+									"type": "String"
+								}
 							}
 						],
 						"collectionReference": ""
