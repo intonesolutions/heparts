@@ -4114,7 +4114,7 @@
 						"typeProperties": {
 							"source": {
 								"type": "SalesforceSource",
-								"query": "select Id,Pronto_Global_Account__c,MSUS_Pronto__c from Account",
+								"query": "select Id,Pronto_Global_Account__c,MSUS_Pronto__c,Canada_Pronto__c,ESUS_Pronto__c,MSAU_CD_Pronto__c,MSAU_Pronto__c,Allgo_Pronto__c,Zambia_Pronto__c,CSAU_Pronto__c,Dom_Ex_Pronto__c,Chile_Pronto__c,Peru_Pronto__c from Account",
 								"readBehavior": "query"
 							},
 							"sink": {
