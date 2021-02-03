@@ -312,7 +312,8 @@
 					{
 						"activity": "account_to_sf",
 						"dependencyConditions": [
-							"Succeeded"
+							"Succeeded",
+							"Failed"
 						]
 					}
 				],
