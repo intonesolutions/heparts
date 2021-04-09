@@ -4017,6 +4017,223 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/pipeline1')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "products",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "JsonSource",
+								"storeSettings": {
+									"type": "AzureBlobStorageReadSettings",
+									"recursive": false,
+									"enablePartitionDiscovery": false
+								},
+								"formatSettings": {
+									"type": "JsonReadSettings"
+								}
+							},
+							"sink": {
+								"type": "SalesforceSink",
+								"writeBatchSize": 5000,
+								"writeBehavior": "upsert",
+								"externalIdFieldName": "Product_Key__c",
+								"ignoreNullValues": true
+							},
+							"enableStaging": false,
+							"enableSkipIncompatibleRow": true,
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"path": "$['Id']"
+										},
+										"sink": {
+											"name": "Id",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "$['IsActive']"
+										},
+										"sink": {
+											"name": "IsActive",
+											"type": "Boolean"
+										}
+									},
+									{
+										"source": {
+											"path": "$['SKU__c']"
+										},
+										"sink": {
+											"name": "SKU__c",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "$['Stock_Code__c']"
+										},
+										"sink": {
+											"name": "Stock_Code__c",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "$['Name']"
+										},
+										"sink": {
+											"name": "Name",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "$['Description']"
+										},
+										"sink": {
+											"name": "Description",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "$['Part_num__c']"
+										},
+										"sink": {
+											"name": "Part_num__c",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "$['Crown_Standard_Price__c']"
+										},
+										"sink": {
+											"name": "Crown_Standard_Price__c",
+											"type": "Decimal"
+										}
+									},
+									{
+										"source": {
+											"path": "$['OEM_Retail_Price__c']"
+										},
+										"sink": {
+											"name": "OEM_Retail_Price__c",
+											"type": "Decimal"
+										}
+									},
+									{
+										"source": {
+											"path": "$['Product_Key__c']"
+										},
+										"sink": {
+											"name": "Product_Key__c",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "$['Family']"
+										},
+										"sink": {
+											"name": "Family",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "$['Product_Category__c']"
+										},
+										"sink": {
+											"name": "Product_Category__c",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "$['Product_Group_Code__c']"
+										},
+										"sink": {
+											"name": "Product_Group_Code__c",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "$['Product_Group_Description__c']"
+										},
+										"sink": {
+											"name": "Product_Group_Description__c",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "$['Product_Class__c']"
+										},
+										"sink": {
+											"name": "Product_Class__c",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "$['CurrencyIsoCode']"
+										},
+										"sink": {
+											"name": "CurrencyIsoCode"
+										}
+									}
+								],
+								"collectionReference": ""
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "blob_json",
+								"type": "DatasetReference",
+								"parameters": {
+									"folder": "stage",
+									"filename": "product2.json"
+								}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "salesforce_OBJ",
+								"type": "DatasetReference",
+								"parameters": {
+									"objName": "Product2"
+								}
+							}
+						]
+					}
+				],
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/blob_json')]",
+				"[concat(variables('factoryId'), '/datasets/salesforce_OBJ')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/run_SO_only_inner')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
@@ -6806,7 +7023,7 @@
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"annotations": [],
-				"runtimeState": "Stopped",
+				"runtimeState": "Started",
 				"pipelines": [
 					{
 						"pipelineReference": {
@@ -6848,223 +7065,6 @@
 				}
 			},
 			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/pipeline1')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "products",
-						"type": "Copy",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "JsonSource",
-								"storeSettings": {
-									"type": "AzureBlobStorageReadSettings",
-									"recursive": false,
-									"enablePartitionDiscovery": false
-								},
-								"formatSettings": {
-									"type": "JsonReadSettings"
-								}
-							},
-							"sink": {
-								"type": "SalesforceSink",
-								"writeBatchSize": 5000,
-								"writeBehavior": "upsert",
-								"externalIdFieldName": "Product_Key__c",
-								"ignoreNullValues": true
-							},
-							"enableStaging": false,
-							"enableSkipIncompatibleRow": true,
-							"translator": {
-								"type": "TabularTranslator",
-								"mappings": [
-									{
-										"source": {
-											"path": "$['Id']"
-										},
-										"sink": {
-											"name": "Id",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "$['IsActive']"
-										},
-										"sink": {
-											"name": "IsActive",
-											"type": "Boolean"
-										}
-									},
-									{
-										"source": {
-											"path": "$['SKU__c']"
-										},
-										"sink": {
-											"name": "SKU__c",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "$['Stock_Code__c']"
-										},
-										"sink": {
-											"name": "Stock_Code__c",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "$['Name']"
-										},
-										"sink": {
-											"name": "Name",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "$['Description']"
-										},
-										"sink": {
-											"name": "Description",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "$['Part_num__c']"
-										},
-										"sink": {
-											"name": "Part_num__c",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "$['Crown_Standard_Price__c']"
-										},
-										"sink": {
-											"name": "Crown_Standard_Price__c",
-											"type": "Decimal"
-										}
-									},
-									{
-										"source": {
-											"path": "$['OEM_Retail_Price__c']"
-										},
-										"sink": {
-											"name": "OEM_Retail_Price__c",
-											"type": "Decimal"
-										}
-									},
-									{
-										"source": {
-											"path": "$['Product_Key__c']"
-										},
-										"sink": {
-											"name": "Product_Key__c",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "$['Family']"
-										},
-										"sink": {
-											"name": "Family",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "$['Product_Category__c']"
-										},
-										"sink": {
-											"name": "Product_Category__c",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "$['Product_Group_Code__c']"
-										},
-										"sink": {
-											"name": "Product_Group_Code__c",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "$['Product_Group_Description__c']"
-										},
-										"sink": {
-											"name": "Product_Group_Description__c",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "$['Product_Class__c']"
-										},
-										"sink": {
-											"name": "Product_Class__c",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "$['CurrencyIsoCode']"
-										},
-										"sink": {
-											"name": "CurrencyIsoCode"
-										}
-									}
-								],
-								"collectionReference": ""
-							}
-						},
-						"inputs": [
-							{
-								"referenceName": "blob_json",
-								"type": "DatasetReference",
-								"parameters": {
-									"folder": "stage",
-									"filename": "product2.json"
-								}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "salesforce_OBJ",
-								"type": "DatasetReference",
-								"parameters": {
-									"objName": "Product2"
-								}
-							}
-						]
-					}
-				],
-				"annotations": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/blob_json')]",
-				"[concat(variables('factoryId'), '/datasets/salesforce_OBJ')]"
-			]
 		}
 	]
 }
