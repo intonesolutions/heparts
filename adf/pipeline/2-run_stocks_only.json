@@ -627,51 +627,6 @@
 							},
 							{
 								"source": {
-									"path": "$['SKU__c']"
-								},
-								"sink": {
-									"name": "SKU__c",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"path": "$['Stock_Code__c']"
-								},
-								"sink": {
-									"name": "Stock_Code__c",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"path": "$['Part_num__c']"
-								},
-								"sink": {
-									"name": "Part_num__c",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"path": "$['Crown_Standard_Price__c']"
-								},
-								"sink": {
-									"name": "Crown_Standard_Price__c",
-									"type": "Decimal"
-								}
-							},
-							{
-								"source": {
-									"path": "$['OEM_Retail_Price__c']"
-								},
-								"sink": {
-									"name": "OEM_Retail_Price__c",
-									"type": "Decimal"
-								}
-							},
-							{
-								"source": {
 									"path": "$['Product_Key__c']"
 								},
 								"sink": {
@@ -722,14 +677,6 @@
 								"sink": {
 									"name": "Product_Class__c",
 									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"path": "$['CurrencyIsoCode']"
-								},
-								"sink": {
-									"name": "CurrencyIsoCode"
 								}
 							}
 						],
