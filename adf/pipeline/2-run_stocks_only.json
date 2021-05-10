@@ -101,6 +101,20 @@
 					},
 					"enableStaging": false,
 					"enableSkipIncompatibleRow": true,
+					"logSettings": {
+						"enableCopyActivityLog": true,
+						"copyActivityLogSettings": {
+							"logLevel": "Warning",
+							"enableReliableLogging": false
+						},
+						"logLocationSettings": {
+							"linkedServiceName": {
+								"referenceName": "blob",
+								"type": "LinkedServiceReference"
+							},
+							"path": "data/logs/_stocks"
+						}
+					},
 					"translator": {
 						"type": "TabularTranslator",
 						"mappings": [
@@ -604,6 +618,20 @@
 					},
 					"enableStaging": false,
 					"enableSkipIncompatibleRow": true,
+					"logSettings": {
+						"enableCopyActivityLog": true,
+						"copyActivityLogSettings": {
+							"logLevel": "Warning",
+							"enableReliableLogging": false
+						},
+						"logLocationSettings": {
+							"linkedServiceName": {
+								"referenceName": "blob",
+								"type": "LinkedServiceReference"
+							},
+							"path": "data/logs/_stocks"
+						}
+					},
 					"translator": {
 						"type": "TabularTranslator",
 						"mappings": [
@@ -677,6 +705,14 @@
 								"sink": {
 									"name": "Product_Class__c",
 									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['Description']"
+								},
+								"sink": {
+									"name": "Description"
 								}
 							}
 						],
