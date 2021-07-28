@@ -1,0 +1,6 @@
+{
+	"name": "onprem-informatica",
+	"properties": {
+		"type": "SelfHosted"
+	}
+}
