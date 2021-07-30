@@ -441,6 +441,14 @@
 								"sink": {
 									"name": "SO_Type_Code__c"
 								}
+							},
+							{
+								"source": {
+									"path": "$['SO_Reason_Code__c']"
+								},
+								"sink": {
+									"name": "SO_Reason_Code__c"
+								}
 							}
 						],
 						"collectionReference": ""
