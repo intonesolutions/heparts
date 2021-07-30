@@ -4846,6 +4846,22 @@
 											"name": "imported__c",
 											"type": "String"
 										}
+									},
+									{
+										"source": {
+											"path": "$['SO_Type_Code__c']"
+										},
+										"sink": {
+											"name": "SO_Type_Code__c"
+										}
+									},
+									{
+										"source": {
+											"path": "$['SO_Reason_Code__c']"
+										},
+										"sink": {
+											"name": "SO_Reason_Code__c"
+										}
 									}
 								],
 								"collectionReference": ""
@@ -7110,7 +7126,8 @@
 					"functionKey": {
 						"type": "SecureString",
 						"value": "[parameters('AzureFunction1_functionKey')]"
-					}
+					},
+					"authentication": "Anonymous"
 				}
 			},
 			"dependsOn": []
@@ -7239,6 +7256,16 @@
 						}
 					}
 				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/onprem-informatica')]",
+			"type": "Microsoft.DataFactory/factories/integrationRuntimes",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "SelfHosted",
+				"typeProperties": {}
 			},
 			"dependsOn": []
 		}
