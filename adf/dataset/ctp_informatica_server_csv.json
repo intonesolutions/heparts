@@ -1,0 +1,90 @@
+{
+	"name": "ctp_informatica_server_csv",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ctp_informatica_server",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"folder": {
+				"type": "string"
+			},
+			"filename": {
+				"type": "string"
+			}
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "FileServerLocation",
+				"fileName": {
+					"value": "@dataset().filename",
+					"type": "Expression"
+				},
+				"folderPath": {
+					"value": "@dataset().folder",
+					"type": "Expression"
+				}
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": [
+			{
+				"name": "Project",
+				"type": "String"
+			},
+			{
+				"name": "Stock Code",
+				"type": "String"
+			},
+			{
+				"name": "Full Serial",
+				"type": "String"
+			},
+			{
+				"name": "Serial",
+				"type": "String"
+			},
+			{
+				"name": "Serial Suffix",
+				"type": "String"
+			},
+			{
+				"name": "Transaction",
+				"type": "String"
+			},
+			{
+				"name": "Trans Date",
+				"type": "String"
+			},
+			{
+				"name": "Customer Reference",
+				"type": "String"
+			},
+			{
+				"name": "Customer Code",
+				"type": "String"
+			},
+			{
+				"name": "Job Source",
+				"type": "String"
+			},
+			{
+				"name": "User ID",
+				"type": "String"
+			},
+			{
+				"name": "Audit Date/Time",
+				"type": "String"
+			},
+			{
+				"name": "Process Desc",
+				"type": "String"
+			}
+		]
+	}
+}
