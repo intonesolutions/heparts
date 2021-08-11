@@ -225,6 +225,62 @@
 						}
 					}
 				]
+			},
+			{
+				"name": "Account_from_sf",
+				"type": "Copy",
+				"dependsOn": [
+					{
+						"activity": "cp_L20",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "SalesforceSource",
+						"query": "select Id,Pronto_Global_Account__c,MSUS_Pronto__c,Canada_Pronto__c,ESUS_Pronto__c,MSAU_CD_Pronto__c,MSAU_Pronto__c,Allgo_Pronto__c,Zambia_Pronto__c,CSAU_Pronto__c,Dom_Ex_Pronto__c,Chile_Pronto__c,Peru_Pronto__c from Account",
+						"readBehavior": "query"
+					},
+					"sink": {
+						"type": "JsonSink",
+						"storeSettings": {
+							"type": "AzureBlobStorageWriteSettings"
+						},
+						"formatSettings": {
+							"type": "JsonWriteSettings"
+						}
+					},
+					"enableStaging": false
+				},
+				"inputs": [
+					{
+						"referenceName": "salesforce_OBJ",
+						"type": "DatasetReference",
+						"parameters": {
+							"objName": "Account"
+						}
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "blob_json",
+						"type": "DatasetReference",
+						"parameters": {
+							"folder": "ctp/intake",
+							"filename": "account.json"
+						}
+					}
+				]
 			}
 		],
 		"folder": {
