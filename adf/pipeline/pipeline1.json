@@ -1,0 +1,261 @@
+{
+	"name": "pipeline1",
+	"properties": {
+		"activities": [
+			{
+				"name": "ctp_to_sf_upd",
+				"description": "make sure you map the lookup correctly to\nProduct_Inventory__r.Product_Key__c",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "JsonSource",
+						"storeSettings": {
+							"type": "AzureBlobStorageReadSettings",
+							"recursive": true
+						},
+						"formatSettings": {
+							"type": "JsonReadSettings"
+						}
+					},
+					"sink": {
+						"type": "SalesforceSink",
+						"writeBatchSize": 5000,
+						"writeBehavior": "upsert",
+						"externalIdFieldName": "CIF_External_id__c",
+						"ignoreNullValues": true
+					},
+					"enableStaging": false,
+					"enableSkipIncompatibleRow": true,
+					"logSettings": {
+						"enableCopyActivityLog": true,
+						"copyActivityLogSettings": {
+							"logLevel": "Warning",
+							"enableReliableLogging": false
+						},
+						"logLocationSettings": {
+							"linkedServiceName": {
+								"referenceName": "blob",
+								"type": "LinkedServiceReference"
+							},
+							"path": "data/ctp/logs"
+						}
+					},
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"path": "$['CIF_External_id__c']"
+								},
+								"sink": {
+									"name": "CIF_External_id__c",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['H_E_Partner__c']"
+								},
+								"sink": {
+									"name": "H_E_Partner__c",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['Component__c']"
+								},
+								"sink": {
+									"name": "Component__c",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['Make__c']"
+								},
+								"sink": {
+									"name": "Equipment_Make__c",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['Model__c']"
+								},
+								"sink": {
+									"name": "Equipment_Model__c",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['Component_OEM__c']"
+								},
+								"sink": {
+									"name": "Component_OEM__c",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['W_O__c']"
+								},
+								"sink": {
+									"name": "W_O__c",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['Date_Sold__c']"
+								},
+								"sink": {
+									"name": "Date_Component_Sold__c",
+									"type": "DateTime"
+								}
+							},
+							{
+								"source": {
+									"path": "$['Component_Status__c']"
+								},
+								"sink": {
+									"name": "Component_Status__c",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['Status__c']"
+								},
+								"sink": {
+									"name": "Status__c",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['Customer_PO__c']"
+								},
+								"sink": {
+									"name": "Customer_PO__c",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['Serial_Number__c']"
+								},
+								"sink": {
+									"name": "Serial_Number__c",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['Serial_Extension__c']"
+								},
+								"sink": {
+									"name": "Serial_Extension__c",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['Full_Serial_Number__c']"
+								},
+								"sink": {
+									"name": "Full_Serial_Number__c",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['Part_Number__c']"
+								},
+								"sink": {
+									"name": "Part_Number__c",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['Account__c']"
+								},
+								"sink": {
+									"name": "Account__c",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['Pronto_Account__c']"
+								},
+								"sink": {
+									"name": "Pronto_Account__c",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['Job_Source__c']"
+								},
+								"sink": {
+									"name": "Job_Source__c",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['Transaction__c']"
+								},
+								"sink": {
+									"name": "Transaction__c",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['Product_Inventory__c']"
+								},
+								"sink": {
+									"name": "Product_Inventory__r.Product_Key__c"
+								}
+							}
+						],
+						"collectionReference": ""
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "blob_json",
+						"type": "DatasetReference",
+						"parameters": {
+							"folder": "ctp/stage",
+							"filename": "updates.json"
+						}
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "salesforce_OBJ",
+						"type": "DatasetReference",
+						"parameters": {
+							"objName": "Components_In_Field_CIF__c"
+						}
+					}
+				]
+			}
+		],
+		"annotations": []
+	}
+}
