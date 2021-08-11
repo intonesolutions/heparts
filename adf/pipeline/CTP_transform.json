@@ -281,6 +281,309 @@
 						}
 					}
 				]
+			},
+			{
+				"name": "comp_list_From_sf",
+				"type": "Copy",
+				"dependsOn": [
+					{
+						"activity": "cp_L20",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "SalesforceSource",
+						"readBehavior": "query"
+					},
+					"sink": {
+						"type": "JsonSink",
+						"storeSettings": {
+							"type": "AzureBlobStorageWriteSettings"
+						},
+						"formatSettings": {
+							"type": "JsonWriteSettings"
+						}
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "Id",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['Id']"
+								}
+							},
+							{
+								"source": {
+									"name": "OwnerId",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['OwnerId']"
+								}
+							},
+							{
+								"source": {
+									"name": "IsDeleted",
+									"type": "Boolean"
+								},
+								"sink": {
+									"path": "$['IsDeleted']"
+								}
+							},
+							{
+								"source": {
+									"name": "Name",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['Name']"
+								}
+							},
+							{
+								"source": {
+									"name": "CurrencyIsoCode",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['CurrencyIsoCode']"
+								}
+							},
+							{
+								"source": {
+									"name": "RecordTypeId",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['RecordTypeId']"
+								}
+							},
+							{
+								"source": {
+									"name": "CreatedDate",
+									"type": "DateTime"
+								},
+								"sink": {
+									"path": "$['CreatedDate']"
+								}
+							},
+							{
+								"source": {
+									"name": "CreatedById",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['CreatedById']"
+								}
+							},
+							{
+								"source": {
+									"name": "LastModifiedDate",
+									"type": "DateTime"
+								},
+								"sink": {
+									"path": "$['LastModifiedDate']"
+								}
+							},
+							{
+								"source": {
+									"name": "LastModifiedById",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['LastModifiedById']"
+								}
+							},
+							{
+								"source": {
+									"name": "SystemModstamp",
+									"type": "DateTime"
+								},
+								"sink": {
+									"path": "$['SystemModstamp']"
+								}
+							},
+							{
+								"source": {
+									"name": "LastActivityDate",
+									"type": "DateTime"
+								},
+								"sink": {
+									"path": "$['LastActivityDate']"
+								}
+							},
+							{
+								"source": {
+									"name": "LastViewedDate",
+									"type": "DateTime"
+								},
+								"sink": {
+									"path": "$['LastViewedDate']"
+								}
+							},
+							{
+								"source": {
+									"name": "LastReferencedDate",
+									"type": "DateTime"
+								},
+								"sink": {
+									"path": "$['LastReferencedDate']"
+								}
+							},
+							{
+								"source": {
+									"name": "Main_Model__c",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['Main_Model__c']"
+								}
+							},
+							{
+								"source": {
+									"name": "Make__c",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['Make__c']"
+								}
+							},
+							{
+								"source": {
+									"name": "Model__c",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['Model__c']"
+								}
+							},
+							{
+								"source": {
+									"name": "Model_Series__c",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['Model_Series__c']"
+								}
+							},
+							{
+								"source": {
+									"name": "Serial__c",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['Serial__c']"
+								}
+							},
+							{
+								"source": {
+									"name": "Component__c",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['Component__c']"
+								}
+							},
+							{
+								"source": {
+									"name": "OEM__c",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['OEM__c']"
+								}
+							},
+							{
+								"source": {
+									"name": "External_id__c",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['External_id__c']"
+								}
+							},
+							{
+								"source": {
+									"name": "Item_Code__c",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['Item_Code__c']"
+								}
+							},
+							{
+								"source": {
+									"name": "Item_Group__c",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['Item_Group__c']"
+								}
+							},
+							{
+								"source": {
+									"name": "Description__c",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['Description__c']"
+								}
+							},
+							{
+								"source": {
+									"name": "H_E_Partner__c",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['H_E_Partner__c']"
+								}
+							},
+							{
+								"source": {
+									"name": "Item_GTIN__c",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['Item_GTIN__c']"
+								}
+							}
+						]
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "salesforce_OBJ",
+						"type": "DatasetReference",
+						"parameters": {
+							"objName": "CTP_Component_List__c"
+						}
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "blob_json",
+						"type": "DatasetReference",
+						"parameters": {
+							"folder": "ctp/intake",
+							"filename": "complist.json"
+						}
+					}
+				]
 			}
 		],
 		"folder": {
