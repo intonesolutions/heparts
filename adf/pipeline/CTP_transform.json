@@ -721,11 +721,19 @@
 							{
 								"source": {
 									"path": "$['Make__c']"
+								},
+								"sink": {
+									"name": "Equipment_Make__c",
+									"type": "String"
 								}
 							},
 							{
 								"source": {
 									"path": "$['Model__c']"
+								},
+								"sink": {
+									"name": "Equipment_Model__c",
+									"type": "String"
 								}
 							},
 							{
@@ -749,6 +757,10 @@
 							{
 								"source": {
 									"path": "$['Date_Sold__c']"
+								},
+								"sink": {
+									"name": "Date_Component_Sold__c",
+									"type": "DateTime"
 								}
 							},
 							{
@@ -955,11 +967,19 @@
 							{
 								"source": {
 									"path": "$['Make__c']"
+								},
+								"sink": {
+									"name": "Equipment_Make__c",
+									"type": "String"
 								}
 							},
 							{
 								"source": {
 									"path": "$['Model__c']"
+								},
+								"sink": {
+									"name": "Equipment_Model__c",
+									"type": "String"
 								}
 							},
 							{
@@ -983,6 +1003,10 @@
 							{
 								"source": {
 									"path": "$['Date_Sold__c']"
+								},
+								"sink": {
+									"name": "Date_Component_Sold__c",
+									"type": "DateTime"
 								}
 							},
 							{
