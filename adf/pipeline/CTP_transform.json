@@ -652,6 +652,7 @@
 			},
 			{
 				"name": "ctp_to_sf_ins",
+				"description": "make sure you map the lookup correctly to\nProduct_Inventory__r.Product_Key__c",
 				"type": "Copy",
 				"dependsOn": [
 					{
@@ -867,8 +868,7 @@
 									"path": "$['Product_Inventory__c']"
 								},
 								"sink": {
-									"name": "Product_Inventory__c",
-									"type": "String"
+									"name": "Product_Inventory__r.Product_Key__c"
 								}
 							}
 						],
@@ -897,6 +897,7 @@
 			},
 			{
 				"name": "ctp_to_sf_upd",
+				"description": "make sure you map the lookup correctly to\nProduct_Inventory__r.Product_Key__c",
 				"type": "Copy",
 				"dependsOn": [
 					{
@@ -1113,8 +1114,7 @@
 									"path": "$['Product_Inventory__c']"
 								},
 								"sink": {
-									"name": "Product_Inventory__c",
-									"type": "String"
+									"name": "Product_Inventory__r.Product_Key__c"
 								}
 							}
 						],
