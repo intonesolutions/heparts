@@ -865,7 +865,7 @@
 							},
 							{
 								"source": {
-									"path": "$['Product_Inventory__c']"
+									"path": "$['Product_Inventory__r.Product_Key__c']"
 								},
 								"sink": {
 									"name": "Product_Inventory__r.Product_Key__c"
@@ -1111,7 +1111,7 @@
 							},
 							{
 								"source": {
-									"path": "$['Product_Inventory__c']"
+									"path": "$['Product_Inventory__r.Product_Key__c']"
 								},
 								"sink": {
 									"name": "Product_Inventory__r.Product_Key__c"
