@@ -229,56 +229,7 @@
 			{
 				"name": "Account_from_sf",
 				"type": "Copy",
-				"dependsOn": [
-					{
-						"activity": "cp_L20",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					},
-					{
-						"activity": "cp_L21",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					},
-					{
-						"activity": "cp_L22",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					},
-					{
-						"activity": "cp_L25",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					},
-					{
-						"activity": "cp_L42",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					},
-					{
-						"activity": "cp_L43",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					},
-					{
-						"activity": "cp_L71",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					},
-					{
-						"activity": "cp_L72",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
+				"dependsOn": [],
 				"policy": {
 					"timeout": "7.00:00:00",
 					"retry": 0,
@@ -327,50 +278,7 @@
 			{
 				"name": "comp_list_From_sf",
 				"type": "Copy",
-				"dependsOn": [
-					{
-						"activity": "cp_L20",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					},
-					{
-						"activity": "cp_L21",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					},
-					{
-						"activity": "cp_L22",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					},
-					{
-						"activity": "cp_L25",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					},
-					{
-						"activity": "cp_L43",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					},
-					{
-						"activity": "cp_L71",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					},
-					{
-						"activity": "cp_L72",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
+				"dependsOn": [],
 				"policy": {
 					"timeout": "7.00:00:00",
 					"retry": 0,
@@ -675,6 +583,78 @@
 					},
 					{
 						"activity": "comp_list_From_sf",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "cp_L20",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "cp_L21",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "cp_L22",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "cp_L25",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "cp_L82",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "cp_L85",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "cp_L42",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "cp_L43",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "cp_L71",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "cp_L72",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "cp_L91",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "cp_L98",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -2783,6 +2763,902 @@
 						"parameters": {
 							"folder": "ctp/intake",
 							"filename": "L72.csv"
+						}
+					}
+				]
+			},
+			{
+				"name": "cp_L82",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "DelimitedTextSource",
+						"storeSettings": {
+							"type": "FileServerReadSettings",
+							"recursive": true,
+							"enablePartitionDiscovery": false
+						},
+						"formatSettings": {
+							"type": "DelimitedTextReadSettings"
+						}
+					},
+					"sink": {
+						"type": "DelimitedTextSink",
+						"storeSettings": {
+							"type": "AzureBlobStorageWriteSettings"
+						},
+						"formatSettings": {
+							"type": "DelimitedTextWriteSettings",
+							"quoteAllText": true,
+							"fileExtension": ".txt"
+						}
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "Project",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Project",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Stock Code",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Stock Code",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Full Serial",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Full Serial",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Serial",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Serial",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Serial Suffix",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Serial Suffix",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Transaction",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Transaction",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Trans Date",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Trans Date",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Customer Reference",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Customer Reference",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Customer Code",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Customer Code",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Job Source",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Job Source",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "User ID",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "User ID",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Audit Date/Time",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Audit Date/Time",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Process Desc",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Process Desc",
+									"type": "String",
+									"physicalType": "String"
+								}
+							}
+						],
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "ctp_informatica_server_csv",
+						"type": "DatasetReference",
+						"parameters": {
+							"folder": "L82",
+							"filename": "SFDC Project Serial Movements-en-au.csv"
+						}
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "blob_csv",
+						"type": "DatasetReference",
+						"parameters": {
+							"folder": "ctp/intake",
+							"filename": "L82.csv"
+						}
+					}
+				]
+			},
+			{
+				"name": "cp_L85",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "DelimitedTextSource",
+						"storeSettings": {
+							"type": "FileServerReadSettings",
+							"recursive": true,
+							"enablePartitionDiscovery": false
+						},
+						"formatSettings": {
+							"type": "DelimitedTextReadSettings"
+						}
+					},
+					"sink": {
+						"type": "DelimitedTextSink",
+						"storeSettings": {
+							"type": "AzureBlobStorageWriteSettings"
+						},
+						"formatSettings": {
+							"type": "DelimitedTextWriteSettings",
+							"quoteAllText": true,
+							"fileExtension": ".txt"
+						}
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "Project",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Project",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Stock Code",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Stock Code",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Full Serial",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Full Serial",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Serial",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Serial",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Serial Suffix",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Serial Suffix",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Transaction",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Transaction",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Trans Date",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Trans Date",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Customer Reference",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Customer Reference",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Customer Code",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Customer Code",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Job Source",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Job Source",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "User ID",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "User ID",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Audit Date/Time",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Audit Date/Time",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Process Desc",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Process Desc",
+									"type": "String",
+									"physicalType": "String"
+								}
+							}
+						],
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "ctp_informatica_server_csv",
+						"type": "DatasetReference",
+						"parameters": {
+							"folder": "L85",
+							"filename": "SFDC Project Serial Movements-en-au.csv"
+						}
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "blob_csv",
+						"type": "DatasetReference",
+						"parameters": {
+							"folder": "ctp/intake",
+							"filename": "L85.csv"
+						}
+					}
+				]
+			},
+			{
+				"name": "cp_L91",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "DelimitedTextSource",
+						"storeSettings": {
+							"type": "FileServerReadSettings",
+							"recursive": true,
+							"enablePartitionDiscovery": false
+						},
+						"formatSettings": {
+							"type": "DelimitedTextReadSettings"
+						}
+					},
+					"sink": {
+						"type": "DelimitedTextSink",
+						"storeSettings": {
+							"type": "AzureBlobStorageWriteSettings"
+						},
+						"formatSettings": {
+							"type": "DelimitedTextWriteSettings",
+							"quoteAllText": true,
+							"fileExtension": ".txt"
+						}
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "Project",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Project",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Stock Code",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Stock Code",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Full Serial",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Full Serial",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Serial",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Serial",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Serial Suffix",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Serial Suffix",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Transaction",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Transaction",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Trans Date",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Trans Date",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Customer Reference",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Customer Reference",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Customer Code",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Customer Code",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Job Source",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Job Source",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "User ID",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "User ID",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Audit Date/Time",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Audit Date/Time",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Process Desc",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Process Desc",
+									"type": "String",
+									"physicalType": "String"
+								}
+							}
+						],
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "ctp_informatica_server_csv",
+						"type": "DatasetReference",
+						"parameters": {
+							"folder": "L91",
+							"filename": "SFDC Project Serial Movements-en-au.csv"
+						}
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "blob_csv",
+						"type": "DatasetReference",
+						"parameters": {
+							"folder": "ctp/intake",
+							"filename": "L91.csv"
+						}
+					}
+				]
+			},
+			{
+				"name": "cp_L98",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "DelimitedTextSource",
+						"storeSettings": {
+							"type": "FileServerReadSettings",
+							"recursive": true,
+							"enablePartitionDiscovery": false
+						},
+						"formatSettings": {
+							"type": "DelimitedTextReadSettings"
+						}
+					},
+					"sink": {
+						"type": "DelimitedTextSink",
+						"storeSettings": {
+							"type": "AzureBlobStorageWriteSettings"
+						},
+						"formatSettings": {
+							"type": "DelimitedTextWriteSettings",
+							"quoteAllText": true,
+							"fileExtension": ".txt"
+						}
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "Project",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Project",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Stock Code",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Stock Code",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Full Serial",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Full Serial",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Serial",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Serial",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Serial Suffix",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Serial Suffix",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Transaction",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Transaction",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Trans Date",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Trans Date",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Customer Reference",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Customer Reference",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Customer Code",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Customer Code",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Job Source",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Job Source",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "User ID",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "User ID",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Audit Date/Time",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Audit Date/Time",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Process Desc",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Process Desc",
+									"type": "String",
+									"physicalType": "String"
+								}
+							}
+						],
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "ctp_informatica_server_csv",
+						"type": "DatasetReference",
+						"parameters": {
+							"folder": "L98",
+							"filename": "SFDC Project Serial Movements-en-au.csv"
+						}
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "blob_csv",
+						"type": "DatasetReference",
+						"parameters": {
+							"folder": "ctp/intake",
+							"filename": "L98.csv"
 						}
 					}
 				]
