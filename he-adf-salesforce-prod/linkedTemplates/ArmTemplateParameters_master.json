@@ -20,6 +20,9 @@
 		"pronto_ftp_password": {
 			"value": ""
 		},
+		"ctp_informatica_server_password": {
+			"value": ""
+		},
 		"customer_properties_typeProperties_fileName": {
 			"value": "CUSTOMER.xml"
 		},
@@ -40,6 +43,12 @@
 		},
 		"sfi_properties_typeProperties_url": {
 			"value": "http://40.77.111.157/prod"
+		},
+		"ctp_informatica_server_properties_typeProperties_host": {
+			"value": "c:\\informatica\\informatica\\"
+		},
+		"ctp_informatica_server_properties_typeProperties_userId": {
+			"value": "ctpsvc"
 		},
 		"containerUri": {
 			"value": ""

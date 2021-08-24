@@ -27,6 +27,10 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'securityToken' of 'hepartspartialsb_hepartial'"
 		},
+		"ctp_informatica_server_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'ctp_informatica_server'"
+		},
 		"AzureFunction1_properties_typeProperties_functionAppUrl": {
 			"type": "string",
 			"defaultValue": "https://hesfintegration.azurewebsites.net"
@@ -54,6 +58,14 @@
 		"hepartspartialsb_hepartial_properties_typeProperties_username": {
 			"type": "string",
 			"defaultValue": "integration@dom-ex.com"
+		},
+		"ctp_informatica_server_properties_typeProperties_host": {
+			"type": "string",
+			"defaultValue": "c:\\informatica\\informatica\\"
+		},
+		"ctp_informatica_server_properties_typeProperties_userId": {
+			"type": "string",
+			"defaultValue": "ctpsvc"
 		}
 	},
 	"variables": {
@@ -513,6 +525,30 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/ctp_informatica_server')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "FileServer",
+				"typeProperties": {
+					"host": "[parameters('ctp_informatica_server_properties_typeProperties_host')]",
+					"userId": "[parameters('ctp_informatica_server_properties_typeProperties_userId')]",
+					"password": {
+						"type": "SecureString",
+						"value": "[parameters('ctp_informatica_server_password')]"
+					}
+				},
+				"connectVia": {
+					"referenceName": "onprem-informatica",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/integrationRuntimes/onprem-informatica')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/cleanup')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
@@ -656,6 +692,9 @@
 						}
 					}
 				],
+				"folder": {
+					"name": "Pronto_SF"
+				},
 				"annotations": []
 			},
 			"dependsOn": [
@@ -677,34 +716,6 @@
 				"schema": [],
 				"typeProperties": {
 					"objectApiName": "Opportunity"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/hepartspartialsb_hepartial')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/salesforce_OBJ')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "hepartspartialsb_hepartial",
-					"type": "LinkedServiceReference"
-				},
-				"parameters": {
-					"objName": {
-						"type": "string"
-					}
-				},
-				"annotations": [],
-				"type": "SalesforceObject",
-				"schema": [],
-				"typeProperties": {
-					"objectApiName": {
-						"value": "@dataset().objName",
-						"type": "Expression"
-					}
 				}
 			},
 			"dependsOn": [
