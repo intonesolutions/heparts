@@ -1,0 +1,22 @@
+{
+	"name": "hepi_website",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "hepi_website_ftp",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "SftpLocation",
+				"folderPath": "/HEPI_Website"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": []
+	}
+}
