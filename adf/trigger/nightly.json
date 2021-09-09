@@ -1,0 +1,17 @@
+{
+	"name": "nightly",
+	"properties": {
+		"annotations": [],
+		"runtimeState": "Stopped",
+		"pipelines": [],
+		"type": "ScheduleTrigger",
+		"typeProperties": {
+			"recurrence": {
+				"frequency": "Minute",
+				"interval": 15,
+				"startTime": "2021-09-09T16:11:00Z",
+				"timeZone": "UTC"
+			}
+		}
+	}
+}
