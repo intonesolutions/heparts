@@ -23,6 +23,9 @@
 		"ctp_informatica_server_password": {
 			"value": ""
 		},
+		"hepi_website_ftp_password": {
+			"value": ""
+		},
 		"customer_properties_typeProperties_fileName": {
 			"value": "CUSTOMER.xml"
 		},
@@ -49,6 +52,12 @@
 		},
 		"ctp_informatica_server_properties_typeProperties_userId": {
 			"value": "ctpsvc"
+		},
+		"hepi_website_ftp_properties_typeProperties_host": {
+			"value": "h-eparts.ftptoday.com"
+		},
+		"hepi_website_ftp_properties_typeProperties_userName": {
+			"value": "hepiwebsite"
 		},
 		"containerUri": {
 			"value": ""

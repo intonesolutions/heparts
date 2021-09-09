@@ -31,6 +31,10 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'password' of 'ctp_informatica_server'"
 		},
+		"hepi_website_ftp_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'hepi_website_ftp'"
+		},
 		"customer_properties_typeProperties_fileName": {
 			"type": "string",
 			"defaultValue": "CUSTOMER.xml"
@@ -66,6 +70,14 @@
 		"ctp_informatica_server_properties_typeProperties_userId": {
 			"type": "string",
 			"defaultValue": "ctpsvc"
+		},
+		"hepi_website_ftp_properties_typeProperties_host": {
+			"type": "string",
+			"defaultValue": "h-eparts.ftptoday.com"
+		},
+		"hepi_website_ftp_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "hepiwebsite"
 		}
 	},
 	"variables": {
@@ -7027,8 +7039,8 @@
 				"type": "ScheduleTrigger",
 				"typeProperties": {
 					"recurrence": {
-						"frequency": "Minute",
-						"interval": 60,
+						"frequency": "Day",
+						"interval": 1,
 						"startTime": "2020-03-06T14:00:00Z",
 						"timeZone": "UTC"
 					}
@@ -11134,6 +11146,179 @@
 				"[concat(variables('factoryId'), '/datasets/blob_json')]",
 				"[concat(variables('factoryId'), '/datasets/salesforce_OBJ')]",
 				"[concat(variables('factoryId'), '/linkedServices/blob')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/domex-ftp')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Copy data1",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "DelimitedTextSource",
+								"storeSettings": {
+									"type": "FileServerReadSettings",
+									"recursive": true,
+									"enablePartitionDiscovery": false
+								},
+								"formatSettings": {
+									"type": "DelimitedTextReadSettings"
+								}
+							},
+							"sink": {
+								"type": "DelimitedTextSink",
+								"storeSettings": {
+									"type": "SftpWriteSettings",
+									"operationTimeout": "01:00:00",
+									"useTempFileRename": true
+								},
+								"formatSettings": {
+									"type": "DelimitedTextWriteSettings",
+									"quoteAllText": true,
+									"fileExtension": ".txt"
+								}
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "ctp_informatica_server_csv",
+								"type": "DatasetReference",
+								"parameters": {
+									"folder": "L22",
+									"filename": "Domex Inventory Full-en-au.csv"
+								}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "hepi_website",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/ctp_informatica_server_csv')]",
+				"[concat(variables('factoryId'), '/datasets/hepi_website')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/hepi_website_ftp')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "Sftp",
+				"typeProperties": {
+					"host": "[parameters('hepi_website_ftp_properties_typeProperties_host')]",
+					"port": 22,
+					"skipHostKeyValidation": true,
+					"authenticationType": "Basic",
+					"userName": "[parameters('hepi_website_ftp_properties_typeProperties_userName')]",
+					"password": {
+						"type": "SecureString",
+						"value": "[parameters('hepi_website_ftp_password')]"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/hepi_website')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "hepi_website_ftp",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "SftpLocation",
+						"folderPath": "/HEPI_Website"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/hepi_website_ftp')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/nightly')]",
+			"type": "Microsoft.DataFactory/factories/triggers",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"runtimeState": "Stopped",
+				"pipelines": [
+					{
+						"pipelineReference": {
+							"referenceName": "domex-ftp",
+							"type": "PipelineReference"
+						},
+						"parameters": {}
+					},
+					{
+						"pipelineReference": {
+							"referenceName": "CTP_transform",
+							"type": "PipelineReference"
+						},
+						"parameters": {}
+					}
+				],
+				"type": "ScheduleTrigger",
+				"typeProperties": {
+					"recurrence": {
+						"frequency": "Day",
+						"interval": 1,
+						"startTime": "2021-09-09T16:11:00Z",
+						"timeZone": "UTC",
+						"schedule": {
+							"minutes": [
+								30
+							],
+							"hours": [
+								5
+							]
+						}
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/pipelines/domex-ftp')]",
+				"[concat(variables('factoryId'), '/pipelines/CTP_transform')]"
 			]
 		}
 	]

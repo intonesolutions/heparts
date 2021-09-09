@@ -19,6 +19,10 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'password' of 'pronto_ftp'"
 		},
+		"hepi_website_ftp_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'hepi_website_ftp'"
+		},
 		"hepartspartialsb_hepartial_password": {
 			"type": "secureString",
 			"metadata": "Secure string for 'password' of 'hepartspartialsb_hepartial'"
@@ -46,6 +50,14 @@
 		"sfi_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "http://40.77.111.157/prod"
+		},
+		"hepi_website_ftp_properties_typeProperties_host": {
+			"type": "string",
+			"defaultValue": "h-eparts.ftptoday.com"
+		},
+		"hepi_website_ftp_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "hepiwebsite"
 		},
 		"customer_properties_typeProperties_fileName": {
 			"type": "string",
@@ -167,6 +179,27 @@
 			"properties": {
 				"type": "SelfHosted",
 				"typeProperties": {}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/hepi_website_ftp')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "Sftp",
+				"typeProperties": {
+					"host": "[parameters('hepi_website_ftp_properties_typeProperties_host')]",
+					"port": 22,
+					"skipHostKeyValidation": true,
+					"authenticationType": "Basic",
+					"userName": "[parameters('hepi_website_ftp_properties_typeProperties_userName')]",
+					"password": {
+						"type": "SecureString",
+						"value": "[parameters('hepi_website_ftp_password')]"
+					}
+				}
 			},
 			"dependsOn": []
 		},
@@ -549,177 +582,30 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/cleanup')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "delete_ftp",
-						"type": "Delete",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"dataset": {
-								"referenceName": "FTP_BIN",
-								"type": "DatasetReference",
-								"parameters": {
-									"folder": "/"
-								}
-							},
-							"enableLogging": false,
-							"storeSettings": {
-								"type": "FtpReadSettings",
-								"recursive": false,
-								"wildcardFileName": "*.xml",
-								"useBinaryTransfer": true
-							}
-						}
-					},
-					{
-						"name": "delete_intake_xml",
-						"type": "Delete",
-						"dependsOn": [
-							{
-								"activity": "delete_ftp",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"dataset": {
-								"referenceName": "blob_json",
-								"type": "DatasetReference",
-								"parameters": {
-									"folder": "intake",
-									"filename": "*.xml"
-								}
-							},
-							"enableLogging": false,
-							"storeSettings": {
-								"type": "AzureBlobStorageReadSettings",
-								"recursive": false,
-								"wildcardFileName": "*.xml"
-							}
-						}
-					},
-					{
-						"name": "delete_intake_json",
-						"type": "Delete",
-						"dependsOn": [
-							{
-								"activity": "delete_intake_xml",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"dataset": {
-								"referenceName": "blob_json",
-								"type": "DatasetReference",
-								"parameters": {
-									"folder": "intake",
-									"filename": "*.json"
-								}
-							},
-							"enableLogging": false,
-							"storeSettings": {
-								"type": "AzureBlobStorageReadSettings",
-								"recursive": false,
-								"wildcardFileName": "*.json"
-							}
-						}
-					},
-					{
-						"name": "delete_stage_json",
-						"type": "Delete",
-						"dependsOn": [
-							{
-								"activity": "delete_intake_json",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"dataset": {
-								"referenceName": "blob_json",
-								"type": "DatasetReference",
-								"parameters": {
-									"folder": "stage",
-									"filename": "*.json"
-								}
-							},
-							"enableLogging": false,
-							"storeSettings": {
-								"type": "AzureBlobStorageReadSettings",
-								"recursive": false,
-								"wildcardFileName": "*.json"
-							}
-						}
-					}
-				],
-				"folder": {
-					"name": "Pronto_SF"
-				},
-				"annotations": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/FTP_BIN')]",
-				"[concat(variables('factoryId'), '/datasets/blob_json')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/Opportunity')]",
+			"name": "[concat(parameters('factoryName'), '/hepi_website')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"linkedServiceName": {
-					"referenceName": "hepartspartialsb_hepartial",
+					"referenceName": "hepi_website_ftp",
 					"type": "LinkedServiceReference"
 				},
 				"annotations": [],
-				"type": "SalesforceObject",
-				"schema": [],
+				"type": "DelimitedText",
 				"typeProperties": {
-					"objectApiName": "Opportunity"
-				}
+					"location": {
+						"type": "SftpLocation",
+						"folderPath": "/HEPI_Website"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": []
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/hepartspartialsb_hepartial')]"
+				"[concat(variables('factoryId'), '/linkedServices/hepi_website_ftp')]"
 			]
 		}
 	]

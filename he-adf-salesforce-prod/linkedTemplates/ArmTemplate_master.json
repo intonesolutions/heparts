@@ -31,6 +31,10 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'password' of 'ctp_informatica_server'"
 		},
+		"hepi_website_ftp_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'hepi_website_ftp'"
+		},
 		"customer_properties_typeProperties_fileName": {
 			"type": "string",
 			"defaultValue": "CUSTOMER.xml"
@@ -66,6 +70,14 @@
 		"ctp_informatica_server_properties_typeProperties_userId": {
 			"type": "string",
 			"defaultValue": "ctpsvc"
+		},
+		"hepi_website_ftp_properties_typeProperties_host": {
+			"type": "string",
+			"defaultValue": "h-eparts.ftptoday.com"
+		},
+		"hepi_website_ftp_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "hepiwebsite"
 		},
 		"containerUri": {
 			"type": "string",
@@ -103,6 +115,9 @@
 					"pronto_ftp_password": {
 						"value": "[parameters('pronto_ftp_password')]"
 					},
+					"hepi_website_ftp_password": {
+						"value": "[parameters('hepi_website_ftp_password')]"
+					},
 					"hepartspartialsb_hepartial_password": {
 						"value": "[parameters('hepartspartialsb_hepartial_password')]"
 					},
@@ -123,6 +138,12 @@
 					},
 					"sfi_properties_typeProperties_url": {
 						"value": "[parameters('sfi_properties_typeProperties_url')]"
+					},
+					"hepi_website_ftp_properties_typeProperties_host": {
+						"value": "[parameters('hepi_website_ftp_properties_typeProperties_host')]"
+					},
+					"hepi_website_ftp_properties_typeProperties_userName": {
+						"value": "[parameters('hepi_website_ftp_properties_typeProperties_userName')]"
 					},
 					"customer_properties_typeProperties_fileName": {
 						"value": "[parameters('customer_properties_typeProperties_fileName')]"
