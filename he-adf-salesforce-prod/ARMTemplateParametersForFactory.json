@@ -11,19 +11,19 @@
 		"blob_connectionString": {
 			"value": ""
 		},
+		"ctp_informatica_server_password": {
+			"value": ""
+		},
 		"hepartspartialsb_hepartial_password": {
 			"value": ""
 		},
 		"hepartspartialsb_hepartial_securityToken": {
 			"value": ""
 		},
-		"pronto_ftp_password": {
-			"value": ""
-		},
-		"ctp_informatica_server_password": {
-			"value": ""
-		},
 		"hepi_website_ftp_password": {
+			"value": ""
+		},
+		"pronto_ftp_password": {
 			"value": ""
 		},
 		"customer_properties_typeProperties_fileName": {
@@ -32,11 +32,23 @@
 		"AzureFunction1_properties_typeProperties_functionAppUrl": {
 			"value": "https://hesfintegration.azurewebsites.net"
 		},
+		"ctp_informatica_server_properties_typeProperties_host": {
+			"value": "c:\\informatica\\informatica\\"
+		},
+		"ctp_informatica_server_properties_typeProperties_userId": {
+			"value": "ctpsvc"
+		},
 		"hepartspartialsb_hepartial_properties_typeProperties_environmentUrl": {
 			"value": "https://login.salesforce.com"
 		},
 		"hepartspartialsb_hepartial_properties_typeProperties_username": {
 			"value": "integration@dom-ex.com"
+		},
+		"hepi_website_ftp_properties_typeProperties_host": {
+			"value": "h-eparts.ftptoday.com"
+		},
+		"hepi_website_ftp_properties_typeProperties_userName": {
+			"value": "hepiwebsite"
 		},
 		"pronto_ftp_properties_typeProperties_host": {
 			"value": "40.77.111.157"
@@ -46,18 +58,6 @@
 		},
 		"sfi_properties_typeProperties_url": {
 			"value": "http://40.77.111.157/prod"
-		},
-		"ctp_informatica_server_properties_typeProperties_host": {
-			"value": "c:\\informatica\\informatica\\"
-		},
-		"ctp_informatica_server_properties_typeProperties_userId": {
-			"value": "ctpsvc"
-		},
-		"hepi_website_ftp_properties_typeProperties_host": {
-			"value": "h-eparts.ftptoday.com"
-		},
-		"hepi_website_ftp_properties_typeProperties_userName": {
-			"value": "hepiwebsite"
 		}
 	}
 }

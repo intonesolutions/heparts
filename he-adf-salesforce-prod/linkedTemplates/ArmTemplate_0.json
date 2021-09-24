@@ -15,13 +15,17 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'blob'"
 		},
+		"hepi_website_ftp_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'hepi_website_ftp'"
+		},
 		"pronto_ftp_password": {
 			"type": "secureString",
 			"metadata": "Secure string for 'password' of 'pronto_ftp'"
 		},
-		"hepi_website_ftp_password": {
+		"ctp_informatica_server_password": {
 			"type": "secureString",
-			"metadata": "Secure string for 'password' of 'hepi_website_ftp'"
+			"metadata": "Secure string for 'password' of 'ctp_informatica_server'"
 		},
 		"hepartspartialsb_hepartial_password": {
 			"type": "secureString",
@@ -31,13 +35,17 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'securityToken' of 'hepartspartialsb_hepartial'"
 		},
-		"ctp_informatica_server_password": {
-			"type": "secureString",
-			"metadata": "Secure string for 'password' of 'ctp_informatica_server'"
-		},
 		"AzureFunction1_properties_typeProperties_functionAppUrl": {
 			"type": "string",
 			"defaultValue": "https://hesfintegration.azurewebsites.net"
+		},
+		"hepi_website_ftp_properties_typeProperties_host": {
+			"type": "string",
+			"defaultValue": "h-eparts.ftptoday.com"
+		},
+		"hepi_website_ftp_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "hepiwebsite"
 		},
 		"pronto_ftp_properties_typeProperties_host": {
 			"type": "string",
@@ -51,25 +59,9 @@
 			"type": "string",
 			"defaultValue": "http://40.77.111.157/prod"
 		},
-		"hepi_website_ftp_properties_typeProperties_host": {
-			"type": "string",
-			"defaultValue": "h-eparts.ftptoday.com"
-		},
-		"hepi_website_ftp_properties_typeProperties_userName": {
-			"type": "string",
-			"defaultValue": "hepiwebsite"
-		},
 		"customer_properties_typeProperties_fileName": {
 			"type": "string",
 			"defaultValue": "CUSTOMER.xml"
-		},
-		"hepartspartialsb_hepartial_properties_typeProperties_environmentUrl": {
-			"type": "string",
-			"defaultValue": "https://login.salesforce.com"
-		},
-		"hepartspartialsb_hepartial_properties_typeProperties_username": {
-			"type": "string",
-			"defaultValue": "integration@dom-ex.com"
 		},
 		"ctp_informatica_server_properties_typeProperties_host": {
 			"type": "string",
@@ -78,6 +70,14 @@
 		"ctp_informatica_server_properties_typeProperties_userId": {
 			"type": "string",
 			"defaultValue": "ctpsvc"
+		},
+		"hepartspartialsb_hepartial_properties_typeProperties_environmentUrl": {
+			"type": "string",
+			"defaultValue": "https://login.salesforce.com"
+		},
+		"hepartspartialsb_hepartial_properties_typeProperties_username": {
+			"type": "string",
+			"defaultValue": "integration@dom-ex.com"
 		}
 	},
 	"variables": {
@@ -112,6 +112,27 @@
 				"type": "AzureBlobStorage",
 				"typeProperties": {
 					"connectionString": "[parameters('blob_connectionString')]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/hepi_website_ftp')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "Sftp",
+				"typeProperties": {
+					"host": "[parameters('hepi_website_ftp_properties_typeProperties_host')]",
+					"port": 22,
+					"skipHostKeyValidation": true,
+					"authenticationType": "Basic",
+					"userName": "[parameters('hepi_website_ftp_properties_typeProperties_userName')]",
+					"password": {
+						"type": "SecureString",
+						"value": "[parameters('hepi_website_ftp_password')]"
+					}
 				}
 			},
 			"dependsOn": []
@@ -179,27 +200,6 @@
 			"properties": {
 				"type": "SelfHosted",
 				"typeProperties": {}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/hepi_website_ftp')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "Sftp",
-				"typeProperties": {
-					"host": "[parameters('hepi_website_ftp_properties_typeProperties_host')]",
-					"port": 22,
-					"skipHostKeyValidation": true,
-					"authenticationType": "Basic",
-					"userName": "[parameters('hepi_website_ftp_properties_typeProperties_userName')]",
-					"password": {
-						"type": "SecureString",
-						"value": "[parameters('hepi_website_ftp_password')]"
-					}
-				}
 			},
 			"dependsOn": []
 		},
@@ -501,6 +501,33 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/hepi_website')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "hepi_website_ftp",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "SftpLocation",
+						"folderPath": "/HEPI_Website"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/hepi_website_ftp')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/sfi_dset')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -530,6 +557,30 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/ctp_informatica_server')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "FileServer",
+				"typeProperties": {
+					"host": "[parameters('ctp_informatica_server_properties_typeProperties_host')]",
+					"userId": "[parameters('ctp_informatica_server_properties_typeProperties_userId')]",
+					"password": {
+						"type": "SecureString",
+						"value": "[parameters('ctp_informatica_server_password')]"
+					}
+				},
+				"connectVia": {
+					"referenceName": "onprem-informatica",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/integrationRuntimes/onprem-informatica')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/hepartspartialsb_hepartial')]",
 			"type": "Microsoft.DataFactory/factories/linkedServices",
 			"apiVersion": "2018-06-01",
@@ -555,57 +606,6 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/integrationRuntimes/IRforSF')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/ctp_informatica_server')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "FileServer",
-				"typeProperties": {
-					"host": "[parameters('ctp_informatica_server_properties_typeProperties_host')]",
-					"userId": "[parameters('ctp_informatica_server_properties_typeProperties_userId')]",
-					"password": {
-						"type": "SecureString",
-						"value": "[parameters('ctp_informatica_server_password')]"
-					}
-				},
-				"connectVia": {
-					"referenceName": "onprem-informatica",
-					"type": "IntegrationRuntimeReference"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/integrationRuntimes/onprem-informatica')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/hepi_website')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "hepi_website_ftp",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "DelimitedText",
-				"typeProperties": {
-					"location": {
-						"type": "SftpLocation",
-						"folderPath": "/HEPI_Website"
-					},
-					"columnDelimiter": ",",
-					"escapeChar": "\\",
-					"firstRowAsHeader": true,
-					"quoteChar": "\""
-				},
-				"schema": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/hepi_website_ftp')]"
 			]
 		}
 	]

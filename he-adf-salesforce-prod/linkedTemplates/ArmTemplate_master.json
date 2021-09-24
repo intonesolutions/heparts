@@ -15,6 +15,10 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'blob'"
 		},
+		"ctp_informatica_server_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'ctp_informatica_server'"
+		},
 		"hepartspartialsb_hepartial_password": {
 			"type": "secureString",
 			"metadata": "Secure string for 'password' of 'hepartspartialsb_hepartial'"
@@ -23,17 +27,13 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'securityToken' of 'hepartspartialsb_hepartial'"
 		},
-		"pronto_ftp_password": {
-			"type": "secureString",
-			"metadata": "Secure string for 'password' of 'pronto_ftp'"
-		},
-		"ctp_informatica_server_password": {
-			"type": "secureString",
-			"metadata": "Secure string for 'password' of 'ctp_informatica_server'"
-		},
 		"hepi_website_ftp_password": {
 			"type": "secureString",
 			"metadata": "Secure string for 'password' of 'hepi_website_ftp'"
+		},
+		"pronto_ftp_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'pronto_ftp'"
 		},
 		"customer_properties_typeProperties_fileName": {
 			"type": "string",
@@ -43,6 +43,14 @@
 			"type": "string",
 			"defaultValue": "https://hesfintegration.azurewebsites.net"
 		},
+		"ctp_informatica_server_properties_typeProperties_host": {
+			"type": "string",
+			"defaultValue": "c:\\informatica\\informatica\\"
+		},
+		"ctp_informatica_server_properties_typeProperties_userId": {
+			"type": "string",
+			"defaultValue": "ctpsvc"
+		},
 		"hepartspartialsb_hepartial_properties_typeProperties_environmentUrl": {
 			"type": "string",
 			"defaultValue": "https://login.salesforce.com"
@@ -50,6 +58,14 @@
 		"hepartspartialsb_hepartial_properties_typeProperties_username": {
 			"type": "string",
 			"defaultValue": "integration@dom-ex.com"
+		},
+		"hepi_website_ftp_properties_typeProperties_host": {
+			"type": "string",
+			"defaultValue": "h-eparts.ftptoday.com"
+		},
+		"hepi_website_ftp_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "hepiwebsite"
 		},
 		"pronto_ftp_properties_typeProperties_host": {
 			"type": "string",
@@ -62,22 +78,6 @@
 		"sfi_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "http://40.77.111.157/prod"
-		},
-		"ctp_informatica_server_properties_typeProperties_host": {
-			"type": "string",
-			"defaultValue": "c:\\informatica\\informatica\\"
-		},
-		"ctp_informatica_server_properties_typeProperties_userId": {
-			"type": "string",
-			"defaultValue": "ctpsvc"
-		},
-		"hepi_website_ftp_properties_typeProperties_host": {
-			"type": "string",
-			"defaultValue": "h-eparts.ftptoday.com"
-		},
-		"hepi_website_ftp_properties_typeProperties_userName": {
-			"type": "string",
-			"defaultValue": "hepiwebsite"
 		},
 		"containerUri": {
 			"type": "string",
@@ -112,11 +112,14 @@
 					"blob_connectionString": {
 						"value": "[parameters('blob_connectionString')]"
 					},
+					"hepi_website_ftp_password": {
+						"value": "[parameters('hepi_website_ftp_password')]"
+					},
 					"pronto_ftp_password": {
 						"value": "[parameters('pronto_ftp_password')]"
 					},
-					"hepi_website_ftp_password": {
-						"value": "[parameters('hepi_website_ftp_password')]"
+					"ctp_informatica_server_password": {
+						"value": "[parameters('ctp_informatica_server_password')]"
 					},
 					"hepartspartialsb_hepartial_password": {
 						"value": "[parameters('hepartspartialsb_hepartial_password')]"
@@ -124,11 +127,14 @@
 					"hepartspartialsb_hepartial_securityToken": {
 						"value": "[parameters('hepartspartialsb_hepartial_securityToken')]"
 					},
-					"ctp_informatica_server_password": {
-						"value": "[parameters('ctp_informatica_server_password')]"
-					},
 					"AzureFunction1_properties_typeProperties_functionAppUrl": {
 						"value": "[parameters('AzureFunction1_properties_typeProperties_functionAppUrl')]"
+					},
+					"hepi_website_ftp_properties_typeProperties_host": {
+						"value": "[parameters('hepi_website_ftp_properties_typeProperties_host')]"
+					},
+					"hepi_website_ftp_properties_typeProperties_userName": {
+						"value": "[parameters('hepi_website_ftp_properties_typeProperties_userName')]"
 					},
 					"pronto_ftp_properties_typeProperties_host": {
 						"value": "[parameters('pronto_ftp_properties_typeProperties_host')]"
@@ -139,26 +145,20 @@
 					"sfi_properties_typeProperties_url": {
 						"value": "[parameters('sfi_properties_typeProperties_url')]"
 					},
-					"hepi_website_ftp_properties_typeProperties_host": {
-						"value": "[parameters('hepi_website_ftp_properties_typeProperties_host')]"
-					},
-					"hepi_website_ftp_properties_typeProperties_userName": {
-						"value": "[parameters('hepi_website_ftp_properties_typeProperties_userName')]"
-					},
 					"customer_properties_typeProperties_fileName": {
 						"value": "[parameters('customer_properties_typeProperties_fileName')]"
-					},
-					"hepartspartialsb_hepartial_properties_typeProperties_environmentUrl": {
-						"value": "[parameters('hepartspartialsb_hepartial_properties_typeProperties_environmentUrl')]"
-					},
-					"hepartspartialsb_hepartial_properties_typeProperties_username": {
-						"value": "[parameters('hepartspartialsb_hepartial_properties_typeProperties_username')]"
 					},
 					"ctp_informatica_server_properties_typeProperties_host": {
 						"value": "[parameters('ctp_informatica_server_properties_typeProperties_host')]"
 					},
 					"ctp_informatica_server_properties_typeProperties_userId": {
 						"value": "[parameters('ctp_informatica_server_properties_typeProperties_userId')]"
+					},
+					"hepartspartialsb_hepartial_properties_typeProperties_environmentUrl": {
+						"value": "[parameters('hepartspartialsb_hepartial_properties_typeProperties_environmentUrl')]"
+					},
+					"hepartspartialsb_hepartial_properties_typeProperties_username": {
+						"value": "[parameters('hepartspartialsb_hepartial_properties_typeProperties_username')]"
 					}
 				}
 			},
