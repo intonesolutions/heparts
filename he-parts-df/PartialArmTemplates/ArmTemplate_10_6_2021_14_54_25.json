@@ -13,74 +13,231 @@
 	},
 	"resources": [
 		{
-			"name": "[concat(parameters('factoryName'), '/Opportunity')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
+			"name": "[concat(parameters('factoryName'), '/0-run_all')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
 			"properties": {
-				"linkedServiceName": {
-					"referenceName": "hepartspartialsb_hepartial",
-					"type": "LinkedServiceReference"
+				"activities": [
+					{
+						"name": "2-run_stocks_only",
+						"type": "ExecutePipeline",
+						"dependsOn": [
+							{
+								"activity": "1-run_customers_only",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "2-run_stocks_only",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true
+						}
+					},
+					{
+						"name": "3-run_SO_only",
+						"type": "ExecutePipeline",
+						"dependsOn": [
+							{
+								"activity": "2-run_stocks_only",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "3-run_SO_only",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true
+						}
+					},
+					{
+						"name": "1-run_customers_only",
+						"type": "ExecutePipeline",
+						"dependsOn": [
+							{
+								"activity": "set_run_file",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "1-run_customers_only",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true
+						}
+					},
+					{
+						"name": "Delete_run_file",
+						"type": "Delete",
+						"dependsOn": [
+							{
+								"activity": "3-run_SO_only",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataset": {
+								"referenceName": "blob_csv",
+								"type": "DatasetReference",
+								"parameters": {
+									"folder": "/",
+									"filename": "__running.txt"
+								}
+							},
+							"enableLogging": false,
+							"storeSettings": {
+								"type": "AzureBlobStorageReadSettings",
+								"recursive": false,
+								"enablePartitionDiscovery": false
+							}
+						}
+					},
+					{
+						"name": "set_run_file",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "DelimitedTextSource",
+								"additionalColumns": [
+									{
+										"name": "status",
+										"value": "running"
+									},
+									{
+										"name": "date",
+										"value": {
+											"value": "@utcnow()",
+											"type": "Expression"
+										}
+									}
+								],
+								"storeSettings": {
+									"type": "FtpReadSettings",
+									"recursive": false,
+									"enablePartitionDiscovery": false,
+									"useBinaryTransfer": false
+								},
+								"formatSettings": {
+									"type": "DelimitedTextReadSettings"
+								}
+							},
+							"sink": {
+								"type": "DelimitedTextSink",
+								"storeSettings": {
+									"type": "AzureBlobStorageWriteSettings"
+								},
+								"formatSettings": {
+									"type": "DelimitedTextWriteSettings",
+									"quoteAllText": true,
+									"fileExtension": ".txt"
+								}
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"name": "ID",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "ID",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "status",
+											"type": "String"
+										},
+										"sink": {
+											"name": "status",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "date",
+											"type": "String"
+										},
+										"sink": {
+											"name": "date",
+											"type": "String",
+											"physicalType": "String"
+										}
+									}
+								],
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "dummy",
+								"type": "DatasetReference"
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "blob_csv",
+								"type": "DatasetReference",
+								"parameters": {
+									"folder": "/",
+									"filename": "__running.txt"
+								}
+							}
+						]
+					}
+				],
+				"folder": {
+					"name": "Pronto_SF"
 				},
-				"annotations": [],
-				"type": "SalesforceObject",
-				"schema": [],
-				"typeProperties": {
-					"objectApiName": "Opportunity"
-				}
+				"annotations": []
 			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/SharePointWebAPI')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "RestService1",
-					"type": "LinkedServiceReference"
-				},
-				"parameters": {
-					"APIURL": {
-						"type": "string"
-					}
-				},
-				"annotations": [],
-				"type": "RestResource",
-				"typeProperties": {
-					"relativeUrl": {
-						"value": "@dataset().APIURL",
-						"type": "Expression"
-					}
-				},
-				"schema": []
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/salesforce_OBJ')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "hepartspartialsb_hepartial",
-					"type": "LinkedServiceReference"
-				},
-				"parameters": {
-					"objName": {
-						"type": "string"
-					}
-				},
-				"annotations": [],
-				"type": "SalesforceObject",
-				"schema": [],
-				"typeProperties": {
-					"objectApiName": {
-						"value": "@dataset().objName",
-						"type": "Expression"
-					}
-				}
-			},
-			"dependsOn": []
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/pipelines/2-run_stocks_only')]",
+				"[concat(variables('factoryId'), '/pipelines/3-run_SO_only')]",
+				"[concat(variables('factoryId'), '/pipelines/1-run_customers_only')]",
+				"[concat(variables('factoryId'), '/datasets/dummy')]"
+			]
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/1-run_customers_only')]",
@@ -131,8 +288,7 @@
 						"inputs": [
 							{
 								"referenceName": "FTP_TEXT",
-								"type": "DatasetReference",
-								"parameters": {}
+								"type": "DatasetReference"
 							}
 						],
 						"outputs": [
@@ -189,8 +345,7 @@
 						"inputs": [
 							{
 								"referenceName": "FTP_TEXT",
-								"type": "DatasetReference",
-								"parameters": {}
+								"type": "DatasetReference"
 							}
 						],
 						"outputs": [
@@ -986,591 +1141,12 @@
 						]
 					}
 				],
-				"policy": {
-					"elapsedTimeMetric": {},
-					"cancelAfter": {}
-				},
 				"folder": {
 					"name": "Pronto_SF"
 				},
 				"annotations": []
 			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/salesforce_OBJ')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/1_prontosf to blob ----old')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "DEB_MASTER",
-						"type": "Copy",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "SalesforceSource",
-								"readBehavior": "query"
-							},
-							"sink": {
-								"type": "JsonSink",
-								"storeSettings": {
-									"type": "AzureBlobStorageWriteSettings"
-								},
-								"formatSettings": {
-									"type": "JsonWriteSettings"
-								}
-							},
-							"enableStaging": false
-						},
-						"inputs": [
-							{
-								"referenceName": "salesforce_OBJ",
-								"type": "DatasetReference",
-								"parameters": {
-									"objName": "DEB_MASTER__C"
-								}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "blob_json",
-								"type": "DatasetReference",
-								"parameters": {
-									"folder": "intake",
-									"filename": "deb_master.json"
-								}
-							}
-						]
-					},
-					{
-						"name": "name and address",
-						"type": "Copy",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "SalesforceSource",
-								"readBehavior": "query"
-							},
-							"sink": {
-								"type": "JsonSink",
-								"storeSettings": {
-									"type": "AzureBlobStorageWriteSettings"
-								},
-								"formatSettings": {
-									"type": "JsonWriteSettings"
-								}
-							},
-							"enableStaging": false
-						},
-						"inputs": [
-							{
-								"referenceName": "salesforce_OBJ",
-								"type": "DatasetReference",
-								"parameters": {
-									"objName": "NAME_AND_ADDRESS_MASTER__c"
-								}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "blob_json",
-								"type": "DatasetReference",
-								"parameters": {
-									"folder": "intake",
-									"filename": "name_address_master.json"
-								}
-							}
-						]
-					},
-					{
-						"name": "stock_master",
-						"type": "Copy",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "SalesforceSource",
-								"readBehavior": "query"
-							},
-							"sink": {
-								"type": "JsonSink",
-								"storeSettings": {
-									"type": "AzureBlobStorageWriteSettings"
-								},
-								"formatSettings": {
-									"type": "JsonWriteSettings"
-								}
-							},
-							"enableStaging": false
-						},
-						"inputs": [
-							{
-								"referenceName": "salesforce_OBJ",
-								"type": "DatasetReference",
-								"parameters": {
-									"objName": "stock_master__c"
-								}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "blob_json",
-								"type": "DatasetReference",
-								"parameters": {
-									"folder": "intake",
-									"filename": "stock_master.json"
-								}
-							}
-						]
-					},
-					{
-						"name": "rep_master",
-						"type": "Copy",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "SalesforceSource",
-								"readBehavior": "query"
-							},
-							"sink": {
-								"type": "JsonSink",
-								"storeSettings": {
-									"type": "AzureBlobStorageWriteSettings"
-								},
-								"formatSettings": {
-									"type": "JsonWriteSettings"
-								}
-							},
-							"enableStaging": false
-						},
-						"inputs": [
-							{
-								"referenceName": "salesforce_OBJ",
-								"type": "DatasetReference",
-								"parameters": {
-									"objName": "rep_master__c"
-								}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "blob_json",
-								"type": "DatasetReference",
-								"parameters": {
-									"folder": "intake",
-									"filename": "rep_master.json"
-								}
-							}
-						]
-					},
-					{
-						"name": "so_pronto",
-						"type": "Copy",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "SalesforceSource",
-								"readBehavior": "query"
-							},
-							"sink": {
-								"type": "JsonSink",
-								"storeSettings": {
-									"type": "AzureBlobStorageWriteSettings"
-								},
-								"formatSettings": {
-									"type": "JsonWriteSettings"
-								}
-							},
-							"enableStaging": false
-						},
-						"inputs": [
-							{
-								"referenceName": "salesforce_OBJ",
-								"type": "DatasetReference",
-								"parameters": {
-									"objName": "SALES_ORDER_PRONTO__c"
-								}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "blob_json",
-								"type": "DatasetReference",
-								"parameters": {
-									"folder": "intake",
-									"filename": "salesorder_head.json"
-								}
-							}
-						]
-					},
-					{
-						"name": "so_lines_pronto",
-						"type": "Copy",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "SalesforceSource",
-								"readBehavior": "query"
-							},
-							"sink": {
-								"type": "JsonSink",
-								"storeSettings": {
-									"type": "AzureBlobStorageWriteSettings"
-								},
-								"formatSettings": {
-									"type": "JsonWriteSettings"
-								}
-							},
-							"enableStaging": false
-						},
-						"inputs": [
-							{
-								"referenceName": "salesforce_OBJ",
-								"type": "DatasetReference",
-								"parameters": {
-									"objName": "SALES_ORDER_LINE__c"
-								}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "blob_json",
-								"type": "DatasetReference",
-								"parameters": {
-									"folder": "intake",
-									"filename": "salesorder_lines.json"
-								}
-							}
-						]
-					}
-				],
-				"policy": {
-					"elapsedTimeMetric": {},
-					"cancelAfter": {}
-				},
-				"folder": {
-					"name": "Pronto_SF/old"
-				},
-				"annotations": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/salesforce_OBJ')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/2_sfobjs to blob')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "Account",
-						"type": "Copy",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "SalesforceSource",
-								"query": "select Id,Pronto_Global_Account__c,MSUS_Pronto__c from Account",
-								"readBehavior": "query"
-							},
-							"sink": {
-								"type": "JsonSink",
-								"storeSettings": {
-									"type": "AzureBlobStorageWriteSettings"
-								},
-								"formatSettings": {
-									"type": "JsonWriteSettings"
-								}
-							},
-							"enableStaging": false
-						},
-						"inputs": [
-							{
-								"referenceName": "salesforce_OBJ",
-								"type": "DatasetReference",
-								"parameters": {
-									"objName": "Account"
-								}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "blob_json",
-								"type": "DatasetReference",
-								"parameters": {
-									"folder": "intake",
-									"filename": "account.json"
-								}
-							}
-						]
-					},
-					{
-						"name": "user",
-						"type": "Copy",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "SalesforceSource",
-								"readBehavior": "query"
-							},
-							"sink": {
-								"type": "JsonSink",
-								"storeSettings": {
-									"type": "AzureBlobStorageWriteSettings"
-								},
-								"formatSettings": {
-									"type": "JsonWriteSettings"
-								}
-							},
-							"enableStaging": false
-						},
-						"inputs": [
-							{
-								"referenceName": "salesforce_OBJ",
-								"type": "DatasetReference",
-								"parameters": {
-									"objName": "User"
-								}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "blob_json",
-								"type": "DatasetReference",
-								"parameters": {
-									"folder": "intake",
-									"filename": "user.json"
-								}
-							}
-						]
-					},
-					{
-						"name": "Product2",
-						"type": "Copy",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "SalesforceSource",
-								"query": "select Id,Product_Key__c from Product2 where IsActive=true",
-								"readBehavior": "query"
-							},
-							"sink": {
-								"type": "JsonSink",
-								"storeSettings": {
-									"type": "AzureBlobStorageWriteSettings"
-								},
-								"formatSettings": {
-									"type": "JsonWriteSettings"
-								}
-							},
-							"enableStaging": false,
-							"enableSkipIncompatibleRow": true
-						},
-						"inputs": [
-							{
-								"referenceName": "salesforce_OBJ",
-								"type": "DatasetReference",
-								"parameters": {
-									"objName": "Product2"
-								}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "blob_json",
-								"type": "DatasetReference",
-								"parameters": {
-									"folder": "intake",
-									"filename": "product2.json"
-								}
-							}
-						]
-					},
-					{
-						"name": "Opportunity",
-						"type": "Copy",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "SalesforceSource",
-								"query": "select Id,Name from Opportunity",
-								"readBehavior": "query"
-							},
-							"sink": {
-								"type": "JsonSink",
-								"storeSettings": {
-									"type": "AzureBlobStorageWriteSettings"
-								},
-								"formatSettings": {
-									"type": "JsonWriteSettings"
-								}
-							},
-							"enableStaging": false
-						},
-						"inputs": [
-							{
-								"referenceName": "salesforce_OBJ",
-								"type": "DatasetReference",
-								"parameters": {
-									"objName": "Opportunity"
-								}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "blob_json",
-								"type": "DatasetReference",
-								"parameters": {
-									"folder": "intake",
-									"filename": "opps_head.json"
-								}
-							}
-						]
-					},
-					{
-						"name": "oppLineitems",
-						"type": "Copy",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "SalesforceSource",
-								"query": "select id,OpportunityId,External_ID__c from  OpportunityLineItem",
-								"readBehavior": "query"
-							},
-							"sink": {
-								"type": "JsonSink",
-								"storeSettings": {
-									"type": "AzureBlobStorageWriteSettings"
-								},
-								"formatSettings": {
-									"type": "JsonWriteSettings"
-								}
-							},
-							"enableStaging": false
-						},
-						"inputs": [
-							{
-								"referenceName": "salesforce_OBJ",
-								"type": "DatasetReference",
-								"parameters": {
-									"objName": "OpportunityLineItem"
-								}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "blob_json",
-								"type": "DatasetReference",
-								"parameters": {
-									"folder": "intake",
-									"filename": "opp_lines.json"
-								}
-							}
-						]
-					}
-				],
-				"policy": {
-					"elapsedTimeMetric": {},
-					"cancelAfter": {}
-				},
-				"folder": {
-					"name": "Pronto_SF/old"
-				},
-				"annotations": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/salesforce_OBJ')]"
-			]
+			"dependsOn": []
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/3-run_SO_only')]",
@@ -1732,8 +1308,7 @@
 														"referenceName": "run_SO_only_inner",
 														"type": "PipelineReference"
 													},
-													"waitOnCompletion": true,
-													"parameters": {}
+													"waitOnCompletion": true
 												}
 											}
 										]
@@ -1951,10 +1526,6 @@
 						]
 					}
 				],
-				"policy": {
-					"elapsedTimeMetric": {},
-					"cancelAfter": {}
-				},
 				"variables": {
 					"nn": {
 						"type": "String",
@@ -1967,1595 +1538,66 @@
 				"annotations": []
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/salesforce_OBJ')]",
 				"[concat(variables('factoryId'), '/pipelines/run_SO_only_inner')]"
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/3_blob to sf pass1')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
+			"name": "[concat(parameters('factoryName'), '/dummy')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
 			"properties": {
-				"activities": [
-					{
-						"name": "account",
-						"type": "Copy",
-						"dependsOn": [
-							{
-								"activity": "call pass1",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "JsonSource",
-								"storeSettings": {
-									"type": "AzureBlobStorageReadSettings",
-									"recursive": true
-								}
-							},
-							"sink": {
-								"type": "SalesforceSink",
-								"writeBatchSize": 5000,
-								"writeBehavior": "upsert",
-								"externalIdFieldName": "MSUS_Pronto__c",
-								"ignoreNullValues": true
-							},
-							"enableStaging": false,
-							"translator": {
-								"type": "TabularTranslator",
-								"mappings": [
-									{
-										"source": {
-											"path": "$['MSUS_Pronto__c']"
-										},
-										"sink": {
-											"name": "MSUS_Pronto__c",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "$['Pronto_Global_Account__c']"
-										},
-										"sink": {
-											"name": "Pronto_Global_Account__c",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "$['Name']"
-										},
-										"sink": {
-											"name": "Name",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "$['CurrencyIsoCode']"
-										},
-										"sink": {
-											"name": "CurrencyIsoCode",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "$['OwnerId']"
-										},
-										"sink": {
-											"name": "OwnerId",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "$['Crown_Sales_Rep__c']"
-										},
-										"sink": {
-											"name": "Crown_Sales_Rep__c",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "$['Territory_ID__c']"
-										},
-										"sink": {
-											"name": "Territory_ID__c",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "$['BillingStreet']"
-										},
-										"sink": {
-											"name": "BillingStreet",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "$['BillingCity']"
-										},
-										"sink": {
-											"name": "BillingCity",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "$['BillingState']"
-										},
-										"sink": {
-											"name": "BillingState",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "$['BillingPostalCode']"
-										},
-										"sink": {
-											"name": "BillingPostalCode",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "$['BillingCountry']"
-										},
-										"sink": {
-											"name": "BillingCountry",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "$['ShippingStreet']"
-										},
-										"sink": {
-											"name": "ShippingStreet",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "$['ShippingCity']"
-										},
-										"sink": {
-											"name": "ShippingCity",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "$['ShippingState']"
-										},
-										"sink": {
-											"name": "ShippingState",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "$['ShippingPostalCode']"
-										},
-										"sink": {
-											"name": "ShippingPostalCode",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "$['ShippingCountry']"
-										},
-										"sink": {
-											"name": "ShippingCountry",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "$['Phone']"
-										},
-										"sink": {
-											"name": "Phone",
-											"type": "String"
-										}
-									}
-								],
-								"collectionReference": ""
-							}
-						},
-						"inputs": [
-							{
-								"referenceName": "blob_json",
-								"type": "DatasetReference",
-								"parameters": {
-									"folder": "stage",
-									"filename": "account.json"
-								}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "salesforce_OBJ",
-								"type": "DatasetReference",
-								"parameters": {
-									"objName": "Account"
-								}
-							}
-						]
-					},
-					{
-						"name": "products",
-						"type": "Copy",
-						"dependsOn": [
-							{
-								"activity": "call pass1",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "JsonSource",
-								"storeSettings": {
-									"type": "AzureBlobStorageReadSettings",
-									"recursive": true
-								}
-							},
-							"sink": {
-								"type": "SalesforceSink",
-								"writeBatchSize": 5000,
-								"writeBehavior": "upsert",
-								"externalIdFieldName": "Product_Key__c",
-								"ignoreNullValues": true
-							},
-							"enableStaging": false,
-							"translator": {
-								"type": "TabularTranslator",
-								"mappings": [
-									{
-										"source": {
-											"path": "$['Id']"
-										},
-										"sink": {
-											"name": "Id",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "$['IsActive']"
-										},
-										"sink": {
-											"name": "IsActive",
-											"type": "Boolean"
-										}
-									},
-									{
-										"source": {
-											"path": "$['SKU__c']"
-										},
-										"sink": {
-											"name": "SKU__c",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "$['Stock_Code__c']"
-										},
-										"sink": {
-											"name": "Stock_Code__c",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "$['Name']"
-										},
-										"sink": {
-											"name": "Name",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "$['Description']"
-										},
-										"sink": {
-											"name": "Description",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "$['Part_num__c']"
-										},
-										"sink": {
-											"name": "Part_num__c",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "$['Crown_Standard_Price__c']"
-										},
-										"sink": {
-											"name": "Crown_Standard_Price__c",
-											"type": "Decimal"
-										}
-									},
-									{
-										"source": {
-											"path": "$['OEM_Retail_Price__c']"
-										},
-										"sink": {
-											"name": "OEM_Retail_Price__c",
-											"type": "Decimal"
-										}
-									},
-									{
-										"source": {
-											"path": "$['Product_Key__c']"
-										},
-										"sink": {
-											"name": "Product_Key__c",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "$['Family']"
-										},
-										"sink": {
-											"name": "Family",
-											"type": "String"
-										}
-									}
-								],
-								"collectionReference": ""
-							}
-						},
-						"inputs": [
-							{
-								"referenceName": "blob_json",
-								"type": "DatasetReference",
-								"parameters": {
-									"folder": "stage",
-									"filename": "product2.json"
-								}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "salesforce_OBJ",
-								"type": "DatasetReference",
-								"parameters": {
-									"objName": "Product2"
-								}
-							}
-						]
-					},
-					{
-						"name": "opportunity",
-						"type": "Copy",
-						"dependsOn": [
-							{
-								"activity": "call pass1",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "JsonSource",
-								"storeSettings": {
-									"type": "AzureBlobStorageReadSettings",
-									"recursive": true
-								}
-							},
-							"sink": {
-								"type": "SalesforceSink",
-								"writeBatchSize": 5000,
-								"writeBehavior": "upsert",
-								"externalIdFieldName": "Crown_Quote_ID__c",
-								"ignoreNullValues": true
-							},
-							"enableStaging": false
-						},
-						"inputs": [
-							{
-								"referenceName": "blob_json",
-								"type": "DatasetReference",
-								"parameters": {
-									"folder": "stage",
-									"filename": "opportunity.json"
-								}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "salesforce_OBJ",
-								"type": "DatasetReference",
-								"parameters": {
-									"objName": "Opportunity"
-								}
-							}
-						]
-					},
-					{
-						"name": "call pass1",
-						"type": "AzureFunctionActivity",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"functionName": "HttpTrigger1",
-							"method": "POST",
-							"headers": {},
-							"body": {
-								"pass": "1"
-							}
-						},
-						"linkedServiceName": {
-							"referenceName": "AzureFunction1",
-							"type": "LinkedServiceReference"
-						}
-					},
-					{
-						"name": "get Opportunity",
-						"type": "Copy",
-						"dependsOn": [
-							{
-								"activity": "get Prod and Pricebook",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "SalesforceSource",
-								"query": "select Id,Name from Opportunity",
-								"readBehavior": "query"
-							},
-							"sink": {
-								"type": "JsonSink",
-								"storeSettings": {
-									"type": "AzureBlobStorageWriteSettings"
-								},
-								"formatSettings": {
-									"type": "JsonWriteSettings"
-								}
-							},
-							"enableStaging": false
-						},
-						"inputs": [
-							{
-								"referenceName": "salesforce_OBJ",
-								"type": "DatasetReference",
-								"parameters": {
-									"objName": "Opportunity"
-								}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "blob_json",
-								"type": "DatasetReference",
-								"parameters": {
-									"folder": "intake",
-									"filename": "opps_head.json"
-								}
-							}
-						]
-					},
-					{
-						"name": "oppLineitems",
-						"type": "Copy",
-						"dependsOn": [
-							{
-								"activity": "get Prod and Pricebook",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "SalesforceSource",
-								"query": "select id,OpportunityId,External_ID__c from  OpportunityLineItem",
-								"readBehavior": "query"
-							},
-							"sink": {
-								"type": "JsonSink",
-								"storeSettings": {
-									"type": "AzureBlobStorageWriteSettings"
-								},
-								"formatSettings": {
-									"type": "JsonWriteSettings"
-								}
-							},
-							"enableStaging": false
-						},
-						"inputs": [
-							{
-								"referenceName": "salesforce_OBJ",
-								"type": "DatasetReference",
-								"parameters": {
-									"objName": "OpportunityLineItem"
-								}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "blob_json",
-								"type": "DatasetReference",
-								"parameters": {
-									"folder": "intake",
-									"filename": "opp_lines.json"
-								}
-							}
-						]
-					},
-					{
-						"name": "get Prod and Pricebook",
-						"type": "Copy",
-						"dependsOn": [
-							{
-								"activity": "account",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							},
-							{
-								"activity": "products",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							},
-							{
-								"activity": "opportunity",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "SalesforceSource",
-								"query": "select Id,Product2.Id,Product2.Product_Key__c from PriceBookEntry where IsActive=true",
-								"readBehavior": "query"
-							},
-							"sink": {
-								"type": "JsonSink",
-								"storeSettings": {
-									"type": "AzureBlobStorageWriteSettings"
-								},
-								"formatSettings": {
-									"type": "JsonWriteSettings"
-								}
-							},
-							"enableStaging": false,
-							"enableSkipIncompatibleRow": true
-						},
-						"inputs": [
-							{
-								"referenceName": "salesforce_OBJ",
-								"type": "DatasetReference",
-								"parameters": {
-									"objName": "Product2"
-								}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "blob_json",
-								"type": "DatasetReference",
-								"parameters": {
-									"folder": "stage",
-									"filename": "productpricebook.json"
-								}
-							}
-						]
-					}
-				],
-				"policy": {
-					"elapsedTimeMetric": {},
-					"cancelAfter": {}
+				"linkedServiceName": {
+					"referenceName": "pronto_ftp",
+					"type": "LinkedServiceReference"
 				},
-				"folder": {
-					"name": "Pronto_SF/old"
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "FtpServerLocation",
+						"fileName": "__dummy_donot_remove.txt"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
 				},
-				"annotations": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/salesforce_OBJ')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/3_blob to sf pass2')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
+				"schema": [
 					{
-						"name": "OppLine_ins",
-						"type": "Copy",
-						"dependsOn": [
-							{
-								"activity": "call pass2",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "JsonSource",
-								"storeSettings": {
-									"type": "AzureBlobStorageReadSettings",
-									"recursive": true
-								}
-							},
-							"sink": {
-								"type": "SalesforceSink",
-								"writeBatchSize": 5000,
-								"writeBehavior": "insert",
-								"ignoreNullValues": false
-							},
-							"enableStaging": false,
-							"translator": {
-								"type": "TabularTranslator",
-								"mappings": [
-									{
-										"source": {
-											"path": "$['Id']"
-										},
-										"sink": {
-											"name": "Id",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "$['External_ID__c']"
-										},
-										"sink": {
-											"name": "External_ID__c",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "$['rowstate__c']"
-										},
-										"sink": {
-											"name": "rowstate__c",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "$['SortOrder__c']"
-										},
-										"sink": {
-											"name": "SortOrder__c",
-											"type": "Decimal"
-										}
-									},
-									{
-										"source": {
-											"path": "$['UnitPrice']"
-										},
-										"sink": {
-											"name": "UnitPrice",
-											"type": "Decimal"
-										}
-									},
-									{
-										"source": {
-											"path": "$['CME_Item_Cost__c']"
-										},
-										"sink": {
-											"name": "CME_Item_Cost__c",
-											"type": "Decimal"
-										}
-									},
-									{
-										"source": {
-											"path": "$['Shipped_Value__c']"
-										},
-										"sink": {
-											"name": "Shipped_Value__c",
-											"type": "Decimal"
-										}
-									},
-									{
-										"source": {
-											"path": "$['CME_Total_Cost__c']"
-										},
-										"sink": {
-											"name": "CME_Total_Cost__c",
-											"type": "Decimal"
-										}
-									},
-									{
-										"source": {
-											"path": "$['Stock_Code__c']"
-										},
-										"sink": {
-											"name": "Stock_Code__c",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "$['CME_Product_Group_Code__c']"
-										},
-										"sink": {
-											"name": "CME_Product_Group_Code__c",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "$['CME_Product_Group_Name__c']"
-										},
-										"sink": {
-											"name": "CME_Product_Group_Name__c",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "$['Back_Order_Suffix__c']"
-										},
-										"sink": {
-											"name": "Back_Order_Suffix__c",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "$['Morgan_Line__c']"
-										},
-										"sink": {
-											"name": "Morgan_Line__c",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "$['Transaction_Type__c']"
-										},
-										"sink": {
-											"name": "Transaction_Type__c",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "$['Quantity']"
-										},
-										"sink": {
-											"name": "Quantity",
-											"type": "Decimal"
-										}
-									},
-									{
-										"source": {
-											"path": "$['Back_Order_Qty__c']"
-										},
-										"sink": {
-											"name": "Back_Order_Qty__c",
-											"type": "Decimal"
-										}
-									},
-									{
-										"source": {
-											"path": "$['Shipped_Qty__c']"
-										},
-										"sink": {
-											"name": "Shipped_Qty__c",
-											"type": "Decimal"
-										}
-									},
-									{
-										"source": {
-											"path": "$['Crown_Customer_ID_Number__c']"
-										},
-										"sink": {
-											"name": "Crown_Customer_ID_Number__c",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "$['Tax_Rate__c']"
-										},
-										"sink": {
-											"name": "Tax_Rate__c",
-											"type": "Decimal"
-										}
-									},
-									{
-										"source": {
-											"path": "$['Total_Ordered_Tax_Amount__c']"
-										},
-										"sink": {
-											"name": "Total_Ordered_Tax_Amount__c",
-											"type": "Decimal"
-										}
-									},
-									{
-										"source": {
-											"path": "$['Total_Ordered_Line_Amount__c']"
-										},
-										"sink": {
-											"name": "Total_Ordered_Line_Amount__c",
-											"type": "Decimal"
-										}
-									}
-								],
-								"collectionReference": ""
-							}
-						},
-						"inputs": [
-							{
-								"referenceName": "blob_json",
-								"type": "DatasetReference",
-								"parameters": {
-									"folder": "stage",
-									"filename": "opportunity_line_ins.json"
-								}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "salesforce_OBJ",
-								"type": "DatasetReference",
-								"parameters": {
-									"objName": "OpportunityLineItem"
-								}
-							}
-						]
-					},
-					{
-						"name": "call pass2",
-						"type": "AzureFunctionActivity",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"functionName": "HttpTrigger1",
-							"method": "POST",
-							"headers": {},
-							"body": {
-								"pass": "2"
-							}
-						},
-						"linkedServiceName": {
-							"referenceName": "AzureFunction1",
-							"type": "LinkedServiceReference"
-						}
-					},
-					{
-						"name": "OppLine_upd",
-						"type": "Copy",
-						"dependsOn": [
-							{
-								"activity": "call pass2",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "JsonSource",
-								"storeSettings": {
-									"type": "AzureBlobStorageReadSettings",
-									"recursive": false,
-									"enablePartitionDiscovery": false
-								}
-							},
-							"sink": {
-								"type": "SalesforceSink",
-								"writeBatchSize": 5000,
-								"writeBehavior": "upsert",
-								"externalIdFieldName": "External_ID__c",
-								"ignoreNullValues": false
-							},
-							"enableStaging": false,
-							"translator": {
-								"type": "TabularTranslator",
-								"mappings": [
-									{
-										"source": {
-											"path": "$['Id']"
-										},
-										"sink": {
-											"name": "Id",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "$['External_ID__c']"
-										},
-										"sink": {
-											"name": "External_ID__c",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "$['rowstate__c']"
-										},
-										"sink": {
-											"name": "rowstate__c",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "$['SortOrder__c']"
-										},
-										"sink": {
-											"name": "SortOrder__c",
-											"type": "Decimal"
-										}
-									},
-									{
-										"source": {
-											"path": "$['UnitPrice']"
-										},
-										"sink": {
-											"name": "UnitPrice",
-											"type": "Decimal"
-										}
-									},
-									{
-										"source": {
-											"path": "$['CME_Item_Cost__c']"
-										},
-										"sink": {
-											"name": "CME_Item_Cost__c",
-											"type": "Decimal"
-										}
-									},
-									{
-										"source": {
-											"path": "$['Shipped_Value__c']"
-										},
-										"sink": {
-											"name": "Shipped_Value__c",
-											"type": "Decimal"
-										}
-									},
-									{
-										"source": {
-											"path": "$['CME_Total_Cost__c']"
-										},
-										"sink": {
-											"name": "CME_Total_Cost__c",
-											"type": "Decimal"
-										}
-									},
-									{
-										"source": {
-											"path": "$['Stock_Code__c']"
-										},
-										"sink": {
-											"name": "Stock_Code__c",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "$['CME_Product_Group_Code__c']"
-										},
-										"sink": {
-											"name": "CME_Product_Group_Code__c",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "$['CME_Product_Group_Name__c']"
-										},
-										"sink": {
-											"name": "CME_Product_Group_Name__c",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "$['Back_Order_Suffix__c']"
-										},
-										"sink": {
-											"name": "Back_Order_Suffix__c",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "$['Morgan_Line__c']"
-										},
-										"sink": {
-											"name": "Morgan_Line__c",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "$['Transaction_Type__c']"
-										},
-										"sink": {
-											"name": "Transaction_Type__c",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "$['Quantity']"
-										},
-										"sink": {
-											"name": "Quantity",
-											"type": "Decimal"
-										}
-									},
-									{
-										"source": {
-											"path": "$['Back_Order_Qty__c']"
-										},
-										"sink": {
-											"name": "Back_Order_Qty__c",
-											"type": "Decimal"
-										}
-									},
-									{
-										"source": {
-											"path": "$['Shipped_Qty__c']"
-										},
-										"sink": {
-											"name": "Shipped_Qty__c",
-											"type": "Decimal"
-										}
-									},
-									{
-										"source": {
-											"path": "$['Crown_Customer_ID_Number__c']"
-										},
-										"sink": {
-											"name": "Crown_Customer_ID_Number__c",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "$['Tax_Rate__c']"
-										},
-										"sink": {
-											"name": "Tax_Rate__c",
-											"type": "Decimal"
-										}
-									},
-									{
-										"source": {
-											"path": "$['Total_Ordered_Tax_Amount__c']"
-										},
-										"sink": {
-											"name": "Total_Ordered_Tax_Amount__c",
-											"type": "Decimal"
-										}
-									},
-									{
-										"source": {
-											"path": "$['Total_Ordered_Line_Amount__c']"
-										},
-										"sink": {
-											"name": "Total_Ordered_Line_Amount__c",
-											"type": "Decimal"
-										}
-									}
-								],
-								"collectionReference": ""
-							}
-						},
-						"inputs": [
-							{
-								"referenceName": "blob_json",
-								"type": "DatasetReference",
-								"parameters": {
-									"folder": "stage",
-									"filename": "opportunity_line_upd.json"
-								}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "salesforce_OBJ",
-								"type": "DatasetReference",
-								"parameters": {
-									"objName": "OpportunityLineItem"
-								}
-							}
-						]
-					}
-				],
-				"policy": {
-					"elapsedTimeMetric": {},
-					"cancelAfter": {}
-				},
-				"folder": {
-					"name": "Pronto_SF/old"
-				},
-				"annotations": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/salesforce_OBJ')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/SharePoint_Pipeline ph1')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"description": "to get siteid, https://support.cloudhq.net/how-to-find-guids-of-sharepoint-sites/",
-				"activities": [
-					{
-						"name": "extract from Pronto",
-						"type": "Copy",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "SalesforceSource",
-								"readBehavior": "query"
-							},
-							"sink": {
-								"type": "JsonSink",
-								"storeSettings": {
-									"type": "AzureBlobStorageWriteSettings"
-								},
-								"formatSettings": {
-									"type": "JsonWriteSettings"
-								}
-							},
-							"enableStaging": false
-						},
-						"inputs": [
-							{
-								"referenceName": "salesforce_OBJ",
-								"type": "DatasetReference",
-								"parameters": {
-									"objName": "DEB_MASTER__C"
-								}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "blob_json",
-								"type": "DatasetReference",
-								"parameters": {
-									"folder": "intake",
-									"filename": "deb_master.json"
-								}
-							}
-						]
-					},
-					{
-						"name": "ForEach1",
-						"type": "ForEach",
-						"dependsOn": [
-							{
-								"activity": "Lookup1",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"userProperties": [],
-						"typeProperties": {
-							"items": {
-								"value": "@activity('Lookup1').output.value",
-								"type": "Expression"
-							},
-							"isSequential": true,
-							"activities": [
-								{
-									"name": "prepJson",
-									"type": "SetVariable",
-									"dependsOn": [],
-									"userProperties": [],
-									"typeProperties": {
-										"variableName": "json",
-										"value": {
-											"value": "@concat('{\n\t\"websiteAbsoluteUrl\":\"https://hepartsint.sharepoint.com/sites/internal/intranet/prontoToSF/\",\n\t\"SPadminUser\":\"Tamer.Elshazli@h-eparts.com\",\n\t\"SPadminPass\":\"Enigma#25\",\n\t\"listName\":\"DEB_MASTER\",\n\t\"item\":{\n\t\t\"Accountcode__c\":\"',item().Accountcode__c,'\",\n\t\t\"RepCode__c\":\"',item().RepCode__c,'\",\n\t\t\"Territory__c\":\"',item().Territory__c,'\",\n\t\t\"DrCurrCode__c\":\"',item().DrCurrCode__c,'\",\n\t\t\"BillTo__c\":\"',item().BillTo__c,'\"\n\t}\n}')",
-											"type": "Expression"
-										}
-									}
-								},
-								{
-									"name": "postToSP",
-									"type": "WebActivity",
-									"dependsOn": [
-										{
-											"activity": "prepJson",
-											"dependencyConditions": [
-												"Succeeded"
-											]
-										}
-									],
-									"policy": {
-										"timeout": "7.00:00:00",
-										"retry": 0,
-										"retryIntervalInSeconds": 30,
-										"secureOutput": false,
-										"secureInput": false
-									},
-									"userProperties": [],
-									"typeProperties": {
-										"url": "https://hewebutils.azurewebsites.net/api/SPUtils/addItemToList",
-										"method": "POST",
-										"headers": {
-											"Content-Type": "application/json"
-										},
-										"body": {
-											"value": "@variables('json')",
-											"type": "Expression"
-										}
-									}
-								}
-							]
-						}
-					},
-					{
-						"name": "Lookup1",
-						"type": "Lookup",
-						"dependsOn": [
-							{
-								"activity": "extract from Pronto",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "JsonSource",
-								"storeSettings": {
-									"type": "AzureBlobStorageReadSettings",
-									"recursive": false,
-									"enablePartitionDiscovery": false
-								}
-							},
-							"dataset": {
-								"referenceName": "blob_json",
-								"type": "DatasetReference",
-								"parameters": {
-									"folder": "intake",
-									"filename": "deb_master.json"
-								}
-							},
-							"firstRowOnly": false
-						}
-					}
-				],
-				"policy": {
-					"elapsedTimeMetric": {},
-					"cancelAfter": {}
-				},
-				"variables": {
-					"json": {
-						"type": "String"
-					},
-					"log": {
+						"name": "ID",
 						"type": "String"
 					}
-				},
-				"folder": {
-					"name": "demo"
-				},
-				"annotations": []
+				]
 			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/salesforce_OBJ')]"
-			]
+			"dependsOn": []
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/SharePoint_pipeline ph2')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
+			"name": "[concat(parameters('factoryName'), '/trigger1')]",
+			"type": "Microsoft.DataFactory/factories/triggers",
 			"apiVersion": "2018-06-01",
 			"properties": {
-				"activities": [
+				"annotations": [],
+				"runtimeState": "Started",
+				"pipelines": [
 					{
-						"name": "CopySPtoBlob",
-						"type": "Copy",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "RestSource",
-								"httpRequestTimeout": "00:01:40",
-								"requestInterval": "00.00:00:00.010",
-								"requestMethod": "POST",
-								"requestBody": "{\n\t\"websiteAbsoluteUrl\":\"https://hepartsint.sharepoint.com/sites/internal/intranet/prontoToSF/\",\n\t\"SPadminUser\":\"Tamer.Elshazli@h-eparts.com\",\n\t\"SPadminPass\":\"Enigma#25\",\n\t\"listName\":\"DEB_MASTER\",\n\t\"filter\":\"Status='Approved'\",\n\t\"sort\":\"\",\n\t\"top\":\"\",\n\t\"getAttachments\":\"false\"\n}",
-								"additionalHeaders": {
-									"Content-Type": "application/json"
-								}
-							},
-							"sink": {
-								"type": "JsonSink",
-								"storeSettings": {
-									"type": "AzureBlobStorageWriteSettings"
-								},
-								"formatSettings": {
-									"type": "JsonWriteSettings"
-								}
-							},
-							"enableStaging": false
-						},
-						"inputs": [
-							{
-								"referenceName": "SharePointWebAPI",
-								"type": "DatasetReference",
-								"parameters": {
-									"APIURL": "api/SPUtils/getItemsFromList"
-								}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "blob_json",
-								"type": "DatasetReference",
-								"parameters": {
-									"folder": "sharepoint",
-									"filename": "deb_master_sp.json"
-								}
-							}
-						]
-					},
-					{
-						"name": "deb_master",
-						"type": "Copy",
-						"dependsOn": [
-							{
-								"activity": "CopySPtoBlob",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "JsonSource",
-								"storeSettings": {
-									"type": "AzureBlobStorageReadSettings",
-									"recursive": true
-								}
-							},
-							"sink": {
-								"type": "SalesforceSink",
-								"writeBatchSize": 5000,
-								"writeBehavior": "upsert",
-								"externalIdFieldName": "Accountcode__c",
-								"ignoreNullValues": true
-							},
-							"enableStaging": false,
-							"translator": {
-								"type": "TabularTranslator",
-								"mappings": [
-									{
-										"source": {
-											"path": "$['Title']"
-										},
-										"sink": {
-											"name": "Name",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "$['Accountcode__c']"
-										},
-										"sink": {
-											"name": "Accountcode__c",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "$['RepCode__c']"
-										},
-										"sink": {
-											"name": "RepCode__c",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "$['Territory__c']"
-										},
-										"sink": {
-											"name": "Territory__c",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "$['DrCurrCode__c']"
-										},
-										"sink": {
-											"name": "DrCurrCode__c",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "$['BillTo__c']"
-										},
-										"sink": {
-											"name": "BillTo__c",
-											"type": "String"
-										}
-									}
-								],
-								"collectionReference": ""
-							}
-						},
-						"inputs": [
-							{
-								"referenceName": "blob_json",
-								"type": "DatasetReference",
-								"parameters": {
-									"folder": "sharepoint",
-									"filename": "deb_master_sp.json"
-								}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "salesforce_OBJ",
-								"type": "DatasetReference",
-								"parameters": {
-									"objName": "DEB_MASTER__c"
-								}
-							}
-						]
+						"pipelineReference": {
+							"referenceName": "0-run_all",
+							"type": "PipelineReference"
+						}
 					}
 				],
-				"policy": {
-					"elapsedTimeMetric": {},
-					"cancelAfter": {}
-				},
-				"folder": {
-					"name": "demo"
-				},
-				"annotations": []
+				"type": "ScheduleTrigger",
+				"typeProperties": {
+					"recurrence": {
+						"frequency": "Minute",
+						"interval": 60,
+						"startTime": "2020-03-06T14:00:00Z",
+						"timeZone": "UTC"
+					}
+				}
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/SharePointWebAPI')]",
-				"[concat(variables('factoryId'), '/datasets/salesforce_OBJ')]"
+				"[concat(variables('factoryId'), '/pipelines/0-run_all')]"
 			]
 		},
 		{
@@ -3610,8 +1652,7 @@
 						"inputs": [
 							{
 								"referenceName": "FTP_TEXT",
-								"type": "DatasetReference",
-								"parameters": {}
+								"type": "DatasetReference"
 							}
 						],
 						"outputs": [
@@ -4007,8 +2048,7 @@
 						"inputs": [
 							{
 								"referenceName": "FTP_TEXT",
-								"type": "DatasetReference",
-								"parameters": {}
+								"type": "DatasetReference"
 							}
 						],
 						"outputs": [
@@ -4067,8 +2107,7 @@
 						"inputs": [
 							{
 								"referenceName": "FTP_TEXT",
-								"type": "DatasetReference",
-								"parameters": {}
+								"type": "DatasetReference"
 							}
 						],
 						"outputs": [
@@ -4128,8 +2167,7 @@
 						"inputs": [
 							{
 								"referenceName": "FTP_TEXT",
-								"type": "DatasetReference",
-								"parameters": {}
+								"type": "DatasetReference"
 							}
 						],
 						"outputs": [
@@ -4306,18 +2344,12 @@
 						]
 					}
 				],
-				"policy": {
-					"elapsedTimeMetric": {},
-					"cancelAfter": {}
-				},
 				"folder": {
 					"name": "Pronto_SF"
 				},
 				"annotations": []
 			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/salesforce_OBJ')]"
-			]
+			"dependsOn": []
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/run_so_res')]",
@@ -4804,18 +2836,12 @@
 						]
 					}
 				],
-				"policy": {
-					"elapsedTimeMetric": {},
-					"cancelAfter": {}
-				},
 				"folder": {
 					"name": "Pronto_SF"
 				},
 				"annotations": []
 			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/salesforce_OBJ')]"
-			]
+			"dependsOn": []
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/run_SO_only_inner')]",
@@ -6629,10 +4655,6 @@
 						}
 					}
 				],
-				"policy": {
-					"elapsedTimeMetric": {},
-					"cancelAfter": {}
-				},
 				"variables": {
 					"tag": {
 						"type": "String"
@@ -6646,393 +4668,7 @@
 				},
 				"annotations": []
 			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/salesforce_OBJ')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/0-run_all')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "2-run_stocks_only",
-						"type": "ExecutePipeline",
-						"dependsOn": [
-							{
-								"activity": "1-run_customers_only",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"userProperties": [],
-						"typeProperties": {
-							"pipeline": {
-								"referenceName": "2-run_stocks_only",
-								"type": "PipelineReference"
-							},
-							"waitOnCompletion": true,
-							"parameters": {}
-						}
-					},
-					{
-						"name": "3-run_SO_only",
-						"type": "ExecutePipeline",
-						"dependsOn": [
-							{
-								"activity": "2-run_stocks_only",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"userProperties": [],
-						"typeProperties": {
-							"pipeline": {
-								"referenceName": "3-run_SO_only",
-								"type": "PipelineReference"
-							},
-							"waitOnCompletion": true,
-							"parameters": {}
-						}
-					},
-					{
-						"name": "1-run_customers_only",
-						"type": "ExecutePipeline",
-						"dependsOn": [
-							{
-								"activity": "set_run_file",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"userProperties": [],
-						"typeProperties": {
-							"pipeline": {
-								"referenceName": "1-run_customers_only",
-								"type": "PipelineReference"
-							},
-							"waitOnCompletion": true,
-							"parameters": {}
-						}
-					},
-					{
-						"name": "Delete_run_file",
-						"type": "Delete",
-						"dependsOn": [
-							{
-								"activity": "3-run_SO_only",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"dataset": {
-								"referenceName": "blob_csv",
-								"type": "DatasetReference",
-								"parameters": {
-									"folder": "/",
-									"filename": "__running.txt"
-								}
-							},
-							"enableLogging": false,
-							"storeSettings": {
-								"type": "AzureBlobStorageReadSettings",
-								"recursive": false,
-								"enablePartitionDiscovery": false
-							}
-						}
-					},
-					{
-						"name": "set_run_file",
-						"type": "Copy",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "DelimitedTextSource",
-								"additionalColumns": [
-									{
-										"name": "status",
-										"value": "running"
-									},
-									{
-										"name": "date",
-										"value": {
-											"value": "@utcnow()",
-											"type": "Expression"
-										}
-									}
-								],
-								"storeSettings": {
-									"type": "FtpReadSettings",
-									"recursive": false,
-									"enablePartitionDiscovery": false,
-									"useBinaryTransfer": false
-								},
-								"formatSettings": {
-									"type": "DelimitedTextReadSettings"
-								}
-							},
-							"sink": {
-								"type": "DelimitedTextSink",
-								"storeSettings": {
-									"type": "AzureBlobStorageWriteSettings"
-								},
-								"formatSettings": {
-									"type": "DelimitedTextWriteSettings",
-									"quoteAllText": true,
-									"fileExtension": ".txt"
-								}
-							},
-							"enableStaging": false,
-							"translator": {
-								"type": "TabularTranslator",
-								"mappings": [
-									{
-										"source": {
-											"name": "ID",
-											"type": "String",
-											"physicalType": "String"
-										},
-										"sink": {
-											"name": "ID",
-											"type": "String",
-											"physicalType": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "status",
-											"type": "String"
-										},
-										"sink": {
-											"name": "status",
-											"type": "String",
-											"physicalType": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "date",
-											"type": "String"
-										},
-										"sink": {
-											"name": "date",
-											"type": "String",
-											"physicalType": "String"
-										}
-									}
-								],
-								"typeConversion": true,
-								"typeConversionSettings": {
-									"allowDataTruncation": true,
-									"treatBooleanAsNumber": false
-								}
-							}
-						},
-						"inputs": [
-							{
-								"referenceName": "dummy",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "blob_csv",
-								"type": "DatasetReference",
-								"parameters": {
-									"folder": "/",
-									"filename": "__running.txt"
-								}
-							}
-						]
-					}
-				],
-				"policy": {
-					"elapsedTimeMetric": {},
-					"cancelAfter": {}
-				},
-				"folder": {
-					"name": "Pronto_SF"
-				},
-				"annotations": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/pipelines/2-run_stocks_only')]",
-				"[concat(variables('factoryId'), '/pipelines/3-run_SO_only')]",
-				"[concat(variables('factoryId'), '/pipelines/1-run_customers_only')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/run all')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "Execute Pipeline1",
-						"type": "ExecutePipeline",
-						"dependsOn": [],
-						"userProperties": [],
-						"typeProperties": {
-							"pipeline": {
-								"referenceName": "1_prontoXML to blob",
-								"type": "PipelineReference"
-							},
-							"waitOnCompletion": true,
-							"parameters": {}
-						}
-					},
-					{
-						"name": "Execute Pipeline2",
-						"type": "ExecutePipeline",
-						"dependsOn": [
-							{
-								"activity": "Execute Pipeline1",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"userProperties": [],
-						"typeProperties": {
-							"pipeline": {
-								"referenceName": "2_sfobjs to blob",
-								"type": "PipelineReference"
-							},
-							"waitOnCompletion": true,
-							"parameters": {}
-						}
-					},
-					{
-						"name": "Execute Pipeline3",
-						"type": "ExecutePipeline",
-						"dependsOn": [
-							{
-								"activity": "Execute Pipeline2",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"userProperties": [],
-						"typeProperties": {
-							"pipeline": {
-								"referenceName": "3_blob to sf pass1",
-								"type": "PipelineReference"
-							},
-							"waitOnCompletion": true,
-							"parameters": {}
-						}
-					},
-					{
-						"name": "Execute Pipeline4",
-						"type": "ExecutePipeline",
-						"dependsOn": [
-							{
-								"activity": "Execute Pipeline3",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"userProperties": [],
-						"typeProperties": {
-							"pipeline": {
-								"referenceName": "3_blob to sf pass2",
-								"type": "PipelineReference"
-							},
-							"waitOnCompletion": true,
-							"parameters": {}
-						}
-					},
-					{
-						"name": "cleanup",
-						"type": "ExecutePipeline",
-						"dependsOn": [
-							{
-								"activity": "Execute Pipeline4",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"userProperties": [],
-						"typeProperties": {
-							"pipeline": {
-								"referenceName": "cleanup",
-								"type": "PipelineReference"
-							},
-							"waitOnCompletion": true,
-							"parameters": {}
-						}
-					}
-				],
-				"policy": {
-					"elapsedTimeMetric": {},
-					"cancelAfter": {}
-				},
-				"folder": {
-					"name": "Pronto_SF/old"
-				},
-				"annotations": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/pipelines/2_sfobjs to blob')]",
-				"[concat(variables('factoryId'), '/pipelines/3_blob to sf pass1')]",
-				"[concat(variables('factoryId'), '/pipelines/3_blob to sf pass2')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/trigger1')]",
-			"type": "Microsoft.DataFactory/factories/triggers",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"runtimeState": "Started",
-				"pipelines": [
-					{
-						"pipelineReference": {
-							"referenceName": "0-run_all",
-							"type": "PipelineReference"
-						},
-						"parameters": {}
-					}
-				],
-				"type": "ScheduleTrigger",
-				"typeProperties": {
-					"recurrence": {
-						"frequency": "Minute",
-						"interval": 60,
-						"startTime": "2020-03-06T14:00:00Z",
-						"timeZone": "UTC"
-					}
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/pipelines/0-run_all')]"
-			]
+			"dependsOn": []
 		}
 	]
 }
