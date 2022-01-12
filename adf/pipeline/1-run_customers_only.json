@@ -395,6 +395,9 @@
 							"recursive": false,
 							"wildcardFileName": "NAME_AND_ADDRESS_MASTER*.xml",
 							"useBinaryTransfer": true
+						},
+						"formatSettings": {
+							"type": "BinaryReadSettings"
 						}
 					},
 					"sink": {
@@ -419,7 +422,10 @@
 						"referenceName": "blob_bin",
 						"type": "DatasetReference",
 						"parameters": {
-							"folder": "processed"
+							"folder": {
+								"value": "@concat('processed/', utcnow('yyyy-MM-dd') )",
+								"type": "Expression"
+							}
 						}
 					}
 				]
