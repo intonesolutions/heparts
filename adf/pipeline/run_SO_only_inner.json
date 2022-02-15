@@ -452,7 +452,7 @@
 							},
 							{
 								"source": {
-									"path": "CME_Sales_Admin_Code__c"
+									"path": "${'CME_Sales_Admin_Code__c'}"
 								},
 								"sink": {
 									"name": "CME_Sales_Admin_Code__c"
@@ -460,7 +460,7 @@
 							},
 							{
 								"source": {
-									"path": "Reason_Lost__c"
+									"path": "${'Reason_Lost__c'}"
 								},
 								"sink": {
 									"name": "Reason_Lost__c"
@@ -468,10 +468,18 @@
 							},
 							{
 								"source": {
-									"path": "Other_Reason_Lost__c"
+									"path": "${'Other_Reason_Lost__c'}"
 								},
 								"sink": {
 									"name": "Other_Reason_Lost__c"
+								}
+							},
+							{
+								"source": {
+									"path": "${'Originated_As_Quote__c'}"
+								},
+								"sink": {
+									"name": "Originated_As_Quote__c"
 								}
 							}
 						],
