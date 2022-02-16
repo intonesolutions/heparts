@@ -439,7 +439,8 @@
 									"path": "$['SO_Type_Code__c']"
 								},
 								"sink": {
-									"name": "SO_Type_Code__c"
+									"name": "SO_Type_Code__c",
+									"type": "String"
 								}
 							},
 							{
@@ -447,39 +448,44 @@
 									"path": "$['SO_Reason_Code__c']"
 								},
 								"sink": {
-									"name": "SO_Reason_Code__c"
+									"name": "SO_Reason_Code__c",
+									"type": "String"
 								}
 							},
 							{
 								"source": {
-									"path": "CME_Sales_Admin_Code__c"
+									"path": "$['CME_Sales_Admin_Code__c']"
 								},
 								"sink": {
-									"name": "CME_Sales_Admin_Code__c"
+									"name": "CME_Sales_Admin_Code__c",
+									"type": "String"
 								}
 							},
 							{
 								"source": {
-									"path": "Reason_Lost__c"
+									"path": "$['Reason_Lost__c']"
 								},
 								"sink": {
-									"name": "Reason_Lost__c"
+									"name": "Reason_Lost__c",
+									"type": "String"
 								}
 							},
 							{
 								"source": {
-									"path": "Other_Reason_Lost__c"
+									"path": "$['Other_Reason_Lost__c']"
 								},
 								"sink": {
-									"name": "Other_Reason_Lost__c"
+									"name": "Other_Reason_Lost__c",
+									"type": "String"
 								}
 							},
 							{
 								"source": {
-									"path": "Originated_As_Quote__c"
+									"path": "$['Originated_As_Quote__c']"
 								},
 								"sink": {
-									"name": "Originated_As_Quote__c"
+									"name": "Originated_As_Quote__c",
+									"type": "String"
 								}
 							}
 						],
